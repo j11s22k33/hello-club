@@ -6,7 +6,7 @@ interface ClubItemProps {
 
 const ClubItem: React.FC<ClubItemProps> = ({ club }) => {
   return (
-    <li>
+    <li data-id={club.id}>
       <div className="inner">
         <div className="thumbnail">
           <div className="club-text">
@@ -16,12 +16,16 @@ const ClubItem: React.FC<ClubItemProps> = ({ club }) => {
               style={{ backgroundImage: `url(${club.logo})` }}
             ></p>
           </div>
-          <div
-            className="img dim"
-            style={{
-              backgroundImage: `url(${club?.bg})`,
-            }}
-          ></div>
+          {club.bg ? (
+            <div
+              className="img dim"
+              style={{
+                backgroundImage: `url(${club?.bg})`,
+              }}
+            ></div>
+          ) : (
+            <div className="img dim"></div>
+          )}
         </div>
       </div>
     </li>

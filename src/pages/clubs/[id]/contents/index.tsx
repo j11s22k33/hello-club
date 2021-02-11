@@ -1,16 +1,13 @@
-import ClubItem from "@/components/ClubItem";
-import clubs from "@/dummy/clubs";
+import ContentItem from "@/components/ContentItem";
+import contents from "@/dummy/contents";
 import Navigation from "@/utils/Navigation";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const Clubs = () => {
-  const router = useRouter();
-
+const Contents = () => {
   const tabNavi = {
     id: "tab-navi",
     options: {
-      cols: 3,
+      cols: 4,
       start: true,
     },
     direction: {
@@ -33,9 +30,7 @@ const Clubs = () => {
       },
     },
     focus(section: any) {},
-    enter(section: any) {
-      router.push(`/clubs/${section.focusItem.dataset.id}/contents`);
-    },
+    enter() {},
     back() {},
   };
 
@@ -60,24 +55,28 @@ const Clubs = () => {
 
   return (
     <div id="root">
-      <div className="container">
+      <div id="navi" className="container">
         <div className="entry_route">
           <span className="i_home">홈</span>
           <span>헬로클럽</span>
+          <span>콘텐츠</span>
         </div>
         <nav className="tabs-wrap">
           <ul className="nav-tabs" id="tab-navi">
-            {["전체클럽", "지역별클럽", "가입한클럽"].map((tab) => (
+            {["전체", "예배영상", "교회행사", "찬송가"].map((tab) => (
               <li key={tab} className="tab-item">
                 <span>{tab}</span>
               </li>
             ))}
           </ul>
         </nav>
-        <div className="contents-list type-club">
+        <div className="contents-list">
+          {/* <div className="empty-contents">
+                        <p>등록된 <em>콘텐츠</em>가 없습니다.</p>
+                    </div> */}
           <ul id="item-navi">
-            {clubs.map((club) => (
-              <ClubItem key={club.id} club={club} />
+            {contents.map((content) => (
+              <ContentItem key={content.id} content={content} />
             ))}
           </ul>
         </div>
@@ -86,4 +85,4 @@ const Clubs = () => {
   );
 };
 
-export default Clubs;
+export default Contents;

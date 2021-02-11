@@ -2,7 +2,7 @@ interface Club {
   id: number;
   channel: string;
   logo: string;
-  backgroundImage?: string;
+  bg?: string;
 }
 
 export default Club;
