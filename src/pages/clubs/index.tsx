@@ -41,21 +41,9 @@ const Clubs = () => {
 
   useEffect(() => {
     Navigation.set({
-      id: "navi",
-      sections: [
-        {
-          id: "navi",
-        },
-      ],
-    });
-
-    Navigation.createLayer({
       id: "clubs",
       sections: [tabNavi, itemNavi],
     });
-    return () => {
-      Navigation.removeLayer("navi");
-    };
   }, []);
 
   return (

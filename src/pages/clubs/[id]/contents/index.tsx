@@ -1,9 +1,12 @@
 import ContentItem from "@/components/ContentItem";
 import contents from "@/dummy/contents";
 import Navigation from "@/utils/Navigation";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const Contents = () => {
+  const router = useRouter();
+
   const tabNavi = {
     id: "tab-navi",
     options: {
@@ -17,7 +20,9 @@ const Contents = () => {
     },
     focus(section: any) {},
     enter() {},
-    back() {},
+    back() {
+      router.back();
+    },
   };
   const itemNavi = {
     id: "item-navi",
@@ -31,26 +36,16 @@ const Contents = () => {
     },
     focus(section: any) {},
     enter() {},
-    back() {},
+    back() {
+      router.back();
+    },
   };
 
   useEffect(() => {
     Navigation.set({
-      id: "navi",
-      sections: [
-        {
-          id: "navi",
-        },
-      ],
-    });
-
-    Navigation.createLayer({
-      id: "clubs",
+      id: "contents",
       sections: [tabNavi, itemNavi],
     });
-    return () => {
-      Navigation.removeLayer("navi");
-    };
   }, []);
 
   return (
@@ -71,9 +66,13 @@ const Contents = () => {
           </ul>
         </nav>
         <div className="contents-list">
-          {/* <div className="empty-contents">
-                        <p>등록된 <em>콘텐츠</em>가 없습니다.</p>
-                    </div> */}
+          {contents.length === 0 && (
+            <div className="empty-contents">
+              <p>
+                등록된 <em>콘텐츠</em>가 없습니다.
+              </p>
+            </div>
+          )}
           <ul id="item-navi">
             {contents.map((content) => (
               <ContentItem key={content.id} content={content} />
