@@ -20,9 +20,6 @@ const ClubItem: React.FC<ContentItemProps> = ({ content }) => {
         </div>
         <div className="title">
           <p>{content.title}</p>
-          <p>
-            <em>{content.description}</em>
-          </p>
         </div>
       </div>
     </li>

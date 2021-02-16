@@ -55,10 +55,22 @@ const Notices = () => {
   return (
     <div id="root">
       <div className="container">
-        <div className="entry_route">
-          <span className="i_home">홈</span>
-          <span>헬로클럽</span>
-          <span>공지사항</span>
+        <div className="contents-utill">
+          <div className="entry-route">
+            <span className="home">홈</span>
+            <span>헬로클럽</span>
+            <span>공지사항</span>
+          </div>
+          <div className="key-guide">
+            <span className="align-type">
+              <i className="green"></i>정렬 (최신순)
+            </span>
+            <div className="fast-move">
+              <button type="button" className="prev"></button>
+              <span>페이지 이동</span>
+              <button type="button" className="next"></button>
+            </div>
+          </div>
         </div>
         <nav className="tabs-wrap">
           <ul className="nav-tabs" id="tab-navi">
