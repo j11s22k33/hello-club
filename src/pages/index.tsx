@@ -139,7 +139,7 @@ const Index = () => {
               </p>
               <div id={joinNavi.id}>
                 <button type="button">
-                  <span>가입하기1</span>
+                  <span>가입하기</span>
                 </button>
               </div>
             </div>
