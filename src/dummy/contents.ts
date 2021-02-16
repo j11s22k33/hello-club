@@ -1,4 +1,6 @@
-const contents = [
+import Content from "@/models/Content";
+
+const contents: Array<Content> = [
   {
     id: 1,
     title: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",

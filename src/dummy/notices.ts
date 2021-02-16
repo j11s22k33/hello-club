@@ -1,4 +1,5 @@
 import Notice from "@/models/Notice";
+
 const notices: Array<Notice> = [
   {
     id: 1,

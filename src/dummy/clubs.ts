@@ -1,4 +1,6 @@
-const clubs = [
+import Club from "@/models/Club";
+
+const clubs: Array<Club> = [
   {
     id: 1,
     channel: "CH.100",
