@@ -5,12 +5,15 @@ import { createNoticePopup } from "@/utils/common";
 import notices from "@/dummy/notices";
 import Notice from "@/models/Notice";
 
+const logPrefix = '[개별 클럽 홈] '
+
 const Index = () => {
   const router = useRouter();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
 
   function pageBack() {
-    router.back()
+    // router.back()
+    alert('디폴트 채널로 이동')
   }
 
   const bannerNavi = {
@@ -73,17 +76,17 @@ const Index = () => {
     },
     enter(section: any) {
       if (section.axis.y === 0) {
-        console.log('[개별 클럽 홈] 라이브 이동');
+        console.log('%o라이브 이동', logPrefix);
         alert('YOUTUBE LIVE 방송')
       } else if (section.axis.y === 1) {
-        console.log('[개별 클럽 홈] 공지사항 목록 이동');
+        console.log('%o공지사항 목록 이동', logPrefix);
         router.push("/notices");
       } else if (section.axis.y === 2) {
-        console.log('[개별 클럽 홈] 콘텐츠 목록 이동');
+        console.log('%o콘텐츠 목록 이동', logPrefix);
         router.push(`/clubs/1/contents`);
       } else if (section.axis.y === 3) {
-        console.log('[개별 클럽 홈] 클럽 목록 이동');
-        router.push("/clubs");
+        console.log('%o클럽 목록 이동', logPrefix);
+        router.replace("/clubs");
       }
     },
     focus(section: any) {},

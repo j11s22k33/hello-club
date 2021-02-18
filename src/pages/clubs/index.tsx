@@ -4,11 +4,14 @@ import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+const logPrefix = '[클럽 목록] '
+
 const Clubs = () => {
   const router = useRouter();
 
   function pageBack() {
-    router.back()
+    // router.back()
+    alert('브릿지 홈 OR Full홈 으로 이동')
   }
 
   const tabNavi = {
@@ -41,7 +44,8 @@ const Clubs = () => {
     focus(section: any) {},
     enter(section: any) {
       // router.push(`/clubs/${section.focusItem.dataset.id}/contents`);
-      router.push('/') // 개별 클럽 홈 이동
+      console.log('%o개별 클럽 홈으로 이동', logPrefix);
+      router.replace('/') // 개별 클럽 홈 이동
     },
     back() {
       pageBack()
