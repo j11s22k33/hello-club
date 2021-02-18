@@ -107,7 +107,7 @@ const Index = () => {
             style={{ backgroundImage: "url(/images/temp/logo4.png)" }}
           ></h2>
           <p className="channel">
-            운산성결교회 전용채널 <em>100번</em>
+            운산성결교회 전용채널 <em>103번</em>
           </p>
         </div>
         <div className="main-body">
