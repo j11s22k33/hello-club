@@ -4,6 +4,7 @@ import PopupText from "@/components/PopupText";
 import PopupTextImage from "@/components/PopupTextImage";
 import notices from "@/dummy/notices";
 import Notice from "@/models/Notice";
+import { createNoticePopup } from "@/utils/common";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -11,6 +12,10 @@ import { useEffect, useState } from "react";
 const Notices = () => {
   const router = useRouter();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
+
+  function pageBack() {
+    router.back()
+  }
 
   const tabNavi = {
     id: "tab-navi",
@@ -25,7 +30,9 @@ const Notices = () => {
     },
     focus(section: any) {},
     enter() {},
-    back() {},
+    back() {
+      pageBack()
+    },
   };
   const itemNavi = {
     id: "item-navi",
@@ -42,7 +49,9 @@ const Notices = () => {
       console.log(section);
       setSelectedNotice(notices[section.axis.y] as Notice);
     },
-    back() {},
+    back() {
+      pageBack()
+    },
   };
 
   useEffect(() => {
@@ -95,28 +104,9 @@ const Notices = () => {
             ))}
           </ul>
         </div>
-
-        {selectedNotice?.type === "TEXT" && (
-          <PopupText
-            notice={selectedNotice}
-            navigation={Navigation}
-            hide={() => setSelectedNotice(undefined)}
-          />
-        )}
-        {selectedNotice?.type === "IMAGE" && (
-          <PopupImage
-            notice={selectedNotice}
-            navigation={Navigation}
-            hide={() => setSelectedNotice(undefined)}
-          />
-        )}
-        {selectedNotice?.type === "TEXT_IMAGE" && (
-          <PopupTextImage
-            notice={selectedNotice}
-            navigation={Navigation}
-            hide={() => setSelectedNotice(undefined)}
-          />
-        )}
+        
+        {createNoticePopup({notice:selectedNotice, navigation:Navigation, hide:() => setSelectedNotice(undefined)})}
+        
       </div>
     </div>
   );

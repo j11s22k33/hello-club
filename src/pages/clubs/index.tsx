@@ -7,6 +7,10 @@ import { useEffect } from "react";
 const Clubs = () => {
   const router = useRouter();
 
+  function pageBack() {
+    router.back()
+  }
+
   const tabNavi = {
     id: "tab-navi",
     options: {
@@ -20,7 +24,9 @@ const Clubs = () => {
     },
     focus(section: any) {},
     enter() {},
-    back() {},
+    back() {
+      pageBack()
+    },
   };
   const itemNavi = {
     id: "item-navi",
@@ -34,9 +40,12 @@ const Clubs = () => {
     },
     focus(section: any) {},
     enter(section: any) {
-      router.push(`/clubs/${section.focusItem.dataset.id}/contents`);
+      // router.push(`/clubs/${section.focusItem.dataset.id}/contents`);
+      router.push('/') // 개별 클럽 홈 이동
     },
-    back() {},
+    back() {
+      pageBack()
+    },
   };
 
   useEffect(() => {

@@ -1,9 +1,17 @@
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createNoticePopup } from "@/utils/common";
+import notices from "@/dummy/notices";
+import Notice from "@/models/Notice";
 
 const Index = () => {
   const router = useRouter();
+  const [selectedNotice, setSelectedNotice] = useState<Notice>();
+
+  function pageBack() {
+    router.back()
+  }
 
   const bannerNavi = {
     id: "banner-navi",
@@ -16,8 +24,13 @@ const Index = () => {
         Navigation.go(menuNavi.id, undefined, false);
       },
     },
-    enter(section: any) {},
+    enter(section: any) {
+      alert('이미지 OR VOD 전체 화면 보기')
+    },
     focus(section: any) {},
+    back() {
+      pageBack()
+    }
   };
 
   const joinNavi = {
@@ -33,8 +46,13 @@ const Index = () => {
         Navigation.go(menuNavi.id, { x: 0, y: 0 }, false);
       },
     },
-    enter(section: any) {},
+    enter(section: any) {
+      alert('가입하기 OR 탈퇴하기 팝업')
+    },
     focus(section: any) {},
+    back() {
+      pageBack()
+    }
   };
 
   const menuNavi = {
@@ -55,14 +73,23 @@ const Index = () => {
     },
     enter(section: any) {
       if (section.axis.y === 0) {
+        console.log('[개별 클럽 홈] 라이브 이동');
+        alert('YOUTUBE LIVE 방송')
       } else if (section.axis.y === 1) {
+        console.log('[개별 클럽 홈] 공지사항 목록 이동');
         router.push("/notices");
       } else if (section.axis.y === 2) {
+        console.log('[개별 클럽 홈] 콘텐츠 목록 이동');
+        router.push(`/clubs/1/contents`);
       } else if (section.axis.y === 3) {
+        console.log('[개별 클럽 홈] 클럽 목록 이동');
         router.push("/clubs");
       }
     },
     focus(section: any) {},
+    back() {
+      pageBack()
+    }
   };
 
   const noticeNavi = {
@@ -75,8 +102,13 @@ const Index = () => {
         Navigation.go(menuNavi.id, { x: 0, y: 3 }, false);
       },
     },
-    enter(section: any) {},
+    enter(section: any) {
+      setSelectedNotice(notices[0])
+    },
     focus(section: any) {},
+    back() {
+      pageBack()
+    }
   };
 
   useEffect(() => {
@@ -107,7 +139,7 @@ const Index = () => {
             style={{ backgroundImage: "url(/images/temp/logo4.png)" }}
           ></h2>
           <p className="channel">
-            운산성결교회 전용채널 <em>103번</em>
+            운산성결교회 전용채널 <em>100번</em>
           </p>
         </div>
         <div className="main-body">
@@ -178,6 +210,7 @@ const Index = () => {
             </button>
           </div>
         </div>
+        {createNoticePopup({notice:selectedNotice, navigation:Navigation, hide:() => setSelectedNotice(undefined)})}
       </div>
     </div>
   );

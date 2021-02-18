@@ -7,6 +7,10 @@ import { useEffect } from "react";
 const Contents = () => {
   const router = useRouter();
 
+  function pageBack() {
+    router.back()
+  }
+
   const tabNavi = {
     id: "tab-navi",
     options: {
@@ -21,7 +25,7 @@ const Contents = () => {
     focus(section: any) {},
     enter() {},
     back() {
-      router.back();
+      pageBack()
     },
   };
   const itemNavi = {
@@ -35,9 +39,11 @@ const Contents = () => {
       },
     },
     focus(section: any) {},
-    enter() {},
+    enter() {
+      alert('VOD OR YOUTUBE 재생')
+    },
     back() {
-      router.back();
+      pageBack()
     },
   };
 
