@@ -1,0 +1,39 @@
+{{#if isHome}}
+    <!--홈일경우-->
+    {{#if isKids}}
+        <div class="entry_route depth_02 {{kidsPath id}}" id="page_path">
+            <span>키즈모드</span>
+        </div>
+    {{else}}
+        <div class="entry_route depth_02 {{kidsPath id}}" id="page_path">
+            <i class="i_home"></i>
+            {{#each list}}
+                <span>{{makeSpace title}}</span>
+            {{/each}}
+        </div>
+    {{/if}}
+{{else}}
+    <!--홈이 아닐 경우-->
+    {{#if isKids}}
+        <div class="entry_route {{kidsPath MENUTYPE}}" id="page_path">
+            <span>키즈모드</span>
+            {{#each list}}
+                {{#if @index}} <!--root 카테고리(키즈홈) 대신 키즈모드 삽입했으므로 index 0이 아닐 때부터 title 찍기 -->
+                    {{#isKidsRecentDetail categoryCode}}
+                        <span>{{makeSpace title}}</span>
+                    {{/isKidsRecentDetail}}
+                {{/if}}
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="entry_route {{kidsPath MENUTYPE}}" id="page_path">
+            <i class="i_home"></i>
+            <!--<span>{{makeSpace list.0.title}}</span>-->
+            {{#each list}}
+                {{#isKidsRecentDetail categoryCode}}
+                    <span>{{makeSpace title}}</span>
+                {{/isKidsRecentDetail}}
+            {{/each}}
+        </div>
+    {{/if}}
+{{/if}}
