@@ -1,11 +1,11 @@
+import notices from "@/dummy/notices";
+import Notice from "@/models/Notice";
+import { createNoticePopup } from "@/utils/common";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { createNoticePopup } from "@/utils/common";
-import notices from "@/dummy/notices";
-import Notice from "@/models/Notice";
 
-const logPrefix = '[개별 클럽 홈] '
+const logPrefix = "[개별 클럽 홈] ";
 
 const Index = () => {
   const router = useRouter();
@@ -13,7 +13,7 @@ const Index = () => {
 
   function pageBack() {
     // router.back()
-    alert('디폴트 채널로 이동')
+    alert("디폴트 채널로 이동");
   }
 
   const bannerNavi = {
@@ -28,12 +28,12 @@ const Index = () => {
       },
     },
     enter(section: any) {
-      alert('이미지 OR VOD 전체 화면 보기')
+      alert("이미지 OR VOD 전체 화면 보기");
     },
     focus(section: any) {},
     back() {
-      pageBack()
-    }
+      pageBack();
+    },
   };
 
   const joinNavi = {
@@ -50,12 +50,12 @@ const Index = () => {
       },
     },
     enter(section: any) {
-      alert('가입하기 OR 탈퇴하기 팝업')
+      alert("가입하기 OR 탈퇴하기 팝업");
     },
     focus(section: any) {},
     back() {
-      pageBack()
-    }
+      pageBack();
+    },
   };
 
   const menuNavi = {
@@ -76,23 +76,23 @@ const Index = () => {
     },
     enter(section: any) {
       if (section.axis.y === 0) {
-        console.log('%o라이브 이동', logPrefix);
-        alert('YOUTUBE LIVE 방송')
+        console.log("%o라이브 이동", logPrefix);
+        alert("YOUTUBE LIVE 방송");
       } else if (section.axis.y === 1) {
-        console.log('%o공지사항 목록 이동', logPrefix);
+        console.log("%o공지사항 목록 이동", logPrefix);
         router.push("/notices");
       } else if (section.axis.y === 2) {
-        console.log('%o콘텐츠 목록 이동', logPrefix);
+        console.log("%o콘텐츠 목록 이동", logPrefix);
         router.push(`/clubs/1/contents`);
       } else if (section.axis.y === 3) {
-        console.log('%o클럽 목록 이동', logPrefix);
+        console.log("%o클럽 목록 이동", logPrefix);
         router.replace("/clubs");
       }
     },
     focus(section: any) {},
     back() {
-      pageBack()
-    }
+      pageBack();
+    },
   };
 
   const noticeNavi = {
@@ -106,12 +106,12 @@ const Index = () => {
       },
     },
     enter(section: any) {
-      setSelectedNotice(notices[0])
+      setSelectedNotice(notices[0]);
     },
     focus(section: any) {},
     back() {
-      pageBack()
-    }
+      pageBack();
+    },
   };
 
   useEffect(() => {
@@ -124,17 +124,21 @@ const Index = () => {
   return (
     <div id="root">
       <div className="container main">
-        {/* <div className="full-img">
-        <div
-          className="img"
-          style={{ backgroundImage: "url(/images/club/img-main.png)" }}
-        ></div>
-        <div className="mask">
-          <p className="text">
-            이전 또는 종료키를 선택하시면, 이전 화면으로 이동됩니다
-          </p>
+        {/* 홍보 영역 전체 화면 보기 */}
+        <div className="full-img" style={{ display: "none;" }}>
+          {/* <div className="img" style="background-image: url(/images/club/img-main-default.png)"></div>
+                <div className="failed-load">
+                    <p>
+                        영상을 불러오지 못했습니다 <br>
+                        잠시 후 다시 이용해 주세요
+                    </p>
+                </div> */}
+          <div className="mask">
+            <p className="text">
+              이전 또는 종료키를 선택하시면, 이전 화면으로 이동됩니다
+            </p>
+          </div>
         </div>
-      </div> */}
 
         <div className="main-header">
           <h2
@@ -148,19 +152,31 @@ const Index = () => {
         <div className="main-body">
           <div className="pr-area">
             <ul id={bannerNavi.id}>
-              {/* <li>
+              <li className="focus">
+                <span className="img"></span>
+                <div className="failed-load">
+                  <p>
+                    영상을 불러오지 못했습니다 <br />
+                    잠시 후 다시 이용해 주세요
+                  </p>
+                </div>
+                <button type="button">
+                  <span>전체화면보기</span>
+                </button>
+              </li>
+              <li className="">
                 <span
                   className="img"
                   style={{
                     backgroundImage: "url(/images/club/img-main-default.png)",
                   }}
                 ></span>
-                <button type="button">
-                  <span>전체화면보기</span>
-                </button>
-              </li> */}
-              <li className="">
-                <span className="img"></span>
+                <div className="failed-load">
+                  <p>
+                    영상을 불러오지 못했습니다 <br />
+                    잠시 후 다시 이용해 주세요
+                  </p>
+                </div>
                 <button type="button">
                   <span>전체화면보기</span>
                 </button>
@@ -213,7 +229,11 @@ const Index = () => {
             </button>
           </div>
         </div>
-        {createNoticePopup({notice:selectedNotice, navigation:Navigation, hide:() => setSelectedNotice(undefined)})}
+        {createNoticePopup({
+          notice: selectedNotice,
+          navigation: Navigation,
+          hide: () => setSelectedNotice(undefined),
+        })}
       </div>
     </div>
   );

@@ -63,16 +63,6 @@ const Contents = () => {
             <span>헬로클럽</span>
             <span>콘텐츠</span>
           </div>
-          <div className="key-guide">
-            <span className="align-type">
-              <i className="green"></i>정렬 (최신순)
-            </span>
-            <div className="fast-move">
-              <button type="button" className="prev"></button>
-              <span>페이지 이동</span>
-              <button type="button" className="next"></button>
-            </div>
-          </div>
         </div>
         <nav className="tabs-wrap">
           <ul className="nav-tabs" id="tab-navi">

@@ -4,14 +4,14 @@ import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const logPrefix = '[클럽 목록] '
+const logPrefix = "[클럽 목록] ";
 
 const Clubs = () => {
   const router = useRouter();
 
   function pageBack() {
     // router.back()
-    alert('브릿지 홈 OR Full홈 으로 이동')
+    alert("브릿지 홈 OR Full홈 으로 이동");
   }
 
   const tabNavi = {
@@ -28,7 +28,7 @@ const Clubs = () => {
     focus(section: any) {},
     enter() {},
     back() {
-      pageBack()
+      pageBack();
     },
   };
   const itemNavi = {
@@ -44,11 +44,11 @@ const Clubs = () => {
     focus(section: any) {},
     enter(section: any) {
       // router.push(`/clubs/${section.focusItem.dataset.id}/contents`);
-      console.log('%o개별 클럽 홈으로 이동', logPrefix);
-      router.replace('/') // 개별 클럽 홈 이동
+      console.log("%o개별 클럽 홈으로 이동", logPrefix);
+      router.replace("/"); // 개별 클럽 홈 이동
     },
     back() {
-      pageBack()
+      pageBack();
     },
   };
 
@@ -88,6 +88,12 @@ const Clubs = () => {
           </ul>
         </nav>
         <div className="contents-list type-club">
+          {/* 등록된 콘텐츠가 없습니다 */}
+          {/* <div className="empty-contents">
+            <p>
+              가입한 <em>클럽</em>이 없습니다.
+            </p>
+          </div> */}
           <ul id="item-navi">
             {clubs.map((club) => (
               <ClubItem key={club.id} club={club} />
