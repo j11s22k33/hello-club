@@ -1,13 +1,15 @@
 import ClubItem from "@/components/ClubItem";
-import clubs from "@/dummy/clubs";
+// import clubs from "@/dummy/clubs";
+import { getAllClubList } from "@/modules/clubs/requests";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const logPrefix = "[클럽 목록] ";
 
 const Clubs = () => {
   const router = useRouter();
+  const [clubs, setClubs] = useState([]);
 
   function pageBack() {
     // router.back()
@@ -53,10 +55,17 @@ const Clubs = () => {
   };
 
   useEffect(() => {
-    Navigation.set({
-      id: "clubs",
-      sections: [tabNavi, itemNavi],
-    });
+    (async () => {
+      const data = await getAllClubList({
+        OFFSET: 1,
+        LIMIT: 100,
+      });
+      setClubs(data.LIST);
+      Navigation.set({
+        id: "clubs",
+        sections: [tabNavi, itemNavi],
+      });
+    })();
   }, []);
 
   return (
@@ -94,7 +103,7 @@ const Clubs = () => {
               가입한 <em>클럽</em>이 없습니다.
             </p>
           </div> */}
-          <ul id="item-navi">
+          <ul id={itemNavi.id}>
             {clubs.map((club) => (
               <ClubItem key={club.ID} club={club} />
             ))}

@@ -1,14 +1,26 @@
 import ContentItem from "@/components/ContentItem";
-import contents from "@/dummy/contents";
+import { getContentList } from "@/modules/contents/requests";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const Contents = () => {
   const router = useRouter();
+  const [contents, setContents] = useState([]);
+
+  const fetchContents = useCallback(async () => {
+    const data = await getContentList({
+      CLUB_ID: router.query.id as string,
+      CATE_ID: "string",
+      ORDER: "string",
+      OFFSET: 1,
+      LIMIT: 100,
+    });
+    setContents(data.LIST);
+  }, []);
 
   function pageBack() {
-    router.back()
+    router.back();
   }
 
   const tabNavi = {
@@ -25,7 +37,7 @@ const Contents = () => {
     focus(section: any) {},
     enter() {},
     back() {
-      pageBack()
+      pageBack();
     },
   };
   const itemNavi = {
@@ -40,18 +52,28 @@ const Contents = () => {
     },
     focus(section: any) {},
     enter() {
-      alert('VOD OR YOUTUBE 재생')
+      alert("VOD OR YOUTUBE 재생");
     },
     back() {
-      pageBack()
+      pageBack();
     },
   };
 
   useEffect(() => {
-    Navigation.set({
-      id: "contents",
-      sections: [tabNavi, itemNavi],
-    });
+    (async () => {
+      const data = await getContentList({
+        CLUB_ID: router.query.id as string,
+        CATE_ID: "string",
+        ORDER: "string",
+        OFFSET: 1,
+        LIMIT: 100,
+      });
+      setContents(data.LIST);
+      Navigation.set({
+        id: "contents",
+        sections: [tabNavi, itemNavi],
+      });
+    })();
   }, []);
 
   return (

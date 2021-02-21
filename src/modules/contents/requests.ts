@@ -8,8 +8,8 @@ export interface ContentListRequest extends DefaultRequest {
   CLUB_ID: string;
   CATE_ID: string;
   ORDER: string;
-  OFFSET: string;
-  LIMIT: string;
+  OFFSET: number;
+  LIMIT: number;
 }
 
 export interface ContentListResponse extends DefaultResponse {
@@ -28,7 +28,7 @@ export interface ContentCategoryResponse extends DefaultResponse {
   LIST: Array<ContentCategory>;
 }
 
-export const getAllClubList = async (
+export const getContentList = async (
   params: ContentListRequest
 ): Promise<ContentListResponse> => {
   const res = await API.get("/v1/club/content/list", { params });

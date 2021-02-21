@@ -9,14 +9,14 @@ import { DefaultRequest } from "../DefaultRequest";
 import { DefaultResponse } from "../DefaultResponse";
 
 export interface ClubListRequest extends DefaultRequest {
-  OFFSET: string;
-  LIMIT: string;
+  OFFSET: number;
+  LIMIT: number;
 }
 
 export interface ClubListByFilterRequest extends DefaultRequest {
-  FILTER: String;
-  OFFSET: string;
-  LIMIT: string;
+  FILTER: string;
+  OFFSET: number;
+  LIMIT: number;
 }
 
 export interface ClubListResponse extends DefaultResponse {
