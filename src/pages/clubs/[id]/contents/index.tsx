@@ -83,7 +83,7 @@ const Contents = () => {
           )}
           <ul id="item-navi">
             {contents.map((content) => (
-              <ContentItem key={content.id} content={content} />
+              <ContentItem key={content.ID} content={content} />
             ))}
           </ul>
         </div>

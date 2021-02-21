@@ -6,20 +6,20 @@ interface ContentItemProps {
 
 const ClubItem: React.FC<ContentItemProps> = ({ content }) => {
   return (
-    <li data-id={content.id}>
+    <li data-id={content.ID}>
       <div className="inner">
         <div className="thumbnail">
-          {content.bg ? (
+          {content.POSTER_IMG ? (
             <div
               className="img"
-              style={{ backgroundImage: `url(${content.bg})` }}
+              style={{ backgroundImage: `url(${content.POSTER_IMG})` }}
             ></div>
           ) : (
             <div className="img"></div>
           )}
         </div>
         <div className="title">
-          <p>{content.title}</p>
+          <p>{content.TITLE}</p>
         </div>
       </div>
     </li>

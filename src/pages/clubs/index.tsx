@@ -96,7 +96,7 @@ const Clubs = () => {
           </div> */}
           <ul id="item-navi">
             {clubs.map((club) => (
-              <ClubItem key={club.id} club={club} />
+              <ClubItem key={club.ID} club={club} />
             ))}
           </ul>
         </div>

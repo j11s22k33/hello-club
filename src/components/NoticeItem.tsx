@@ -6,12 +6,12 @@ interface NoticeItemProps {
 
 const ClubItem: React.FC<NoticeItemProps> = ({ notice }) => {
   return (
-    <li data-id={notice.id}>
+    <li data-id={notice.ID}>
       <p className="title">
         {notice.label && <em>{notice.label}</em>}
-        {notice.title}
+        {notice.TITLE}
       </p>
-      <p className="date">{notice.date}</p>
+      <p className="date">{notice.DATE}</p>
     </li>
   );
 };
