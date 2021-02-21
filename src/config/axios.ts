@@ -1,4 +1,5 @@
 import env from "@/config/env";
+import clubHome from "@/dummy/clubHome";
 import clubs from "@/dummy/clubs";
 import contents from "@/dummy/contents";
 import axios, { AxiosError } from "axios";
@@ -46,6 +47,8 @@ mock.onGet("/v1/club/content/list").reply(200, {
   TOTAL: contents.length,
   LIST: contents,
 });
+
+mock.onGet("/v1/club/info").reply(200, clubHome);
 
 export default API;
 

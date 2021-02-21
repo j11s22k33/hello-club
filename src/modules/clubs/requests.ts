@@ -35,7 +35,7 @@ export interface ClubInfoResponse extends DefaultResponse {
   CH_NUM: number;
   SOURCE_ID: number;
   JOIN: Join;
-  MENU: Menu;
+  MENU: Array<Menu>;
   NOTICE: Notice;
   LIVE: Live;
   PROMOTION: {
@@ -67,7 +67,7 @@ export const getMyClubList = async (
 
 export const getClubInfo = async (
   params: ClubInfoRequest
-): Promise<ClubListResponse> => {
+): Promise<ClubInfoResponse> => {
   const res = await API.get("/v1/club/info", { params });
   return res.data;
 };

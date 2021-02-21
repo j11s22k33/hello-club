@@ -12,7 +12,7 @@ interface NoticeBody {
 }
 
 interface Notice {
-  ID: number;
+  ID: string;
   label?: string;
   TITLE: string;
   DATE: string;

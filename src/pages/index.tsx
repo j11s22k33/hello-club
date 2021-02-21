@@ -1,5 +1,6 @@
 import notices from "@/dummy/notices";
 import Notice from "@/models/Notice";
+import { ClubInfoResponse, getClubInfo } from "@/modules/clubs/requests";
 import { createNoticePopup } from "@/utils/common";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
@@ -10,6 +11,7 @@ const logPrefix = "[개별 클럽 홈] ";
 const Index = () => {
   const router = useRouter();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
+  const [club, setClub] = useState<ClubInfoResponse>();
 
   function pageBack() {
     // router.back()
@@ -115,17 +117,29 @@ const Index = () => {
   };
 
   useEffect(() => {
-    Navigation.set({
-      id: "home",
-      sections: [bannerNavi, joinNavi, menuNavi, noticeNavi],
-    });
+    (async () => {
+      const data = await getClubInfo({
+        CLUB_ID: "",
+        SOURCE_ID: "string",
+      });
+      setClub(data);
+
+      Navigation.set({
+        id: "home",
+        sections: [bannerNavi, joinNavi, menuNavi, noticeNavi],
+      });
+    })();
   }, []);
+
+  if (!club) {
+    return <div></div>;
+  }
 
   return (
     <div id="root">
       <div className="container main">
         {/* 홍보 영역 전체 화면 보기 */}
-        <div className="full-img" style={{ display: "none;" }}>
+        <div className="full-img" style={{ display: "none" }}>
           {/* <div className="img" style="background-image: url(/images/club/img-main-default.png)"></div>
                 <div className="failed-load">
                     <p>
@@ -146,7 +160,7 @@ const Index = () => {
             style={{ backgroundImage: "url(/images/temp/logo4.png)" }}
           ></h2>
           <p className="channel">
-            운산성결교회 전용채널 <em>100번</em>
+            {club.NAME} <em>{club.CH_NUM}번</em>
           </p>
         </div>
         <div className="main-body">
@@ -198,7 +212,10 @@ const Index = () => {
               <ul id={menuNavi.id}>
                 <li>
                   <p className="ic-live">
-                    실시간 예배<span className="sticker">방송중</span>
+                    실시간 예배
+                    <span className="sticker">
+                      {club.LIVE.IS_LIVE === "Y" ? "방송중" : "방송전"}
+                    </span>
                   </p>
                 </li>
                 <li>
