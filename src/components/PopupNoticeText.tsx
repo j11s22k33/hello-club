@@ -27,11 +27,11 @@ const PopupText: React.FC<PopupTextProps> = ({ notice, navigation, hide }) => {
 
   useEffect(() => {
     navigation.createLayer({
-      id: "notice-popup",
+      id: "popup-notice",
       sections: [btnNavi],
     });
     return () => {
-      navigation.removeLayer("notice-popup");
+      navigation.removeLayer("popup-notice");
     };
   }, []);
 
@@ -84,18 +84,15 @@ const PopupText: React.FC<PopupTextProps> = ({ notice, navigation, hide }) => {
               </div>
               <div className="scroll">
                 <span
-                  style={{
-                    top: "20%",
-                    transform: "translate(-50%, -20%)",
-                  }}
-                ></span>
+                  style={{ top: "20%", transform: "translate(-50%, -20%)" }}
+                />
               </div>
             </div>
           </div>
         </div>
         <div className="popup-footer no-line">
-          <div className="button-area" id="btn-navi">
-            <button type="button" className="button">
+          <div className="button-area">
+            <button type="button" className="button focus">
               <span>확인</span>
             </button>
           </div>
