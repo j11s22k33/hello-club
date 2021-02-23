@@ -1,4 +1,5 @@
 import notices from "@/dummy/notices";
+import { MenuType } from "@/models/Menu";
 import Notice from "@/models/Notice";
 import { ClubInfoResponse, getClubInfo } from "@/modules/clubs/requests";
 import { createNoticePopup } from "@/utils/common";
@@ -77,16 +78,17 @@ const Index = () => {
       },
     },
     enter(section: any) {
-      if (section.axis.y === 0) {
+      const menyType = section.focusItem.dataset.menuType as MenuType;
+      if (menyType === "LIVE") {
         console.log("%o라이브 이동", logPrefix);
         alert("YOUTUBE LIVE 방송");
-      } else if (section.axis.y === 1) {
+      } else if (menyType === "NOTICE") {
         console.log("%o공지사항 목록 이동", logPrefix);
         router.push("/notices");
-      } else if (section.axis.y === 2) {
+      } else if (menyType === "CONT") {
         console.log("%o콘텐츠 목록 이동", logPrefix);
         router.push(`/clubs/1/contents`);
-      } else if (section.axis.y === 3) {
+      } else {
         console.log("%o클럽 목록 이동", logPrefix);
         router.replace("/clubs");
       }
@@ -160,7 +162,7 @@ const Index = () => {
             style={{ backgroundImage: "url(/images/temp/logo4.png)" }}
           ></h2>
           <p className="channel">
-            {club.NAME} <em>{club.CH_NUM}번</em>
+            {club.clubName} <em>{club.chnlNo}번</em>
           </p>
         </div>
         <div className="main-body">
@@ -198,32 +200,45 @@ const Index = () => {
             </ul>
           </div>
           <div className="lnb">
-            <div className="banner">
-              <p className="text">
-                일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔
-              </p>
+            <div
+              className="banner"
+              style={{ backgroundImage: `url(${club.join.introImg})` }}
+            >
+              <p className="text">{club.join.introText}</p>
               <div id={joinNavi.id}>
                 <button type="button">
-                  <span>가입하기</span>
+                  <span>{club.join.isJoin ? "탈퇴하기" : "가입하기"}</span>
                 </button>
               </div>
             </div>
             <nav>
               <ul id={menuNavi.id}>
-                <li>
-                  <p className="ic-live">
-                    실시간 예배
-                    <span className="sticker">
-                      {club.LIVE.IS_LIVE === "Y" ? "방송중" : "방송전"}
-                    </span>
-                  </p>
-                </li>
-                <li>
-                  <p className="ic-notice">공지사항</p>
-                </li>
-                <li>
-                  <p className="ic-vod">예배와 찬양</p>
-                </li>
+                {club.menuList.map((menu) => {
+                  if (menu.type === "LIVE") {
+                    return (
+                      <li data-menu-type={menu.type}>
+                        <p className="ic-live">
+                          실시간 예배
+                          <span className="sticker">
+                            {club.live.isLive === "Y" ? "방송중" : "방송전"}
+                          </span>
+                        </p>
+                      </li>
+                    );
+                  } else if (menu.type === "NOTICE") {
+                    return (
+                      <li data-menu-type={menu.type}>
+                        <p className="ic-notice">공지사항</p>
+                      </li>
+                    );
+                  } else if (menu.type === "CONT") {
+                    return (
+                      <li data-menu-type={menu.type}>
+                        <p className="ic-vod">예배와 찬양</p>
+                      </li>
+                    );
+                  }
+                })}
                 <li>
                   <p className="ic-all">전체클럽 가기</p>
                 </li>
@@ -231,21 +246,18 @@ const Index = () => {
             </nav>
           </div>
         </div>
-        <div className="main-footer">
-          <div className="notice">
-            <p>
-              <em>[공지사항]</em> 1월24일 일요 예배를 (권장훈 목사) 11시에
-              시작하오니 라이브방송으로 실시간 예배에 참여해주세요 1월24일 일요
-              예배를 (권장훈 목사) 11시에 시작하오니 라이브방송으로 실시간
-              예배에 참여해주세요
-            </p>
+        {club.notice && (
+          <div className="main-footer">
+            <div className="notice">
+              <p>{club.notice.title}</p>
+            </div>
+            <div id={noticeNavi.id}>
+              <button type="button">
+                <span>상세보기</span>
+              </button>
+            </div>
           </div>
-          <div id={noticeNavi.id}>
-            <button type="button">
-              <span>상세보기</span>
-            </button>
-          </div>
-        </div>
+        )}
         {createNoticePopup({
           notice: selectedNotice,
           navigation: Navigation,

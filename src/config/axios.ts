@@ -48,7 +48,7 @@ mock.onGet("/v1/club/content/list").reply(200, {
   LIST: contents,
 });
 
-mock.onGet("/v1/club/info").reply(200, clubHome);
+mock.onGet("/clubpf/svc/club/info").reply(200, clubHome);
 
 export default API;
 

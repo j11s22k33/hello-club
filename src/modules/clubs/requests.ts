@@ -30,17 +30,17 @@ export interface ClubInfoRequest extends DefaultRequest {
 }
 
 export interface ClubInfoResponse extends DefaultResponse {
-  ID: string;
-  NAME: string;
-  CH_NUM: number;
-  SOURCE_ID: number;
-  JOIN: Join;
-  MENU: Array<Menu>;
-  NOTICE: Notice;
-  LIVE: Live;
-  PROMOTION: {
-    TOTAL: number;
-    LIST: Array<Promotion>;
+  clubId: string;
+  clubName: string;
+  chnlNo: number;
+  sourceId: number;
+  join: Join;
+  menuList: Array<Menu>;
+  notice?: Notice;
+  live: Live;
+  promotion: {
+    total: number;
+    data: Array<Promotion>;
   };
 }
 
@@ -68,6 +68,6 @@ export const getMyClubList = async (
 export const getClubInfo = async (
   params: ClubInfoRequest
 ): Promise<ClubInfoResponse> => {
-  const res = await API.get("/v1/club/info", { params });
+  const res = await API.get("/clubpf/svc/club/info", { params });
   return res.data;
 };

@@ -3,8 +3,8 @@
 export type LiveStatus = "Y" | "N";
 
 interface Live {
-  IS_LIVE: LiveStatus;
-  PLAY_URL: string;
+  isLive: LiveStatus;
+  playUrl: string;
 }
 
 export default Live;

@@ -1,12 +1,10 @@
 // 이미지 : 100
 // 영상 : 200
-export type PromotionType = 100 | 200;
+export type PromotionType = "IMG" | "CONT";
 
 interface Promotion {
-  TYPE: PromotionType;
-  URL: string;
-  FREQ: string;
-  PNUM: string;
+  type: PromotionType;
+  url: string;
 }
 
 export default Promotion;

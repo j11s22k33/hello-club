@@ -87,7 +87,7 @@ const Notices = () => {
           )}
           <ul id="item-navi">
             {notices.map((notice) => (
-              <NoticeItem key={notice.ID} notice={notice} />
+              <NoticeItem key={notice.id} notice={notice} />
             ))}
           </ul>
         </div>

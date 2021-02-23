@@ -2,29 +2,23 @@ import Notice from "@/models/Notice";
 
 const notices: Array<Notice> = [
   {
-    ID: 1,
-    label: "[예배안내]",
-    TITLE:
+    id: 1,
+    title:
       "운산 성결교회 예배 시간 안내 드립니다. 운산 성결교회 예배 시간 안내 드립니다. 운산 성결교회 예배 시간 안내 드립니다.",
-    DATE: "2021.01.01",
-    TYPE: 100,
-    LIST: [],
+    date: "2021.01.01",
+    type: "TXT",
   },
   {
-    ID: 2,
-    label: "[안내]",
-    TITLE: "운산 성결교회 예배 시간 안내 드립니다.",
-    DATE: "2021.01.01",
-    TYPE: 200,
-    LIST: [],
+    id: 2,
+    title: "운산 성결교회 예배 시간 안내 드립니다.",
+    date: "2021.01.01",
+    type: "IMG",
   },
   {
-    ID: 3,
-    label: undefined,
-    TITLE: "운산 성결교회 예배 시간 안내 드립니다.",
-    DATE: "2021.01.01",
-    TYPE: 300,
-    LIST: [],
+    id: 3,
+    title: "운산 성결교회 예배 시간 안내 드립니다.",
+    date: "2021.01.01",
+    type: "TXTIMG",
   },
 ];
 
