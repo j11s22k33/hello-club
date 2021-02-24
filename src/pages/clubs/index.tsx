@@ -121,7 +121,7 @@ const Clubs = () => {
         /* <!-- tab : end --> */}
 
         {/* <!-- contents-list : start --> */
-        <div className={"contents-list type-club " + (uiMode==="UI_SCROLL_BROWSING" && "active")}>
+        <div className={"contents-list type-club " + (uiMode==="UI_SCROLL_BROWSING" ? "active" : "")}>
           {/* 등록된 콘텐츠가 없습니다 */}
           {/* <div className="empty-contents">
             <p>

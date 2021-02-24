@@ -120,7 +120,7 @@ const Contents = () => {
         /* <!-- tab : end --> */}
 
         {/* <!-- contents-list : start --><!-- active 클래스로 리스트 스케일과 스크롤 포커스를 제어합니다. --> */
-        <div className={"contents-list " + (uiMode==="UI_SCROLL_BROWSING" && "active")}>
+        <div className={"contents-list " + (uiMode==="UI_SCROLL_BROWSING" ? "active" : "")}>
           {contents.length === 0 && (
             <div className="empty-contents">
               <p>
