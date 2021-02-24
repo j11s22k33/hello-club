@@ -19,8 +19,8 @@ export interface ContentListResponse extends DefaultResponse {
 
 export interface ContentCategoryRequest extends DefaultRequest {
   CLUB_ID: string;
-  OFFSET: string;
-  LIMIT: string;
+  OFFSET: number;
+  LIMIT: number;
 }
 
 export interface ContentCategoryResponse extends DefaultResponse {

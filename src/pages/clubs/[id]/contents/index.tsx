@@ -1,27 +1,46 @@
 import ContentItem from "@/components/ContentItem";
-import { getContentList } from "@/modules/contents/requests";
+import { getContentList, getContentCategoryList } from "@/modules/contents/requests";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type UI_MODE = "UI_DEFAULT_BROWSING" | "UI_CONTENTS_BROWSING" | "UI_SCROLL_BROWSING";
 
 const Contents = () => {
+  /* 
+  UI 업데이트 START
+  updateUI(cb) -> setUpdateUINum() -> useEffect([updateUINum]) -> cb()
+  */
+  const __updateUIListener = useRef([])
+  const [__updateUINum, __setUpdateUINum] = useState(0)
+  useEffect(()=>{
+    const size = __updateUIListener.current.length
+    for (let x=0; x<size; x++) {
+      __updateUIListener.current[x]()
+    }
+    __updateUIListener.current = []
+  }, [__updateUINum])
+  function updateUI(cb?:Function) {
+    cb && __updateUIListener.current.push(cb)
+    __setUpdateUINum(c => c+1)
+  }
+  /* <!-- UI 업데이트 END */
+  
   const router = useRouter();
-  const [contents, setContents] = useState([]);
+  const data = useRef({
+    cateListFocusIdx: 0,
+    cateList: {
+      TOTAL: 1,
+      LIST: [{CATE_ID:"", NAME:"전체"}]
+    },
+    contents: {
+      TOTAL: 0,
+      LIST: []
+    }
+  })
+
   const [uiMode, setUiMode] = useState<UI_MODE>("UI_DEFAULT_BROWSING")
  
-  const fetchContents = useCallback(async () => {
-    const data = await getContentList({
-      CLUB_ID: router.query.id as string,
-      CATE_ID: "string",
-      ORDER: "string",
-      OFFSET: 1,
-      LIMIT: 100,
-    });
-    setContents(data.LIST);
-  }, []);
-
   function pageBack() {
     router.back();
   }
@@ -30,7 +49,8 @@ const Contents = () => {
     id: "tab-navi",
     options: {
       cols: 4,
-      start: true,
+      axis: {x:0, y:0},
+      start: true
     },
     direction: {
       down(section: any) {
@@ -63,20 +83,30 @@ const Contents = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const data = await getContentList({
+      getContentCategoryList({
+        CLUB_ID: router.query.id as string,
+        OFFSET: 1,
+        LIMIT: 100,
+      }).then(resp => {
+        data.current.cateList = resp
+        tabNavi.options.cols = data.current.cateList.LIST.length
+        tabNavi.options.axis = {x:0, y:0}
+        Navigation.set({
+          id: "contents",
+          sections: [tabNavi, itemNavi],
+        })
+      })
+
+      getContentList({
         CLUB_ID: router.query.id as string,
         CATE_ID: "string",
         ORDER: "string",
         OFFSET: 1,
         LIMIT: 100,
-      });
-      setContents(data.LIST);
-      Navigation.set({
-        id: "contents",
-        sections: [tabNavi, itemNavi],
-      });
-    })();
+      }).then(resp => {
+        data.current.contents = resp
+        // updateUI()
+      })
   }, []);
 
   return (
@@ -110,18 +140,20 @@ const Contents = () => {
         uiMode==="UI_DEFAULT_BROWSING" &&
         <nav className="tabs-wrap">
           <ul className="nav-tabs" id="tab-navi">
-            {["전체", "예배영상", "교회행사", "찬송가"].map((tab) => (
-              <li key={tab} className="tab-item">
-                <span>{tab}</span>
-              </li>
-            ))}
+            {
+              data.current.cateList.LIST.map(item => (
+                <li key={item.CATE_ID} className="tab-item">
+                  <span>{item.NAME}</span>
+                </li>
+              ))
+            }
           </ul>
         </nav>
         /* <!-- tab : end --> */}
 
         {/* <!-- contents-list : start --><!-- active 클래스로 리스트 스케일과 스크롤 포커스를 제어합니다. --> */
         <div className={"contents-list " + (uiMode==="UI_SCROLL_BROWSING" ? "active" : "")}>
-          {contents.length === 0 && (
+          {data.current.contents.LIST.length === 0 && (
             <div className="empty-contents">
               <p>
                 등록된 <em>콘텐츠</em>가 없습니다.
@@ -131,7 +163,7 @@ const Contents = () => {
 
           {/* <!-- list : start --> */}
           <ul id="item-navi">
-            {contents.map((content) => (
+            {data.current.contents.LIST.map((content) => (
               <ContentItem key={content.ID} content={content} />
             ))}
           </ul>

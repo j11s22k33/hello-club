@@ -2,6 +2,7 @@ import env from "@/config/env";
 import clubHome from "@/dummy/clubHome";
 import clubs from "@/dummy/clubs";
 import contents from "@/dummy/contents";
+import contentsCateList from "@/dummy/contentsCateList";
 import axios, { AxiosError } from "axios";
 import MockAdapter from "axios-mock-adapter";
 
@@ -46,6 +47,13 @@ mock.onGet("/v1/club/content/list").reply(200, {
   RESULT_MESSAGE: "",
   TOTAL: contents.length,
   LIST: contents,
+});
+
+mock.onGet("/v1/club/category/list").reply(200, {
+  RESULT_CODE: 200,
+  RESULT_MESSAGE: "",
+  TOTAL: contentsCateList.length,
+  LIST: contentsCateList,
 });
 
 mock.onGet("/clubpf/svc/club/info").reply(200, clubHome);

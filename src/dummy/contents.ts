@@ -1,44 +1,14 @@
 import Content from "@/models/Content";
 
-const contents: Array<Content> = [
-  {
-    ID: 1,
-    TITLE: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",
+const size = 27
+const contents: Array<Content> = new Array(size)
+
+for(let x=0; x<size; x++) {
+  contents[x] = {
+    ID: x+1,
+    TITLE: `${x+1} > 아침에 삼겹살 먹어도 맛있다. 식은 치킨도 맛있다. 간식은 필수. 새벽에 먹는 라면은 살이 안찐다.`,
     POSTER_IMG: "/images/club/img-main-default.png",
-  },
-  {
-    ID: 2,
-    TITLE: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",
-    POSTER_IMG: "/images/club/img-main-default.png",
-  },
-  {
-    ID: 3,
-    TITLE: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",
-  },
-  {
-    ID: 4,
-    TITLE: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",
-  },
-  {
-    ID: 5,
-    TITLE: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",
-  },
-  {
-    ID: 6,
-    TITLE: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",
-  },
-  {
-    ID: 7,
-    TITLE: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",
-  },
-  {
-    ID: 8,
-    TITLE: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",
-  },
-  {
-    ID: 9,
-    TITLE: "범사에 감사해라 범사에 감사해라 범사에 감사해라 범사에 감사해라",
-  },
-];
+  }
+}
 
 export default contents;
