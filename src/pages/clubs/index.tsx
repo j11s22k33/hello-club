@@ -7,9 +7,13 @@ import { useEffect, useState } from "react";
 
 const logPrefix = "[클럽 목록] ";
 
+type UI_MODE = "UI_DEFAULT_BROWSING" | "UI_CONTENTS_BROWSING" | "UI_SCROLL_BROWSING";
+
 const Clubs = () => {
   const router = useRouter();
   const [clubs, setClubs] = useState([]);
+  const [uiMode, setUiMode] = useState<UI_MODE>("UI_DEFAULT_BROWSING")
+  const [isTabDep2, setIsTabDep2] = useState<Boolean>(true)
 
   function pageBack() {
     // router.back()
@@ -71,44 +75,81 @@ const Clubs = () => {
   return (
     <div id="root">
       <div className="container">
+        
+        {/* <!-- contents-utill : start --> */
         <div className="contents-utill">
           <div className="entry-route">
             <span className="home">홈</span>
             <span>헬로클럽</span>
           </div>
+
+          {/* <!-- key-guide : start --> */
+          uiMode==="UI_CONTENTS_BROWSING" &&
           <div className="key-guide">
-            <span className="align-type">
-              <i className="green"></i>정렬 (최신순)
-            </span>
-            <div className="fast-move">
-              <button type="button" className="prev"></button>
-              <span>페이지 이동</span>
-              <button type="button" className="next"></button>
-            </div>
+              <span className="align-type"><i className="green"></i>정렬 (최신순)</span>
+              <div className="fast-move">
+                  <button type="button" className="prev"></button>
+                  <span>페이지 이동</span>
+                  <button type="button" className="next"></button>
+              </div>
           </div>
+          /* <!-- key-guide : end --> */}
+
         </div>
-        <nav className="tabs-wrap">
-          <ul className="nav-tabs" id="tab-navi">
-            {["전체클럽", "지역별클럽", "가입한클럽"].map((tab) => (
-              <li key={tab} className="tab-item">
-                <span>{tab}</span>
-              </li>
-            ))}
-          </ul>
+        /* <!-- contents-utill : end --> */}
+
+        {/* <!-- tab : start --> */
+        uiMode==="UI_DEFAULT_BROWSING" &&
+        <nav className={"tabs-wrap " + (isTabDep2 ? "type-depth2" : "")}>
+            <ul className="nav-tabs" id="tab-navi">
+                <li className="tab-item focus">
+                    <span>전체클럽</span>
+                    <ul className="depth2" style={{display:(isTabDep2 ? "":"none")}}>
+                        <li>전체</li>
+                        <li className="select">서울</li>
+                        <li>경기</li>
+                    </ul>
+                </li>
+                <li className="tab-item">
+                    <span>지역별클럽</span>
+                </li>
+                <li className="tab-item">
+                    <span>가입한클럽</span>
+                </li>
+            </ul>
         </nav>
-        <div className="contents-list type-club">
+        /* <!-- tab : end --> */}
+
+        {/* <!-- contents-list : start --> */
+        <div className={"contents-list type-club " + (uiMode==="UI_SCROLL_BROWSING" && "active")}>
           {/* 등록된 콘텐츠가 없습니다 */}
           {/* <div className="empty-contents">
             <p>
               가입한 <em>클럽</em>이 없습니다.
             </p>
           </div> */}
+
+          {/* <!-- list : start --> */
           <ul id={itemNavi.id}>
             {clubs.map((club) => (
               <ClubItem key={club.ID} club={club} />
             ))}
           </ul>
+          /* <!-- list : end --> */}
+          
+          {/* <!-- scroll : start --> */
+          uiMode!=="UI_DEFAULT_BROWSING" &&
+          <div className="scroll">
+              <span className="focus"><i>1</i></span>
+              <span className=""><i>2</i></span>
+              <span className=""><i>3</i></span>
+              <span className=""><i>4</i></span>
+              <span className=""><i>5</i></span>
+          </div>
+          /* <!-- scroll : end --> */}
+
         </div>
+        /* <!-- contents-list : end --> */}
       </div>
     </div>
   );
