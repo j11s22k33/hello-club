@@ -89,11 +89,13 @@ const Contents = () => {
         LIMIT: 100,
       }).then(resp => {
         data.current.cateList = resp
-        tabNavi.options.cols = data.current.cateList.LIST.length
-        tabNavi.options.axis = {x:0, y:0}
-        Navigation.set({
-          id: "contents",
-          sections: [tabNavi, itemNavi],
+        updateUI(()=>{
+          tabNavi.options.cols = data.current.cateList.LIST.length
+          tabNavi.options.axis = {x:0, y:0}
+          Navigation.set({
+            id: "contents",
+            sections: [tabNavi, itemNavi],
+          })
         })
       })
 
@@ -105,7 +107,7 @@ const Contents = () => {
         LIMIT: 100,
       }).then(resp => {
         data.current.contents = resp
-        // updateUI()
+        updateUI()
       })
   }, []);
 
