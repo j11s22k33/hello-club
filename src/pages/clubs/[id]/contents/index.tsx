@@ -30,7 +30,6 @@ const Contents = ({updateUI}) => {
     id: "tab-navi",
     options: {
       cols: 4,
-      axis: {x:0, y:0},
       start: true
     },
     direction: {
@@ -70,9 +69,9 @@ const Contents = ({updateUI}) => {
         LIMIT: 100,
       }).then(resp => {
         data.current.cateList = resp
+                
         updateUI(()=>{
           tabNavi.options.cols = data.current.cateList.LIST.length
-          tabNavi.options.axis = {x:0, y:0}
           Navigation.set({
             id: "contents",
             sections: [tabNavi, itemNavi],
