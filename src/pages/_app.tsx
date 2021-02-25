@@ -18,7 +18,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     const length = listeners.length
     __updateUIListener.current.effect = []
 
-    console.log('[updateUI useEffect] listeners.length:%o __updateUINum:%o', length, __updateUINum)
+    console.log('[updateUI useEffect] __updateUINum:%o, listeners.length:%o', __updateUINum, length)
 
     for (let x=0; x<length; x++) {
       listeners[x]()
@@ -30,7 +30,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     const length = listeners.length
     __updateUIListener.current.layoutEffect = []
     
-    console.log('[updateUI useLayoutEffect] listeners.length:%o __updateUINum:%o', length, __updateUINum)
+    console.log('[updateUI useLayoutEffect] __updateUINum:%o, listeners.length:%o', __updateUINum, length)
 
     for (let x=0; x<length; x++) {
       listeners[x]()
@@ -43,7 +43,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     __setUpdateUINum(c => c+1)
   }
   /* <!-- UI 업데이트 END */
-  
+
   return (
     <>
       <Component {...pageProps} updateUI={updateUI}/>
