@@ -37,9 +37,9 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     }
   }, [__updateUINum])
   
-  function updateUI(effectCb?:Function, layoutEffectCb?:Function) {
-    effectCb && __updateUIListener.current.effect.push(effectCb)
+  function updateUI(layoutEffectCb?:Function, effectCb?:Function) {
     layoutEffectCb && __updateUIListener.current.layoutEffect.push(layoutEffectCb)
+    effectCb && __updateUIListener.current.effect.push(effectCb)
     __setUpdateUINum(c => c+1)
   }
   /* <!-- UI 업데이트 END */
