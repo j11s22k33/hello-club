@@ -12,10 +12,9 @@ const Contents = ({updateUI}) => {
   const router = useRouter();
   const [uiMode, setUiMode] = useState<UI_MODE>("UI_DEFAULT_BROWSING")
   const data = useRef({
-    cateListFocusIdx: 0,
     cateList: {
-      TOTAL: 1,
-      LIST: [{CATE_ID:"", NAME:"전체"}]
+      TOTAL: 0,
+      LIST: []
     },
     contents: {
       TOTAL: 0,
@@ -38,7 +37,23 @@ const Contents = ({updateUI}) => {
         Navigation.go(itemNavi.id, undefined, true);
       },
     },
-    focus(section: any) {},
+    focus(section: any) {
+      const d = data.current.cateList.LIST[section.axis.x]
+      console.log(`${pageName} tabNavi focus=%o`, d)
+
+      getContentList({
+        CLUB_ID: router.query.id as string,
+        CATE_ID: d.CATE_ID,
+        ORDER: "string",
+        OFFSET: 1,
+        LIMIT: 100,
+      }).then(resp => {
+        data.current.contents = resp
+        updateUI(()=>{
+          Navigation.addSection(pageName, [itemNavi])
+        })
+      })
+    },
     enter() {},
     back() {
       pageBack();
@@ -72,23 +87,13 @@ const Contents = ({updateUI}) => {
       LIMIT: 100,
     }).then(resp => {
       data.current.cateList = resp
+
       updateUI(()=>{
         tabNavi.options.cols = data.current.cateList.LIST.length
         Navigation.set({
-          id: "contents",
+          id: pageName,
           sections: [tabNavi, itemNavi],
         })
-        getContentList({
-          CLUB_ID: router.query.id as string,
-          CATE_ID: "string",
-          ORDER: "string",
-          OFFSET: 1,
-          LIMIT: 100,
-        }).then(resp => {
-          data.current.contents = resp
-          updateUI()
-        })
-
       })
     })
 

@@ -34,7 +34,11 @@ API.interceptors.response.use(undefined, (error: AxiosError) => {
   return Promise.reject(error);
 });
 
-const mock = new MockAdapter(API);
+function random(min:number,max:number) {
+  return Math.floor(Math.random()*(max-min+1)+min);
+}
+// https://www.npmjs.com/package/axios-mock-adapter
+const mock = new MockAdapter(API, { delayResponse: 300 });
 mock.onGet("/v1/club/list/all").reply(200, {
   RESULT_CODE: 200,
   RESULT_MESSAGE: "",
@@ -42,11 +46,14 @@ mock.onGet("/v1/club/list/all").reply(200, {
   LIST: clubs,
 });
 
-mock.onGet("/v1/club/content/list").reply(200, {
-  RESULT_CODE: 200,
-  RESULT_MESSAGE: "",
-  TOTAL: contents.length,
-  LIST: contents,
+mock.onGet("/v1/club/content/list").reply(config => {  
+  const list = contents.createContents(random(0, 30), config.params.CATE_ID)
+  return [200, {
+    RESULT_CODE: 200,
+    RESULT_MESSAGE: "",
+    TOTAL: list.length,
+    LIST: list,
+  }]
 });
 
 mock.onGet("/v1/club/category/list").reply(200, {
