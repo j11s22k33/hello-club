@@ -45,7 +45,7 @@ const Contents = ({updateUI}) => {
         CLUB_ID: router.query.id as string,
         CATE_ID: d.CATE_ID,
         ORDER: "string",
-        OFFSET: 1,
+        OFFSET: 0,
         LIMIT: 100,
       }).then(resp => {
         data.current.contents = resp

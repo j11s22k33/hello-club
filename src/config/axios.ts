@@ -14,7 +14,7 @@ const API = axios.create({
   },
 });
 
-API.interceptors.request.use((config) => {
+API.interceptors.request.use(config => {
   config.params = {
     ...config.params,
     SID: "SID",
@@ -23,13 +23,24 @@ API.interceptors.request.use((config) => {
     MODEL: "MODEL",
     MAC: "MAC",
   };
+  console.log(`[axios.intercenptors.request]`, config)
   return config;
+}, error => {
+  console.log('[axios.intercenptors.request.error]', error.message, error.config)
+  return Promise.reject(error)
 });
 
-API.interceptors.response.use(undefined, (error: AxiosError) => {
-  // 공통 오류 처리
-  if (error.response) {
-    console.log(error.response?.data);
+API.interceptors.response.use(response => {
+  console.log(`[axios.intercenptors.response]`, response.config, response.data)
+  return response
+}, (error: AxiosError) => {
+  console.log(`[axios.intercenptors.response.error]`, error)
+  if (error.config) {
+    //
+  } else if(error.config && error.response) {
+    //
+  } else {
+    //
   }
   return Promise.reject(error);
 });
@@ -47,7 +58,8 @@ mock.onGet("/v1/club/list/all").reply(200, {
 });
 
 mock.onGet("/v1/club/content/list").reply(config => {  
-  const list = contents.createContents(random(0, 30), config.params.CATE_ID)
+  const list = contents.createContents(random(30, 30), config.params)
+  // const list = contents.createContents(random(00, 30), config.params)
   return [200, {
     RESULT_CODE: 200,
     RESULT_MESSAGE: "",
