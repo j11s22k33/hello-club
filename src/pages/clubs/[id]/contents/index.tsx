@@ -6,8 +6,11 @@ import { useEffect, useRef, useState } from "react";
 
 type UI_MODE = "UI_DEFAULT_BROWSING" | "UI_CONTENTS_BROWSING" | "UI_SCROLL_BROWSING";
 
-const Contents = ({updateUI}) => { 
+const pageName = "[개별 클럽 홈]";
+
+const Contents = ({updateUI}) => {
   const router = useRouter();
+  const [uiMode, setUiMode] = useState<UI_MODE>("UI_DEFAULT_BROWSING")
   const data = useRef({
     cateListFocusIdx: 0,
     cateList: {
@@ -20,8 +23,6 @@ const Contents = ({updateUI}) => {
     }
   })
 
-  const [uiMode, setUiMode] = useState<UI_MODE>("UI_DEFAULT_BROWSING")
- 
   function pageBack() {
     router.back();
   }
@@ -63,32 +64,37 @@ const Contents = ({updateUI}) => {
   };
 
   useEffect(() => {
-      getContentCategoryList({
-        CLUB_ID: router.query.id as string,
-        OFFSET: 1,
-        LIMIT: 100,
-      }).then(resp => {
-        data.current.cateList = resp
-                
-        updateUI(()=>{
-          tabNavi.options.cols = data.current.cateList.LIST.length
-          Navigation.set({
-            id: "contents",
-            sections: [tabNavi, itemNavi],
-          })
+    console.log(`${pageName} mount`)
+    
+    getContentCategoryList({
+      CLUB_ID: router.query.id as string,
+      OFFSET: 1,
+      LIMIT: 100,
+    }).then(resp => {
+      data.current.cateList = resp
+      updateUI(()=>{
+        tabNavi.options.cols = data.current.cateList.LIST.length
+        Navigation.set({
+          id: "contents",
+          sections: [tabNavi, itemNavi],
         })
-      })
+        getContentList({
+          CLUB_ID: router.query.id as string,
+          CATE_ID: "string",
+          ORDER: "string",
+          OFFSET: 1,
+          LIMIT: 100,
+        }).then(resp => {
+          data.current.contents = resp
+          updateUI()
+        })
 
-      getContentList({
-        CLUB_ID: router.query.id as string,
-        CATE_ID: "string",
-        ORDER: "string",
-        OFFSET: 1,
-        LIMIT: 100,
-      }).then(resp => {
-        data.current.contents = resp
-        updateUI()
       })
+    })
+
+    return ()=>{
+      console.log(`${pageName} unmount`)
+    }
   }, []);
 
   return (
