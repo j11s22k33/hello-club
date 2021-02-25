@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 type UI_MODE = "UI_DEFAULT_BROWSING" | "UI_CONTENTS_BROWSING" | "UI_SCROLL_BROWSING";
 
-const pageName = "[개별 클럽 홈]";
+const pageName = "[콘텐츠 리스트]";
 
 const Contents = ({updateUI}) => {
   const router = useRouter();
@@ -34,12 +34,14 @@ const Contents = ({updateUI}) => {
     },
     direction: {
       down(section: any) {
-        Navigation.go(itemNavi.id, undefined, true);
+        if(data.current.contents.LIST.length > 0) {
+          Navigation.go(itemNavi.id, undefined, true)
+        }
       },
     },
     focus(section: any) {
       const d = data.current.cateList.LIST[section.axis.x]
-      console.log(`${pageName} tabNavi focus=%o`, d)
+      console.log(`${pageName} tabNavi focus`, d)
 
       getContentList({
         CLUB_ID: router.query.id as string,
@@ -69,7 +71,10 @@ const Contents = ({updateUI}) => {
         Navigation.go(tabNavi.id, undefined, true);
       },
     },
-    focus(section: any) {},
+    focus(section: any) {
+      const d = data.current.contents.LIST[section.axis.y][section.axis.x]
+      console.log(`${pageName} itemNavi focus`, d)
+    },
     enter() {
       alert("VOD OR YOUTUBE 재생");
     },
@@ -146,13 +151,14 @@ const Contents = ({updateUI}) => {
 
         {/* <!-- contents-list : start --><!-- active 클래스로 리스트 스케일과 스크롤 포커스를 제어합니다. --> */
         <div className={"contents-list " + (uiMode==="UI_SCROLL_BROWSING" ? "active" : "")}>
-          {data.current.contents.LIST.length === 0 && (
+          {
+            data.current.contents.LIST.length === 0 &&
             <div className="empty-contents">
               <p>
                 등록된 <em>콘텐츠</em>가 없습니다.
               </p>
             </div>
-          )}
+          }
 
           {/* <!-- list : start --> */}
           <ul id="item-navi">
