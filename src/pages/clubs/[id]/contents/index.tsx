@@ -6,26 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 type UI_MODE = "UI_DEFAULT_BROWSING" | "UI_CONTENTS_BROWSING" | "UI_SCROLL_BROWSING";
 
-const Contents = () => {
-  /* 
-  UI 업데이트 START
-  updateUI(cb) -> setUpdateUINum() -> useEffect([updateUINum]) -> cb()
-  */
-  const __updateUIListener = useRef([])
-  const [__updateUINum, __setUpdateUINum] = useState(0)
-  useEffect(()=>{
-    const size = __updateUIListener.current.length
-    for (let x=0; x<size; x++) {
-      __updateUIListener.current[x]()
-    }
-    __updateUIListener.current = []
-  }, [__updateUINum])
-  function updateUI(cb?:Function) {
-    cb && __updateUIListener.current.push(cb)
-    __setUpdateUINum(c => c+1)
-  }
-  /* <!-- UI 업데이트 END */
-  
+const Contents = ({updateUI}) => { 
   const router = useRouter();
   const data = useRef({
     cateListFocusIdx: 0,
