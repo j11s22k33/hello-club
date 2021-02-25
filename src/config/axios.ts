@@ -50,11 +50,13 @@ function random(min:number,max:number) {
 }
 // https://www.npmjs.com/package/axios-mock-adapter
 const mock = new MockAdapter(API, { delayResponse: 300 });
-mock.onGet("/v1/club/list/all").reply(200, {
-  RESULT_CODE: 200,
-  RESULT_MESSAGE: "",
-  TOTAL: clubs.length,
-  LIST: clubs,
+mock.onGet("/v1/club/list/all").reply(config => {
+  return [200, {
+    RESULT_CODE: 200,
+    RESULT_MESSAGE: "",
+    TOTAL: clubs.length,
+    LIST: clubs,
+  }]
 });
 
 mock.onGet("/v1/club/content/list").reply(config => {  
@@ -68,14 +70,18 @@ mock.onGet("/v1/club/content/list").reply(config => {
   }]
 });
 
-mock.onGet("/v1/club/category/list").reply(200, {
-  RESULT_CODE: 200,
-  RESULT_MESSAGE: "",
-  TOTAL: contentsCateList.length,
-  LIST: contentsCateList,
+mock.onGet("/v1/club/category/list").reply(config => {
+  return [200, {
+    RESULT_CODE: 200,
+    RESULT_MESSAGE: "",
+    TOTAL: contentsCateList.length,
+    LIST: contentsCateList,
+  }]
 });
 
-mock.onGet("/clubpf/svc/club/info").reply(200, clubHome);
+mock.onGet("/clubpf/svc/club/info").reply(config => {
+  return [200, clubHome]
+});
 
 export default API;
 
