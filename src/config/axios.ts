@@ -51,17 +51,19 @@ function random(min:number,max:number) {
 // https://www.npmjs.com/package/axios-mock-adapter
 const mock = new MockAdapter(API, { delayResponse: 300 });
 mock.onGet("/v1/club/list/all").reply(config => {
+  const list = clubs.createClubs(random(30, 30), config.params)
+  // const list = clubs.createClubs(random(0, 30), config.params)
   return [200, {
     RESULT_CODE: 200,
     RESULT_MESSAGE: "",
-    TOTAL: clubs.length,
-    LIST: clubs,
+    TOTAL: list.length,
+    LIST: list,
   }]
 });
 
 mock.onGet("/v1/club/content/list").reply(config => {  
   const list = contents.createContents(random(30, 30), config.params)
-  // const list = contents.createContents(random(00, 30), config.params)
+  // const list = contents.createContents(random(0, 30), config.params)
   return [200, {
     RESULT_CODE: 200,
     RESULT_MESSAGE: "",
