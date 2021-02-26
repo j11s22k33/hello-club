@@ -1,16 +1,20 @@
-import Navigation from "@/utils/Navigation";
 import { useEffect } from "react";
 
-interface PopupAgreeProps {
+interface PopupAgree1Props {
+  navigation: any;
   ok: () => void;
   cancel: () => void;
 }
 
-const PopupAgree: React.FC<PopupAgreeProps> = ({ ok, cancel }) => {
+const PopupAgree1: React.FC<PopupAgree1Props> = ({
+  navigation,
+  ok,
+  cancel,
+}) => {
   let btnNavi = {
     id: "btn-navi",
     options: {
-      cols: 1,
+      cols: 2,
       start: true,
     },
     direction: {},
@@ -25,12 +29,12 @@ const PopupAgree: React.FC<PopupAgreeProps> = ({ ok, cancel }) => {
   };
 
   useEffect(() => {
-    Navigation.createLayer({
-      id: "popup-alert",
+    navigation.createLayer({
+      id: "popup-agree1",
       sections: [btnNavi],
     });
     return () => {
-      Navigation.removeLayer("popup-alert");
+      navigation.removeLayer("popup-agree1");
     };
   }, []);
 
@@ -76,11 +80,11 @@ const PopupAgree: React.FC<PopupAgreeProps> = ({ ok, cancel }) => {
           </div>
         </div>
         <div className="popup-footer no-line">
-          <div className="button-area">
+          <div className="button-area" id={btnNavi.id}>
             <button type="button" className="button">
               <span>가입확인</span>
             </button>
-            <button type="button" className="button focus">
+            <button type="button" className="button">
               <span>취소</span>
             </button>
           </div>
@@ -90,4 +94,4 @@ const PopupAgree: React.FC<PopupAgreeProps> = ({ ok, cancel }) => {
   );
 };
 
-export default PopupAgree;
+export default PopupAgree1;

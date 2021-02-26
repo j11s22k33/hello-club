@@ -1,19 +1,36 @@
-import Navigation from "@/utils/Navigation";
 import { useEffect } from "react";
 
-interface PopupPrivacyProps {
+interface PopupJoinProps {
+  navigation: any;
   ok: () => void;
   cancel: () => void;
 }
 
-const PopupPrivacy: React.FC<PopupPrivacyProps> = ({ ok, cancel }) => {
+const PopupJoin: React.FC<PopupJoinProps> = ({ navigation, ok, cancel }) => {
+  const height = 322;
+  const movePixel = 20;
+  let offsetHeight = 0;
+  let pos = 0;
+  let limit = 0;
+
   let btnNavi = {
     id: "btn-navi",
     options: {
-      cols: 1,
+      cols: 2,
       start: true,
     },
-    direction: {},
+    direction: {
+      up() {
+        if (pos === 0) return;
+        pos--;
+        moveScroll();
+      },
+      down() {
+        if (pos === limit) return;
+        pos++;
+        moveScroll();
+      },
+    },
     enter(section) {
       ok();
     },
@@ -21,16 +38,27 @@ const PopupPrivacy: React.FC<PopupPrivacyProps> = ({ ok, cancel }) => {
       cancel();
     },
     leave(section) {},
-    entry(section) {},
+    entry(section) {
+      offsetHeight = document.getElementById("body").offsetHeight;
+      limit = Math.ceil((offsetHeight - height + 30) / movePixel);
+    },
+  };
+
+  const moveScroll = () => {
+    document.getElementById("body").style.top = `-${pos * movePixel}px`;
+    document.getElementById("scroll").style.top = `${Math.min(
+      (pos / limit) * 100,
+      98
+    )}%`;
   };
 
   useEffect(() => {
-    Navigation.createLayer({
-      id: "popup-alert",
+    navigation.createLayer({
+      id: "popup-join",
       sections: [btnNavi],
     });
     return () => {
-      Navigation.removeLayer("popup-alert");
+      navigation.removeLayer("popup-join");
     };
   }, []);
 
@@ -43,7 +71,7 @@ const PopupPrivacy: React.FC<PopupPrivacyProps> = ({ ok, cancel }) => {
         <div className="popup-body">
           <div className="popup-box type-privacy">
             <div className="popup-scroll">
-              <div className="text-terms">
+              <div className="text-terms" id="body">
                 <p className="mgt">
                   본 헬로클럽은 무료 서비스로 가입 후, 이용하실 수 있습니다.
                 </p>
@@ -79,15 +107,16 @@ const PopupPrivacy: React.FC<PopupPrivacyProps> = ({ ok, cancel }) => {
               </div>
               <div className="scroll">
                 <span
-                  style={{ top: "20%", transform: "translate(-50%, -20%)" }}
+                  id="scroll"
+                  style={{ top: "0%", transform: "translate(-50%, -20%)" }}
                 />
               </div>
             </div>
           </div>
         </div>
         <div className="popup-footer no-line">
-          <div className="button-area">
-            <button type="button" className="button focus">
+          <div className="button-area" id={btnNavi.id}>
+            <button type="button" className="button">
               <span>확인</span>
             </button>
             <button type="button" className="button">
@@ -100,4 +129,4 @@ const PopupPrivacy: React.FC<PopupPrivacyProps> = ({ ok, cancel }) => {
   );
 };
 
-export default PopupPrivacy;
+export default PopupJoin;

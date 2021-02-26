@@ -1549,6 +1549,7 @@ em {
 }
 
 .popup .popup-box .popup-scroll .text-terms {
+  position: relative;
   font-size: 1.7rem;
 }
 

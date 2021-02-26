@@ -112,6 +112,10 @@ mock.onGet("/uipf/v1/club/account/withdraw").reply((config) => {
   return [200];
 });
 
+mock.onGet("/v1/club/account/auth").reply((config) => {
+  return [200, { result: "0000" }];
+});
+
 export default API;
 
 export const fetcher = <T>(url: string): Promise<T> =>

@@ -1,4 +1,7 @@
+import PopupAgree1 from "@/components/PopupAgree1";
 import PopupAlert from "@/components/PopupAlert";
+import PopupJoin from "@/components/PopupJoin";
+import PopupPassword from "@/components/PopupPassword";
 import notices from "@/dummy/notices";
 import { MenuType } from "@/models/Menu";
 import Notice from "@/models/Notice";
@@ -17,6 +20,10 @@ const Index = ({ updateUI }) => {
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
   const [withdrawPopup, setWithdrawPopup] = useState(false);
   const [withdrawAcceptPopup, setWithdrawAcceptPopup] = useState(false);
+  const [passwordPopup, setPasswordPopup] = useState(false);
+  const [joinPopup, setJoinPopup] = useState(false);
+  const [agreePopup1, setAgreePopup1] = useState(false);
+  const [agreePopup2, setAgreePopup2] = useState(false);
 
   function pageBack() {
     // router.back()
@@ -60,7 +67,11 @@ const Index = ({ updateUI }) => {
       if (club.current.join.isJoin === "Y") {
         setWithdrawPopup(true);
       } else {
-        alert("가입");
+        if (club.current.join.joinType === "100") {
+          setJoinPopup(true);
+        } else {
+          setPasswordPopup(true);
+        }
       }
     },
     focus(section: any) {},
@@ -273,6 +284,57 @@ const Index = ({ updateUI }) => {
             </div>
           </div>
         )}
+        {passwordPopup && (
+          <PopupPassword
+            navigation={Navigation}
+            updateUI={updateUI}
+            ok={async () => {
+              try {
+                setPasswordPopup(false);
+                setJoinPopup(true);
+              } catch (e) {
+                alert(e);
+              }
+            }}
+            cancel={() => {
+              setPasswordPopup(false);
+            }}
+          />
+        )}
+        {joinPopup && (
+          <PopupJoin
+            navigation={Navigation}
+            ok={() => {
+              setJoinPopup(false);
+              setAgreePopup1(true);
+            }}
+            cancel={() => {
+              setJoinPopup(false);
+            }}
+          />
+        )}
+        {agreePopup1 && (
+          <PopupAgree1
+            navigation={Navigation}
+            ok={() => {
+              setAgreePopup1(false);
+            }}
+            cancel={() => {
+              setAgreePopup1(false);
+            }}
+          />
+        )}
+        {agreePopup2 && (
+          <PopupAgree1
+            navigation={Navigation}
+            ok={() => {
+              setAgreePopup2(false);
+            }}
+            cancel={() => {
+              setAgreePopup2(false);
+            }}
+          />
+        )}
         {withdrawPopup && (
           <PopupAlert
             navigation={Navigation}
@@ -288,7 +350,7 @@ const Index = ({ updateUI }) => {
             }
             ok={async () => {
               try {
-                await withdraw({ CLUB_ID: "" });
+                await withdraw({ clubId: "" });
                 setWithdrawPopup(false);
                 setWithdrawAcceptPopup(true);
               } catch (e) {
