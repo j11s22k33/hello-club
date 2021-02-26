@@ -10,9 +10,9 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
  * const [cnt, updateCnt] = useStateCallbackWrapper(0)
  * 
  * updateCnt({
- *    setState: state => state+1,
- *    useLayoutEffect: state => console.log(state),
- *    useEffect: state => console.log(state)
+ *    setState: oldState => oldState+1,
+ *    useLayoutEffect: newState => console.log(newState),
+ *    useEffect: newState => console.log(newState)
  * })
  * 
  * ```
