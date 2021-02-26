@@ -5,7 +5,7 @@ import Notice from "@/models/Notice";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 /**
- * state, setState, cb 반환
+ * @returns [state, setState, cbRef]
  * @param initVal 
  */
 const useStateCallbackWrapper = (initVal:any):
@@ -17,15 +17,15 @@ const useStateCallbackWrapper = (initVal:any):
     layoutEffect: any[];}>
 ] => {
   const [state, setState] = useState(initVal)
-  const cbList = useRef({
+  const cbRef = useRef({
     effect: [],
     layoutEffect: []
   })
 
   useLayoutEffect(() => {
-    const list = cbList.current.layoutEffect 
+    const list = cbRef.current.layoutEffect 
     const len = list.length
-    cbList.current.layoutEffect = []
+    cbRef.current.layoutEffect = []
 
     for (let x=0; x<len; x++) {
       list[x](state)
@@ -33,16 +33,16 @@ const useStateCallbackWrapper = (initVal:any):
   }, [state])
 
   useEffect(() => {
-    const list = cbList.current.effect 
+    const list = cbRef.current.effect 
     const len = list.length
-    cbList.current.effect = []
+    cbRef.current.effect = []
 
     for (let x=0; x<len; x++) {
       list[x](state)
     }
   }, [state])
   
-  return [state, setState, cbList]
+  return [state, setState, cbRef]
 }
 
 function createNoticePopup(props: { notice: Notice; navigation; hide }) {
