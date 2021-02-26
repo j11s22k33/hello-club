@@ -10,32 +10,20 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
  */
 
 interface UseStateCallbackList {
-  effect: Function[];
-  layoutEffect: Function[];
+  effect: Function;
+  layoutEffect: Function;
 }
 
 const useStateCallbackWrapper = (initVal:any):[any, React.Dispatch<any>, React.MutableRefObject<UseStateCallbackList>] => {
   const [state, setState] = useState(initVal)
-  const cbRef = useRef<UseStateCallbackList>({ effect: [], layoutEffect: [] })
+  const cbRef = useRef<UseStateCallbackList>({ effect: null, layoutEffect: null })
 
   useLayoutEffect(() => {
-    const list = cbRef.current.layoutEffect 
-    const len = list.length
-    cbRef.current.layoutEffect = []
-
-    for (let x=0; x<len; x++) {
-      list[x](state)
-    }
+    cbRef.current.layoutEffect?.(state)
   }, [state])
 
   useEffect(() => {
-    const list = cbRef.current.effect 
-    const len = list.length
-    cbRef.current.effect = []
-
-    for (let x=0; x<len; x++) {
-      list[x](state)
-    }
+    cbRef.current.effect?.(state)
   }, [state])
   
   return [state, setState, cbRef]
