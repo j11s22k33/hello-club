@@ -5,28 +5,39 @@ import Notice from "@/models/Notice";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 /**
- * @returns [state, setState, cbRef]
- * @param initVal 
+ * ```
+ * // 예제
+ * const [cnt, updateCnt] = useStateCallbackWrapper(0)
+ * 
+ * updateCnt({
+ *    setState: state => state+1,
+ *    useLayoutEffect: state => console.log(state),
+ *    useEffect: state => console.log(state)
+ * })
+ * 
+ * ```
+ * @param initialState
+ * @returns [state, updateState]
  */
-
-interface UseStateCallbackList {
-  effect: Function;
-  layoutEffect: Function;
-}
-
-const useStateCallbackWrapper = (initVal:any):[any, React.Dispatch<any>, React.MutableRefObject<UseStateCallbackList>] => {
-  const [state, setState] = useState(initVal)
-  const cbRef = useRef<UseStateCallbackList>({ effect: null, layoutEffect: null })
+const useStateCallbackWrapper = (initialState:any):[any, Function] => {
+  const [_state, _setState] = useState(initialState)
+  const _ref = useRef({ effect: null, layoutEffect: null })
 
   useLayoutEffect(() => {
-    cbRef.current.layoutEffect?.(state)
-  }, [state])
+    _ref.current.layoutEffect?.(_state)
+  }, [_state])
 
   useEffect(() => {
-    cbRef.current.effect?.(state)
-  }, [state])
+    _ref.current.effect?.(_state)
+  }, [_state])
+
+  function _udateState({setState, useLayoutEffect, useEffect}) {
+    _ref.current.effect = useEffect
+    _ref.current.layoutEffect = useLayoutEffect
+    _setState(setState)
+  }
   
-  return [state, setState, cbRef]
+  return [_state, _udateState]
 }
 
 function createNoticePopup(props: { notice: Notice; navigation; hide }) {

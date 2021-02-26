@@ -3,12 +3,14 @@ import "@/assets/css/style.css";
 import { useStateCallbackWrapper } from "@/utils/common"
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
-  const [tmp, setTmp, cbList] = useStateCallbackWrapper(0)
+  const [tmp, uTmp] = useStateCallbackWrapper(0)
   
-  function updateUI(layoutEffectCb?:Function, effectCb?:Function) {
-    cbList.current.layoutEffect = layoutEffectCb
-    cbList.current.effect = effectCb
-    setTmp(c => c+1)
+  function updateUI({useLayoutEffect, useEffect}) {
+    uTmp({
+      setState: c => c+1, 
+      useLayoutEffect, 
+      useEffect
+    })
   }
 
   return (

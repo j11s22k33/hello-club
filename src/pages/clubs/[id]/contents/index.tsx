@@ -2,7 +2,8 @@ import ContentItem from "@/components/ContentItem";
 import { getContentList, getContentCategoryList } from "@/modules/contents/requests";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useStateCallbackWrapper } from "@/utils/common"
 
 type UI_MODE = "UI_DEFAULT_BROWSING" | "UI_CONTENTS_BROWSING" | "UI_SCROLL_BROWSING";
 
@@ -10,7 +11,10 @@ const pageName = "[콘텐츠 리스트]";
 
 const Contents = ({updateUI}) => {
   const router = useRouter();
-  const [uiMode, setUiMode] = useState<UI_MODE>("UI_DEFAULT_BROWSING")
+
+  const [uiMode, updateUIMode] = useStateCallbackWrapper("UI_DEFAULT_BROWSING")  
+
+  const elTab = useRef()
   const data = useRef({
     cateList: {
       TOTAL: 0,
@@ -19,7 +23,8 @@ const Contents = ({updateUI}) => {
     contents: {
       TOTAL: 0,
       LIST: []
-    }
+    },
+    contentsCols: 4
   })
 
   function pageBack() {
@@ -42,6 +47,7 @@ const Contents = ({updateUI}) => {
     focus(section: any) {
       const d = data.current.cateList.LIST[section.axis.x]
       console.log(`${pageName} tabNavi focus`, d)
+      console.log(section.items)
 
       getContentList({
         CLUB_ID: router.query.id as string,
@@ -51,8 +57,10 @@ const Contents = ({updateUI}) => {
         LIMIT: 100,
       }).then(resp => {
         data.current.contents = resp
-        updateUI(()=>{
-          Navigation.addSection(pageName, [itemNavi])
+        updateUI({
+            useLayoutEffect: () => {
+              Navigation.addSection(pageName, [itemNavi])
+            }
         })
       })
     },
@@ -64,7 +72,7 @@ const Contents = ({updateUI}) => {
   const itemNavi = {
     id: "item-navi",
     options: {
-      cols: 4,
+      cols: data.current.contentsCols,
     },
     direction: {
       up(section: any) {
@@ -72,8 +80,23 @@ const Contents = ({updateUI}) => {
       },
     },
     focus(section: any) {
-      const d = data.current.contents.LIST[section.axis.y][section.axis.x]
+      const didx = data.current.contentsCols * section.axis.y + section.axis.x
+      const d = data.current.contents.LIST[didx]
       console.log(`${pageName} itemNavi focus`, d)
+
+      if(didx < data.current.contentsCols) {
+        updateUIMode({
+          setState: state => { console.log('updateUIMode setState ', state); return "UI_DEFAULT_BROWSING" },
+          useLayoutEffect: state => { console.log('updateUIMode useLayoutEffect ', state)},
+          useEffect: state => { console.log('updateUIMode useEffect ', state)},
+        })
+      } else {
+        updateUIMode({
+          setState: state => { console.log('updateUIMode setState ', state); return "UI_CONTENTS_BROWSING" },
+          useLayoutEffect: state => { console.log('updateUIMode useLayoutEffect ', state)},
+          useEffect: state => { console.log('updateUIMode useEffect ', state)},
+        })
+      }
     },
     enter() {
       alert("VOD OR YOUTUBE 재생");
@@ -85,7 +108,7 @@ const Contents = ({updateUI}) => {
 
   useEffect(() => {
     console.log(`${pageName} mount`)
-    
+
     getContentCategoryList({
       CLUB_ID: router.query.id as string,
       OFFSET: 1,
@@ -93,12 +116,14 @@ const Contents = ({updateUI}) => {
     }).then(resp => {
       data.current.cateList = resp
 
-      updateUI(()=>{
-        tabNavi.options.cols = data.current.cateList.LIST.length
-        Navigation.set({
-          id: pageName,
-          sections: [tabNavi, itemNavi],
-        })
+      updateUI({
+        useLayoutEffect:()=>{
+          tabNavi.options.cols = data.current.cateList.LIST.length
+          Navigation.set({
+            id: pageName,
+            sections: [tabNavi, itemNavi],
+          })
+        }
       })
     })
 
@@ -137,7 +162,7 @@ const Contents = ({updateUI}) => {
         {/* <!-- tab : start --> */
         uiMode==="UI_DEFAULT_BROWSING" &&
         <nav className="tabs-wrap">
-          <ul className="nav-tabs" id="tab-navi">
+          <ul className="nav-tabs" id="tab-navi" ref={elTab}>
             {
               data.current.cateList.LIST.map(item => (
                 <li key={item.CATE_ID} className="tab-item">
