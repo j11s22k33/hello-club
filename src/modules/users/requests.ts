@@ -28,6 +28,6 @@ export const auth = async (params: AuthRequest): Promise<DefaultResponse> => {
 export const withdraw = async (
   params: WithDrawRequest
 ): Promise<DefaultResponse> => {
-  const res = await API.post("/v1/club/account/withdraw", { params });
+  const res = await API.get("/uipf/v1/club/account/withdraw", { params });
   return res.data;
 };

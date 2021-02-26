@@ -1,18 +1,22 @@
+import PopupAlert from "@/components/PopupAlert";
 import notices from "@/dummy/notices";
 import { MenuType } from "@/models/Menu";
 import Notice from "@/models/Notice";
 import { ClubInfoResponse, getClubInfo } from "@/modules/clubs/requests";
+import { withdraw } from "@/modules/users/requests";
 import { createNoticePopup } from "@/utils/common";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const logPrefix = "[개별 클럽 홈] ";
 
-const Index = () => {
+const Index = ({ updateUI }) => {
   const router = useRouter();
+  const club = useRef<ClubInfoResponse>();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
-  const [club, setClub] = useState<ClubInfoResponse>();
+  const [withdrawPopup, setWithdrawPopup] = useState(false);
+  const [withdrawAcceptPopup, setWithdrawAcceptPopup] = useState(false);
 
   function pageBack() {
     // router.back()
@@ -53,7 +57,11 @@ const Index = () => {
       },
     },
     enter(section: any) {
-      alert("가입하기 OR 탈퇴하기 팝업");
+      if (club.current.join.isJoin === "Y") {
+        setWithdrawPopup(true);
+      } else {
+        alert("가입");
+      }
     },
     focus(section: any) {},
     back() {
@@ -124,16 +132,19 @@ const Index = () => {
         CLUB_ID: "",
         SOURCE_ID: "string",
       });
-      setClub(data);
-
-      Navigation.set({
-        id: "home",
-        sections: [bannerNavi, joinNavi, menuNavi, noticeNavi],
+      club.current = data;
+      updateUI({
+        useEffect: () => {
+          Navigation.set({
+            id: "home",
+            sections: [bannerNavi, joinNavi, menuNavi, noticeNavi],
+          });
+        },
       });
     })();
   }, []);
 
-  if (!club) {
+  if (!club.current) {
     return <div></div>;
   }
 
@@ -162,7 +173,7 @@ const Index = () => {
             style={{ backgroundImage: "url(/images/temp/logo4.png)" }}
           ></h2>
           <p className="channel">
-            {club.clubName} <em>{club.chnlNo}번</em>
+            {club.current.clubName} <em>{club.current.chnlNo}번</em>
           </p>
         </div>
         <div className="main-body">
@@ -202,25 +213,29 @@ const Index = () => {
           <div className="lnb">
             <div
               className="banner"
-              style={{ backgroundImage: `url(${club.join.introImg})` }}
+              style={{ backgroundImage: `url(${club.current.join.introImg})` }}
             >
-              <p className="text">{club.join.introText}</p>
+              <p className="text">{club.current.join.introText}</p>
               <div id={joinNavi.id}>
                 <button type="button">
-                  <span>{club.join.isJoin ? "탈퇴하기" : "가입하기"}</span>
+                  <span>
+                    {club.current.join.isJoin == "Y" ? "탈퇴하기" : "가입하기"}
+                  </span>
                 </button>
               </div>
             </div>
             <nav>
               <ul id={menuNavi.id}>
-                {club.menuList.map((menu) => {
+                {club.current.menuList.map((menu) => {
                   if (menu.type === "LIVE") {
                     return (
                       <li data-menu-type={menu.type}>
                         <p className="ic-live">
                           실시간 예배
                           <span className="sticker">
-                            {club.live.isLive === "Y" ? "방송중" : "방송전"}
+                            {club.current.live.isLive === "Y"
+                              ? "방송중"
+                              : "방송전"}
                           </span>
                         </p>
                       </li>
@@ -246,10 +261,10 @@ const Index = () => {
             </nav>
           </div>
         </div>
-        {club.notice && (
+        {club.current.notice && (
           <div className="main-footer">
             <div className="notice">
-              <p>{club.notice.title}</p>
+              <p>{club.current.notice.title}</p>
             </div>
             <div id={noticeNavi.id}>
               <button type="button">
@@ -257,6 +272,50 @@ const Index = () => {
               </button>
             </div>
           </div>
+        )}
+        {withdrawPopup && (
+          <PopupAlert
+            navigation={Navigation}
+            title={"탈퇴 확인"}
+            message={
+              <>
+                탈퇴 시, 해당 클럽 서비스를
+                <br />
+                더 이상 이용하실 수 없습니다.
+                <br />
+                탈퇴 하시겠습니까?"
+              </>
+            }
+            ok={async () => {
+              try {
+                await withdraw({ CLUB_ID: "" });
+                setWithdrawPopup(false);
+                setWithdrawAcceptPopup(true);
+              } catch (e) {
+                alert(e);
+              }
+            }}
+            cancel={() => {
+              setWithdrawPopup(false);
+            }}
+          />
+        )}
+        {withdrawAcceptPopup && (
+          <PopupAlert
+            navigation={Navigation}
+            title={"탈퇴 완료"}
+            message={<>탈퇴 되었습니다</>}
+            ok={() => {
+              club.current.join.isJoin = "N";
+              updateUI({});
+              setWithdrawAcceptPopup(false);
+            }}
+            cancel={() => {
+              club.current.join.isJoin = "N";
+              updateUI({});
+              setWithdrawAcceptPopup(false);
+            }}
+          />
         )}
         {createNoticePopup({
           notice: selectedNotice,

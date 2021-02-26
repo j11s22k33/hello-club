@@ -1,14 +1,15 @@
-import Navigation from "@/utils/Navigation";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
 interface PopupAlertProps {
+  navigation: any;
   title: string;
-  message: string;
+  message: ReactNode;
   ok: () => void;
   cancel: () => void;
 }
 
 const PopupAlert: React.FC<PopupAlertProps> = ({
+  navigation,
   title,
   message,
   ok,
@@ -19,12 +20,16 @@ const PopupAlert: React.FC<PopupAlertProps> = ({
   let btnNavi = {
     id: "btn-navi",
     options: {
-      cols: 1,
+      cols: 2,
       start: true,
     },
     direction: {},
     enter(section) {
-      ok();
+      if (section.focusItem.dataset.btn === "ok") {
+        ok();
+      } else if (section.focusItem.dataset.btn === "cancel") {
+        cancel();
+      }
     },
     back() {
       cancel();
@@ -34,12 +39,12 @@ const PopupAlert: React.FC<PopupAlertProps> = ({
   };
 
   useEffect(() => {
-    Navigation.createLayer({
+    navigation.createLayer({
       id: "popup-alert",
       sections: [btnNavi],
     });
     return () => {
-      Navigation.removeLayer("popup-alert");
+      navigation.removeLayer("popup-alert");
     };
   }, []);
 
@@ -55,11 +60,11 @@ const PopupAlert: React.FC<PopupAlertProps> = ({
           </div>
         </div>
         <div className="popup-footer">
-          <div className="button-area">
-            <button type="button" className="button focus">
+          <div className="button-area" id={btnNavi.id}>
+            <button type="button" className="button" data-btn="ok">
               <span>확인</span>
             </button>
-            <button type="button" className="button">
+            <button type="button" className="button" data-btn="cancel">
               <span>취소</span>
             </button>
           </div>

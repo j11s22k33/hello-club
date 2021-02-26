@@ -14,75 +14,102 @@ const API = axios.create({
   },
 });
 
-API.interceptors.request.use(config => {
-  config.params = {
-    ...config.params,
-    SID: "SID",
-    LOCAL: "LOCAL",
-    SOID: "SOID",
-    MODEL: "MODEL",
-    MAC: "MAC",
-  };
-  console.log(`[axios.intercenptors.request]`, config)
-  return config;
-}, error => {
-  console.log('[axios.intercenptors.request.error]', error.message, error.config)
-  return Promise.reject(error)
-});
-
-API.interceptors.response.use(response => {
-  console.log(`[axios.intercenptors.response]`, response.config, response.data)
-  return response
-}, (error: AxiosError) => {
-  console.log(`[axios.intercenptors.response.error]`, error)
-  if (error.config) {
-    //
-  } else if(error.config && error.response) {
-    //
-  } else {
-    //
+API.interceptors.request.use(
+  (config) => {
+    config.params = {
+      ...config.params,
+      SID: "SID",
+      LOCAL: "LOCAL",
+      SOID: "SOID",
+      MODEL: "MODEL",
+      MAC: "MAC",
+    };
+    console.log(`[axios.intercenptors.request]`, config);
+    return config;
+  },
+  (error) => {
+    console.log(
+      "[axios.intercenptors.request.error]",
+      error.message,
+      error.config
+    );
+    return Promise.reject(error);
   }
-  return Promise.reject(error);
-});
+);
 
-function random(min:number,max:number) {
-  return Math.floor(Math.random()*(max-min+1)+min);
+API.interceptors.response.use(
+  (response) => {
+    console.log(
+      `[axios.intercenptors.response]`,
+      response.config,
+      response.data
+    );
+    return response;
+  },
+  (error: AxiosError) => {
+    console.log(`[axios.intercenptors.response.error]`, error);
+    if (error.config) {
+      //
+    } else if (error.config && error.response) {
+      //
+    } else {
+      //
+    }
+    return Promise.reject(error);
+  }
+);
+
+function random(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 // https://www.npmjs.com/package/axios-mock-adapter
 const mock = new MockAdapter(API, { delayResponse: 300 });
-mock.onGet("/v1/club/list/all").reply(config => {
-  const list = clubs.createClubs(random(30, 30), config.params)
+mock.onGet("/v1/club/list/all").reply((config) => {
+  const list = clubs.createClubs(random(30, 30), config.params);
   // const list = clubs.createClubs(random(0, 30), config.params)
-  return [200, {
-    RESULT_CODE: 200,
-    RESULT_MESSAGE: "",
-    TOTAL: list.length,
-    LIST: list,
-  }]
+  return [
+    200,
+    {
+      RESULT_CODE: 200,
+      RESULT_MESSAGE: "",
+      TOTAL: list.length,
+      LIST: list,
+    },
+  ];
 });
 
-mock.onGet("/v1/club/content/list").reply(config => {  
-  const list = contents.createContents(random(30, 30), config.params)
+mock.onGet("/v1/club/content/list").reply((config) => {
+  const list = contents.createContents(random(30, 30), config.params);
   // const list = contents.createContents(random(0, 30), config.params)
-  return [200, {
-    RESULT_CODE: 200,
-    RESULT_MESSAGE: "",
-    TOTAL: list.length,
-    LIST: list,
-  }]
+  return [
+    200,
+    {
+      RESULT_CODE: 200,
+      RESULT_MESSAGE: "",
+      TOTAL: list.length,
+      LIST: list,
+    },
+  ];
 });
 
-mock.onGet("/v1/club/category/list").reply(config => {
-  return [200, {
-    RESULT_CODE: 200,
-    RESULT_MESSAGE: "",
-    TOTAL: contentsCateList.length,
-    LIST: contentsCateList,
-  }]
+mock.onGet("/v1/club/category/list").reply((config) => {
+  return [
+    200,
+    {
+      RESULT_CODE: 200,
+      RESULT_MESSAGE: "",
+      TOTAL: contentsCateList.length,
+      LIST: contentsCateList,
+    },
+  ];
 });
 
-mock.onGet("/clubpf/svc/club/info").reply(config => {
-  return [200, clubHome]
+mock.onGet("/clubpf/svc/club/info").reply((config) => {
+  return [200, clubHome];
+});
+
+mock.onGet("/uipf/v1/club/account/withdraw").reply((config) => {
+  return [200];
 });
 
 export default API;
