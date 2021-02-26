@@ -8,19 +8,15 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
  * @returns [state, setState, cbRef]
  * @param initVal 
  */
-const useStateCallbackWrapper = (initVal:any):
-[
-  any,
-  React.Dispatch<any>,
-  React.MutableRefObject<{
-    effect: any[];
-    layoutEffect: any[];}>
-] => {
+
+interface UseStateCallbackList {
+  effect: Function[];
+  layoutEffect: Function[];
+}
+
+const useStateCallbackWrapper = (initVal:any):[any, React.Dispatch<any>, React.MutableRefObject<UseStateCallbackList>] => {
   const [state, setState] = useState(initVal)
-  const cbRef = useRef({
-    effect: [],
-    layoutEffect: []
-  })
+  const cbRef = useRef<UseStateCallbackList>({ effect: [], layoutEffect: [] })
 
   useLayoutEffect(() => {
     const list = cbRef.current.layoutEffect 
