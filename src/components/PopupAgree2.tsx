@@ -90,7 +90,6 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
       down() {},
     },
     keydown(section, event) {
-      console.log("keydown");
       if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         if (!checked.current) {
           return true;
