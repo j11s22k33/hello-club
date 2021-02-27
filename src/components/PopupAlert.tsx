@@ -7,7 +7,7 @@ interface PopupAlertProps {
   title: string;
   message: ReactNode;
   ok: () => void;
-  cancel: () => void;
+  cancel?: () => void;
   type: PopupType;
 }
 
@@ -73,7 +73,7 @@ const PopupAlert: React.FC<PopupAlertProps> = ({
             </div>
           ) : (
             <div className="button-area" id={btnNavi.id}>
-              <button type="button" className="button" data-btn="cancel">
+              <button type="button" className="button" data-btn="ok">
                 <span>닫기</span>
               </button>
             </div>

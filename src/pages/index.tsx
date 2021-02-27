@@ -357,9 +357,8 @@ const Index = ({ updateUI }) => {
               </>
             }
             type="ALERT"
-            ok={() => {}}
-            cancel={() => {
-              club.current.join.isJoin = "N";
+            ok={() => {
+              club.current.join.isJoin = "Y";
               updateUI({});
               setPopup(undefined);
             }}
