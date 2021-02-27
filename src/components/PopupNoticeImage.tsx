@@ -1,25 +1,39 @@
 import Notice from "@/models/Notice";
 import Navigation from "@/utils/Navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface PopupImageProps {
   notice: Notice;
   navigation: any;
+  updateUI: any;
   hide: () => void;
 }
 
 const PopupImage: React.FC<PopupImageProps> = ({
   notice,
   navigation,
+  updateUI,
   hide,
 }) => {
+  let imagePos = useRef(0);
   let btnNavi = {
     id: "btn-navi",
     options: {
       cols: 1,
       start: true,
     },
-    direction: {},
+    direction: {
+      left() {
+        if (imagePos.current === 0) return;
+        imagePos.current--;
+        updateUI({});
+      },
+      right() {
+        if (imagePos.current === notice.imgUrl.length - 1) return;
+        imagePos.current++;
+        updateUI({});
+      },
+    },
     enter(section) {
       hide();
     },
@@ -48,23 +62,33 @@ const PopupImage: React.FC<PopupImageProps> = ({
             <div className="popup-slide">
               <ul>
                 <li>
-                  <div className="img" />
+                  <div className="img">
+                    <img
+                      src={notice.imgUrl[imagePos.current]}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
                 </li>
               </ul>
             </div>
             <div className="control-box">
               <div className="control">
                 <span
-                  style={{ left: "100%", transform: "translate(-100%, -50%)" }}
+                  style={{
+                    left: `${
+                      ((imagePos.current / (notice.imgUrl.length - 1)) * 100) - 4
+                    }%`,
+                    transform: "translate(0%, -50%)",
+                  }}
                 >
-                  2
+                  {imagePos.current + 1}
                 </span>
               </div>
             </div>
           </div>
         </div>
         <div className="popup-footer no-line">
-          <div className="button-area">
+          <div className="button-area" id={btnNavi.id}>
             <button type="button" className="button focus">
               <span>확인</span>
             </button>

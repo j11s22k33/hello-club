@@ -1,25 +1,39 @@
 import Notice from "@/models/Notice";
 import Navigation from "@/utils/Navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface PopupTextImageProps {
   notice: Notice;
   navigation: any;
+  updateUI: any;
   hide: () => void;
 }
 
 const PopupTextImage: React.FC<PopupTextImageProps> = ({
   notice,
   navigation,
+  updateUI,
   hide,
 }) => {
+  let imagePos = useRef(0);
   let btnNavi = {
     id: "btn-navi",
     options: {
       cols: 1,
       start: true,
     },
-    direction: {},
+    direction: {
+      left() {
+        if (imagePos.current === 0) return;
+        imagePos.current--;
+        updateUI({});
+      },
+      right() {
+        if (imagePos.current === notice.imgUrl.length - 1) return;
+        imagePos.current++;
+        updateUI({});
+      },
+    },
     enter(section) {
       hide();
     },
@@ -48,31 +62,37 @@ const PopupTextImage: React.FC<PopupTextImageProps> = ({
             <div className="popup-slide">
               <ul>
                 <li>
-                  <div className="img" />
-                  <div className="text">
-                    이번 주 예배 안내입니다
-                    <br />
-                    <br />
-                    우리교회 본당은 450석이므로 주일 예배를 45명씩 4부로 나누어
-                    예배를 드릴 예정입니다. 대면 예배에 참여하시기 원하시는 분은
-                    아래 예배 안내를 참고해주시기 바랍니다.
-                    <br />
-                    <br />
+                  <div className="img">
+                    <img
+                      src={notice.imgUrl[imagePos.current]}
+                      style={{ width: "100%", height: "100%" }}
+                    />
                   </div>
+                  <div
+                    className="text"
+                    dangerouslySetInnerHTML={{ __html: notice.text }}
+                  ></div>
                 </li>
               </ul>
             </div>
             <div className="control-box">
               <div className="control">
-                <span style={{ left: "0%", transform: "translate(0%, -50%)" }}>
-                  1
+                <span
+                  style={{
+                    left: `${
+                      ((imagePos.current / (notice.imgUrl.length - 1)) * 100) - 4
+                    }%`,
+                    transform: "translate(0%, -50%)",
+                  }}
+                >
+                  {imagePos.current + 1}
                 </span>
               </div>
             </div>
           </div>
         </div>
         <div className="popup-footer no-line">
-          <div className="button-area">
+          <div className="button-area" id={btnNavi.id}>
             <button type="button" className="button focus">
               <span>확인</span>
             </button>

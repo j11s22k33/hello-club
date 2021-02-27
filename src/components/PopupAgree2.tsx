@@ -49,6 +49,10 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
     entry(section) {
       offsetHeight = document.getElementById("body").offsetHeight;
       limit = Math.ceil((offsetHeight - height + 30) / movePixel);
+      limit = Math.max(limit, 0);
+      if (limit === 0) {
+        document.getElementById("scroll-bar").style.display = "none";
+      }
     },
   };
 
@@ -157,7 +161,7 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
                   </li>
                 </ol>
               </div>
-              <div className="scroll">
+              <div className="scroll" id="scroll-bar">
                 <span
                   id="scroll"
                   style={{ top: "0%", transform: "translate(-50%, -20%)" }}

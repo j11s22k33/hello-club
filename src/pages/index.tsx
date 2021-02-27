@@ -432,6 +432,7 @@ const Index = ({ updateUI }) => {
         {createNoticePopup({
           notice: selectedNotice,
           navigation: Navigation,
+          updateUI: updateUI,
           hide: () => setSelectedNotice(undefined),
         })}
       </div>

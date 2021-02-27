@@ -4,10 +4,16 @@ import { useEffect } from "react";
 interface PopupTextProps {
   notice: Notice;
   navigation: any;
+  updateUI: any;
   hide: () => void;
 }
 
-const PopupText: React.FC<PopupTextProps> = ({ notice, navigation, hide }) => {
+const PopupText: React.FC<PopupTextProps> = ({
+  notice,
+  navigation,
+  updateUI,
+  hide,
+}) => {
   const height = 322;
   const movePixel = 20;
   let offsetHeight = 0;
@@ -44,6 +50,10 @@ const PopupText: React.FC<PopupTextProps> = ({ notice, navigation, hide }) => {
     entry(section) {
       offsetHeight = document.getElementById("body").offsetHeight;
       limit = Math.ceil((offsetHeight - height + 30) / movePixel);
+      limit = Math.max(limit, 0);
+      if (limit === 0) {
+        document.getElementById("scroll-bar").style.display = "none";
+      }
     },
   };
 
@@ -77,7 +87,7 @@ const PopupText: React.FC<PopupTextProps> = ({ notice, navigation, hide }) => {
               <div className="text-terms" id="body">
                 <p dangerouslySetInnerHTML={{ __html: notice.text }}></p>
               </div>
-              <div className="scroll">
+              <div className="scroll" id="scroll-bar">
                 <span
                   id="scroll"
                   style={{ top: "0%", transform: "translate(-50%, -20%)" }}
