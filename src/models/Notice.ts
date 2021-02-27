@@ -17,7 +17,7 @@ interface Notice {
   date: string;
   type: NoticeType;
   text?: string;
-  imgUrl?: string;
+  imgUrl?: Array<string>;
 }
 
 export default Notice;

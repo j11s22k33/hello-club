@@ -2,7 +2,6 @@ import PopupAgree1 from "@/components/PopupAgree1";
 import PopupAlert from "@/components/PopupAlert";
 import PopupJoin from "@/components/PopupJoin";
 import PopupPassword from "@/components/PopupPassword";
-import notices from "@/dummy/notices";
 import { MenuType } from "@/models/Menu";
 import Notice from "@/models/Notice";
 import { ClubInfoResponse, getClubInfo } from "@/modules/clubs/requests";
@@ -45,6 +44,11 @@ const Index = ({ updateUI }) => {
       right(section: any) {
         Navigation.go(menuNavi.id, undefined, false);
       },
+    },
+    keydown(section, event) {
+      if (event.key === "ArrowDown") {
+        return true;
+      }
     },
     enter(section: any) {
       isFull.current = !isFull.current;
@@ -142,7 +146,7 @@ const Index = ({ updateUI }) => {
       },
     },
     enter(section: any) {
-      setSelectedNotice(notices[0]);
+      setSelectedNotice(club.current.notice);
     },
     focus(section: any) {},
     back() {
