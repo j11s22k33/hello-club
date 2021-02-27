@@ -54,6 +54,13 @@ const Index = ({ updateUI }) => {
     },
   };
 
+  const showJoinPopup = () => {
+    if (club.current.join.joinType === "100") {
+      setPopup("JOIN");
+    } else {
+      setPopup("PASSWORD");
+    }
+  };
   const joinNavi = {
     id: "join-navi",
     options: {
@@ -71,11 +78,7 @@ const Index = ({ updateUI }) => {
       if (club.current.join.isJoin === "Y") {
         setPopup("WITHDRAW");
       } else {
-        if (club.current.join.joinType === "100") {
-          setPopup("JOIN");
-        } else {
-          setPopup("PASSWORD");
-        }
+        showJoinPopup();
       }
     },
     focus(section: any) {},
@@ -101,6 +104,10 @@ const Index = ({ updateUI }) => {
       },
     },
     enter(section: any) {
+      if (club.current.join.isJoin === "N") {
+        showJoinPopup();
+        return;
+      }
       const menyType = section.focusItem.dataset.menuType as MenuType;
       if (menyType === "LIVE") {
         console.log("%o라이브 이동", logPrefix);
