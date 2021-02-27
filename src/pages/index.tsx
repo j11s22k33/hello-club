@@ -28,6 +28,7 @@ const Index = ({ updateUI }) => {
   const club = useRef<ClubInfoResponse>();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
   const [popup, setPopup] = useState<PopupType>();
+  const isFull = useRef(false);
 
   function pageBack() {
     // router.back()
@@ -46,7 +47,8 @@ const Index = ({ updateUI }) => {
       },
     },
     enter(section: any) {
-      alert("이미지 OR VOD 전체 화면 보기");
+      isFull.current = !isFull.current;
+      updateUI({});
     },
     focus(section: any) {},
     back() {
@@ -174,7 +176,10 @@ const Index = ({ updateUI }) => {
     <div id="root">
       <div className="container main">
         {/* 홍보 영역 전체 화면 보기 */}
-        <div className="full-img" style={{ display: "none" }}>
+        <div
+          className="full-img"
+          style={{ display: isFull.current ? "" : "none" }}
+        >
           {/* <div className="img" style="background-image: url(/images/club/img-main-default.png)"></div>
                 <div className="failed-load">
                     <p>
