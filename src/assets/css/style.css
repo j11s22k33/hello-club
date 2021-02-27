@@ -1601,6 +1601,10 @@ em {
   border: 2px solid #4c4c4c;
 }
 
+.popup .input-checkbox.focus input[type=checkbox] {
+  border: 2px solid #c9bb03;
+}
+
 .popup .input-checkbox input[type=checkbox]::before {
   display: block;
   content: '';

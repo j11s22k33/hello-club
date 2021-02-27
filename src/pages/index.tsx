@@ -6,7 +6,7 @@ import notices from "@/dummy/notices";
 import { MenuType } from "@/models/Menu";
 import Notice from "@/models/Notice";
 import { ClubInfoResponse, getClubInfo } from "@/modules/clubs/requests";
-import { withdraw } from "@/modules/users/requests";
+import { join, withdraw } from "@/modules/users/requests";
 import { createNoticePopup } from "@/utils/common";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
@@ -14,16 +14,20 @@ import { useEffect, useRef, useState } from "react";
 
 const logPrefix = "[개별 클럽 홈] ";
 
+type PopupType =
+  | "PASSWORD"
+  | "WITHDRAW"
+  | "WITHDRAW_ACCEPT"
+  | "JOIN"
+  | "AGREE1"
+  | "AGREE2"
+  | "SUCCESS_JOIN";
+
 const Index = ({ updateUI }) => {
   const router = useRouter();
   const club = useRef<ClubInfoResponse>();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
-  const [withdrawPopup, setWithdrawPopup] = useState(false);
-  const [withdrawAcceptPopup, setWithdrawAcceptPopup] = useState(false);
-  const [passwordPopup, setPasswordPopup] = useState(false);
-  const [joinPopup, setJoinPopup] = useState(false);
-  const [agreePopup1, setAgreePopup1] = useState(false);
-  const [agreePopup2, setAgreePopup2] = useState(false);
+  const [popup, setPopup] = useState<PopupType>();
 
   function pageBack() {
     // router.back()
@@ -65,12 +69,12 @@ const Index = ({ updateUI }) => {
     },
     enter(section: any) {
       if (club.current.join.isJoin === "Y") {
-        setWithdrawPopup(true);
+        setPopup("WITHDRAW");
       } else {
         if (club.current.join.joinType === "100") {
-          setJoinPopup(true);
+          setPopup("JOIN");
         } else {
-          setPasswordPopup(true);
+          setPopup("PASSWORD");
         }
       }
     },
@@ -284,98 +288,129 @@ const Index = ({ updateUI }) => {
             </div>
           </div>
         )}
-        {passwordPopup && (
+        {popup === "PASSWORD" && (
           <PopupPassword
+            navigation={Navigation}
+            updateUI={updateUI}
+            ok={() => {
+              setPopup("JOIN");
+            }}
+            cancel={() => {
+              setPopup(undefined);
+            }}
+          />
+        )}
+        {popup === "JOIN" && (
+          <PopupJoin
+            navigation={Navigation}
+            ok={() => {
+              setPopup("AGREE1");
+            }}
+            cancel={() => {
+              setPopup(undefined);
+            }}
+          />
+        )}
+        {popup === "AGREE1" && (
+          <PopupAgree1
+            navigation={Navigation}
+            updateUI={updateUI}
+            ok={() => {
+              setPopup("AGREE2");
+            }}
+            cancel={() => {
+              setPopup(undefined);
+            }}
+          />
+        )}
+        {popup === "AGREE2" && (
+          <PopupAgree1
             navigation={Navigation}
             updateUI={updateUI}
             ok={async () => {
               try {
-                setPasswordPopup(false);
-                setJoinPopup(true);
+                const res = await join({ clubId: "" });
+                if (res.result === "0000") {
+                  setPopup("SUCCESS_JOIN");
+                } else {
+                  alert(res.result);
+                }
               } catch (e) {
                 alert(e);
               }
             }}
             cancel={() => {
-              setPasswordPopup(false);
+              setPopup(undefined);
             }}
           />
         )}
-        {joinPopup && (
-          <PopupJoin
+        {popup === "SUCCESS_JOIN" && (
+          <PopupAlert
             navigation={Navigation}
-            ok={() => {
-              setJoinPopup(false);
-              setAgreePopup1(true);
-            }}
+            title={"가입 완료"}
+            message={
+              <>
+                <p className="accent">
+                  <em>운산성결교회 클럽</em>
+                </p>
+                <p>가입이 완료 되었습니다</p>
+              </>
+            }
+            type="ALERT"
+            ok={() => {}}
             cancel={() => {
-              setJoinPopup(false);
+              club.current.join.isJoin = "N";
+              updateUI({});
+              setPopup(undefined);
             }}
           />
         )}
-        {agreePopup1 && (
-          <PopupAgree1
-            navigation={Navigation}
-            ok={() => {
-              setAgreePopup1(false);
-            }}
-            cancel={() => {
-              setAgreePopup1(false);
-            }}
-          />
-        )}
-        {agreePopup2 && (
-          <PopupAgree1
-            navigation={Navigation}
-            ok={() => {
-              setAgreePopup2(false);
-            }}
-            cancel={() => {
-              setAgreePopup2(false);
-            }}
-          />
-        )}
-        {withdrawPopup && (
+        {popup === "WITHDRAW" && (
           <PopupAlert
             navigation={Navigation}
             title={"탈퇴 확인"}
+            type="CONFIRM"
             message={
-              <>
+              <p>
                 탈퇴 시, 해당 클럽 서비스를
                 <br />
                 더 이상 이용하실 수 없습니다.
                 <br />
                 탈퇴 하시겠습니까?"
-              </>
+              </p>
             }
             ok={async () => {
               try {
-                await withdraw({ clubId: "" });
-                setWithdrawPopup(false);
-                setWithdrawAcceptPopup(true);
+                const res = await withdraw({ clubId: "" });
+                if (res.result === "0000") {
+                  setPopup("WITHDRAW_ACCEPT");
+                } else {
+                  alert(res.result);
+                }
               } catch (e) {
                 alert(e);
               }
             }}
             cancel={() => {
-              setWithdrawPopup(false);
+              setPopup(undefined);
             }}
           />
         )}
-        {withdrawAcceptPopup && (
+        {popup === "WITHDRAW_ACCEPT" && (
           <PopupAlert
             navigation={Navigation}
             title={"탈퇴 완료"}
             message={<>탈퇴 되었습니다</>}
+            type="CONFIRM"
             ok={() => {
               club.current.join.isJoin = "N";
               updateUI({});
-              setWithdrawAcceptPopup(false);
+              setPopup(undefined);
             }}
             cancel={() => {
               club.current.join.isJoin = "N";
               updateUI({});
-              setWithdrawAcceptPopup(false);
+              setPopup(undefined);
             }}
           />
         )}

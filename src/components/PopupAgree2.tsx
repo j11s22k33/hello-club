@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 
-interface PopupAgree1Props {
+interface PopupAgree2Props {
   navigation: any;
   updateUI: any;
   ok: () => void;
   cancel: () => void;
 }
 
-const PopupAgree1: React.FC<PopupAgree1Props> = ({
+const PopupAgree2: React.FC<PopupAgree2Props> = ({
   navigation,
   updateUI,
   ok,
@@ -121,11 +121,11 @@ const PopupAgree1: React.FC<PopupAgree1Props> = ({
 
   useEffect(() => {
     navigation.createLayer({
-      id: "popup-agree1",
+      id: "popup-agree2",
       sections: [body, check, btnNavi],
     });
     return () => {
-      navigation.removeLayer("popup-agree1");
+      navigation.removeLayer("popup-agree2");
     };
   }, []);
 
@@ -188,4 +188,4 @@ const PopupAgree1: React.FC<PopupAgree1Props> = ({
   );
 };
 
-export default PopupAgree1;
+export default PopupAgree2;

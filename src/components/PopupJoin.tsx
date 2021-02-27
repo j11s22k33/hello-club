@@ -32,7 +32,11 @@ const PopupJoin: React.FC<PopupJoinProps> = ({ navigation, ok, cancel }) => {
       },
     },
     enter(section) {
-      ok();
+      if (section.focusItem.dataset.btn === "ok") {
+        ok();
+      } else if (section.focusItem.dataset.btn === "cancel") {
+        cancel();
+      }
     },
     back() {
       cancel();
@@ -116,10 +120,10 @@ const PopupJoin: React.FC<PopupJoinProps> = ({ navigation, ok, cancel }) => {
         </div>
         <div className="popup-footer no-line">
           <div className="button-area" id={btnNavi.id}>
-            <button type="button" className="button">
+            <button type="button" className="button" data-btn="ok">
               <span>확인</span>
             </button>
-            <button type="button" className="button">
+            <button type="button" className="button" data-btn="cancel">
               <span>취소</span>
             </button>
           </div>

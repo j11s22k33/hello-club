@@ -21,7 +21,7 @@ interface ResultResponse extends DefaultResponse {
 }
 
 export const join = async (params: JoinRequest): Promise<ResultResponse> => {
-  const res = await API.post("/v1/club/account/join", { params });
+  const res = await API.get("/v1/club/account/join", { params });
   return res.data;
 };
 
