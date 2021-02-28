@@ -28,6 +28,8 @@ const Index = ({ updateUI }) => {
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
   const [popup, setPopup] = useState<PopupType>();
   const isFull = useRef(false);
+  const promotionPos = useRef(0);
+  const isVODLoaded = useRef(true);
 
   function pageBack() {
     // router.back()
@@ -40,19 +42,25 @@ const Index = ({ updateUI }) => {
       cols: 1,
       start: true,
     },
-    direction: {
-      right(section: any) {
-        Navigation.go(menuNavi.id, undefined, false);
-      },
-    },
     keydown(section, event) {
-      if (event.key === "ArrowDown") {
-        return true;
+      if (isFull.current) {
+        if (event.key === "Backspace" || event.key === "Enter") {
+          isFull.current = false;
+          updateUI({});
+          return true;
+        }
+      } else {
+        if (event.key === "ArrowDown") {
+          return true;
+        } else if (event.key === "ArrowRight") {
+          Navigation.go(menuNavi.id, undefined, false);
+          return true;
+        } else if (event.key === "Enter") {
+          isFull.current = true;
+          updateUI({});
+          return true;
+        }
       }
-    },
-    enter(section: any) {
-      isFull.current = !isFull.current;
-      updateUI({});
     },
     focus(section: any) {},
     back() {
@@ -172,6 +180,15 @@ const Index = ({ updateUI }) => {
     })();
   }, []);
 
+  useEffect(() => {
+    const id = setInterval(() => {
+      promotionPos.current =
+        (promotionPos.current + 1) % club.current.promotion.data.length;
+      updateUI({});
+    }, 5000);
+    return () => clearInterval(id);
+  }, [promotionPos]);
+
   if (!club.current) {
     return <div></div>;
   }
@@ -184,13 +201,22 @@ const Index = ({ updateUI }) => {
           className="full-img"
           style={{ display: isFull.current ? "" : "none" }}
         >
-          {/* <div className="img" style="background-image: url(/images/club/img-main-default.png)"></div>
-                <div className="failed-load">
-                    <p>
-                        영상을 불러오지 못했습니다 <br>
-                        잠시 후 다시 이용해 주세요
-                    </p>
-                </div> */}
+          <div
+            className="img"
+            style={{
+              backgroundImage: `url(${
+                club.current.promotion.data[promotionPos.current].url
+              })`,
+            }}
+          ></div>
+          {!isVODLoaded && (
+            <div className="failed-load">
+              <p>
+                영상을 불러오지 못했습니다 <br />
+                잠시 후 다시 이용해 주세요
+              </p>
+            </div>
+          )}
           <div className="mask">
             <p className="text">
               이전 또는 종료키를 선택하시면, 이전 화면으로 이동됩니다
@@ -211,13 +237,22 @@ const Index = ({ updateUI }) => {
           <div className="pr-area">
             <ul id={bannerNavi.id}>
               <li className="focus">
-                <span className="img"></span>
-                <div className="failed-load">
-                  <p>
-                    영상을 불러오지 못했습니다 <br />
-                    잠시 후 다시 이용해 주세요
-                  </p>
-                </div>
+                <span
+                  className="img"
+                  style={{
+                    backgroundImage: `url(${
+                      club.current.promotion.data[promotionPos.current].url
+                    })`,
+                  }}
+                ></span>
+                {!isVODLoaded.current && (
+                  <div className="failed-load">
+                    <p>
+                      영상을 불러오지 못했습니다 <br />
+                      잠시 후 다시 이용해 주세요
+                    </p>
+                  </div>
+                )}
                 <button type="button">
                   <span>전체화면보기</span>
                 </button>
