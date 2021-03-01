@@ -2,6 +2,8 @@ import NoticeItem from "@/components/NoticeItem";
 import Notice from "@/models/Notice";
 import {
   getAllNoticeList,
+  getNoticeCategoryList,
+  NoticeCategoryListResponse,
   NoticeListResponse,
 } from "@/modules/notices/requests";
 import { createNoticePopup } from "@/utils/common";
@@ -11,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 
 const Notices = ({ updateUI }) => {
   const router = useRouter();
+  const categoryData = useRef<NoticeCategoryListResponse>();
   const noticeData = useRef<NoticeListResponse>();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
   const currentPage = useRef(0);
@@ -87,6 +90,8 @@ const Notices = ({ updateUI }) => {
 
   useEffect(() => {
     (async () => {
+      const category = await getNoticeCategoryList();
+      categoryData.current = category;
       const data = await getAllNoticeList({
         clubId: "",
         offset: 0,
@@ -124,7 +129,7 @@ const Notices = ({ updateUI }) => {
           style={{ display: currentPage.current === 0 ? "" : "none" }}
         >
           <ul className="nav-tabs" id="tab-navi">
-            {["공지사항", "교회소개"].map((tab) => (
+            {categoryData.current.data.map((tab) => (
               <li key={tab} className="tab-item">
                 <span>{tab}</span>
               </li>

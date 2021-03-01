@@ -133,6 +133,10 @@ mock.onGet("/v1/club/notice/list").reply((config) => {
   ];
 });
 
+mock.onGet("/clubpf/svc/notice/cateList").reply((config) => {
+  return [200, { data: ["공지사항", "교회소개"] }];
+});
+
 export default API;
 
 export const fetcher = <T>(url: string): Promise<T> =>
