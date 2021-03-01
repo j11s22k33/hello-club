@@ -79,7 +79,7 @@ const PopupText: React.FC<PopupTextProps> = ({
     <div className="popup">
       <div className="popup-content large">
         <div className="popup-header">
-          <h5 className="popup-title">[코로나 관련 주요 공지]</h5>
+          <h5 className="popup-title">{notice.title}</h5>
         </div>
         <div className="popup-body">
           <div className="popup-box type-notice">

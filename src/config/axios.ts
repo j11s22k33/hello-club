@@ -3,6 +3,8 @@ import clubHome from "@/dummy/clubHome";
 import clubs from "@/dummy/clubs";
 import contents from "@/dummy/contents";
 import contentsCateList from "@/dummy/contentsCateList";
+import notices from "@/dummy/notices";
+import { NoticeListRequest } from "@/modules/notices/requests";
 import axios, { AxiosError } from "axios";
 import MockAdapter from "axios-mock-adapter";
 
@@ -118,6 +120,17 @@ mock.onGet("/v1/club/account/auth").reply((config) => {
 
 mock.onGet("/v1/club/account/join").reply((config) => {
   return [200, { result: "0000" }];
+});
+
+mock.onGet("/v1/club/notice/list").reply((config) => {
+  const request = config.params as NoticeListRequest;
+  return [
+    200,
+    {
+      total: notices.length,
+      data: notices.slice(request.offset, request.offset + request.limit),
+    },
+  ];
 });
 
 export default API;

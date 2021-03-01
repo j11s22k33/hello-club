@@ -4,17 +4,17 @@ import { DefaultRequest } from "../DefaultRequest";
 import { DefaultResponse } from "../DefaultResponse";
 
 export interface NoticeListRequest extends DefaultRequest {
-  CLUB_ID: string;
-  OFFSET: string;
-  LIMIT: string;
+  clubId: string;
+  offset: number;
+  limit: number;
 }
 
 export interface NoticeListResponse extends DefaultResponse {
-  TOP_NOTICE: Notice;
-  NOTICE: Array<Notice>;
+  total: number;
+  data: Array<Notice>;
 }
 
-export const getAllClubList = async (
+export const getAllNoticeList = async (
   params: NoticeListRequest
 ): Promise<NoticeListResponse> => {
   const res = await API.get("/v1/club/notice/list", { params });

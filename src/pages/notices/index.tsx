@@ -1,17 +1,24 @@
 import NoticeItem from "@/components/NoticeItem";
-import notices from "@/dummy/notices";
 import Notice from "@/models/Notice";
+import {
+  getAllNoticeList,
+  NoticeListResponse,
+} from "@/modules/notices/requests";
 import { createNoticePopup } from "@/utils/common";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const Notices = () => {
+const Notices = ({ updateUI }) => {
   const router = useRouter();
+  const noticeData = useRef<NoticeListResponse>();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
+  const currentPage = useRef(0);
+  const totalPage = useRef(1);
+  const size = 8;
 
   function pageBack() {
-    router.back()
+    router.back();
   }
 
   const tabNavi = {
@@ -22,13 +29,13 @@ const Notices = () => {
     },
     direction: {
       down(section: any) {
-        Navigation.go(itemNavi.id, undefined, true);
+        Navigation.go(itemNavi.id, undefined, false);
       },
     },
     focus(section: any) {},
     enter() {},
     back() {
-      pageBack()
+      pageBack();
     },
   };
   const itemNavi = {
@@ -37,26 +44,70 @@ const Notices = () => {
       cols: 1,
     },
     direction: {
-      up(section: any) {
-        Navigation.go(tabNavi.id, undefined, true);
+      async up(section: any) {
+        if (currentPage.current === 0) {
+          Navigation.go(tabNavi.id, undefined, true);
+        } else {
+          currentPage.current = (currentPage.current - 1) % totalPage.current;
+          await updateData();
+          Navigation.addSection("notices", [itemNavi]);
+          Navigation.go(itemNavi.id, { x: 0, y: size - 1 }, false);
+        }
+      },
+      async down(section: any) {
+        currentPage.current = (currentPage.current + 1) % totalPage.current;
+        await updateData();
+        Navigation.addSection("notices", [itemNavi]);
+        if (currentPage.current === 0) {
+          Navigation.go(itemNavi.id, { x: 0, y: 0 }, false);
+          Navigation.go(tabNavi.id, undefined, true);
+        } else {
+          Navigation.go(itemNavi.id, { x: 0, y: 0 }, false);
+        }
       },
     },
     focus(section: any) {},
     enter(section: any) {
-      console.log(section);
-      setSelectedNotice(notices[section.axis.y] as Notice);
+      setSelectedNotice(noticeData.current.data[section.axis.y] as Notice);
     },
     back() {
-      pageBack()
+      pageBack();
     },
   };
 
-  useEffect(() => {
-    Navigation.set({
-      id: "notices",
-      sections: [tabNavi, itemNavi],
+  const updateData = async () => {
+    const data = await getAllNoticeList({
+      clubId: "",
+      offset: currentPage.current * size,
+      limit: size,
     });
+    noticeData.current = data;
+    updateUI({});
+  };
+
+  useEffect(() => {
+    (async () => {
+      const data = await getAllNoticeList({
+        clubId: "",
+        offset: 0,
+        limit: size,
+      });
+      noticeData.current = data;
+      totalPage.current = Math.ceil(data.total / size);
+      updateUI({
+        useEffect: () => {
+          Navigation.set({
+            id: "notices",
+            sections: [tabNavi, itemNavi],
+          });
+        },
+      });
+    })();
   }, []);
+
+  if (!noticeData.current) {
+    return <div></div>;
+  }
 
   return (
     <div id="root">
@@ -68,7 +119,10 @@ const Notices = () => {
             <span>공지사항</span>
           </div>
         </div>
-        <nav className="tabs-wrap">
+        <nav
+          className="tabs-wrap"
+          style={{ display: currentPage.current === 0 ? "" : "none" }}
+        >
           <ul className="nav-tabs" id="tab-navi">
             {["공지사항", "교회소개"].map((tab) => (
               <li key={tab} className="tab-item">
@@ -78,7 +132,7 @@ const Notices = () => {
           </ul>
         </nav>
         <div className="board-list">
-          {notices.length === 0 && (
+          {noticeData.current.data.length === 0 && (
             <div className="empty-contents">
               <p>
                 등록된 <em>콘텐츠</em>가 없습니다.
@@ -86,14 +140,34 @@ const Notices = () => {
             </div>
           )}
           <ul id="item-navi">
-            {notices.map((notice) => (
+            {noticeData.current.data.map((notice) => (
               <NoticeItem key={notice.id} notice={notice} />
             ))}
           </ul>
+          <div
+            className="scroll"
+            style={{ display: currentPage.current === 0 ? "none" : "" }}
+          >
+            {Array(totalPage.current)
+              .fill(undefined)
+              .map((_, index) => {
+                return (
+                  <span
+                    className={currentPage.current === index ? "focus" : ""}
+                  >
+                    <i>{index + 1}</i>
+                  </span>
+                );
+              })}
+          </div>
         </div>
-        
-        {createNoticePopup({notice:selectedNotice, navigation:Navigation, hide:() => setSelectedNotice(undefined)})}
-        
+
+        {createNoticePopup({
+          notice: selectedNotice,
+          navigation: Navigation,
+          updateUI: updateUI,
+          hide: () => setSelectedNotice(undefined),
+        })}
       </div>
     </div>
   );
