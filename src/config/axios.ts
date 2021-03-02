@@ -5,9 +5,9 @@ import contents from "@/dummy/contents";
 import contentsCateList from "@/dummy/contentsCateList";
 import notices from "@/dummy/notices";
 import { NoticeListRequest } from "@/modules/notices/requests";
+import Navigation from "@/utils/Navigation";
 import axios, { AxiosError } from "axios";
 import MockAdapter from "axios-mock-adapter";
-import Navigation from "@/utils/Navigation";
 
 const API = axios.create({
   baseURL: env.API,
@@ -19,7 +19,7 @@ const API = axios.create({
 
 API.interceptors.request.use(
   (config) => {
-    Navigation.prevent = true
+    Navigation.prevent = true;
 
     config.params = {
       ...config.params,
@@ -33,8 +33,8 @@ API.interceptors.request.use(
     return config;
   },
   (error) => {
-    Navigation.prevent = false
-    
+    Navigation.prevent = false;
+
     console.log(
       "[axios.intercenptors.request.error]",
       error.message,
@@ -46,8 +46,8 @@ API.interceptors.request.use(
 
 API.interceptors.response.use(
   (response) => {
-    Navigation.prevent = false
-    
+    Navigation.prevent = false;
+
     console.log(
       `[axios.intercenptors.response]`,
       response.config,
@@ -56,8 +56,8 @@ API.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    Navigation.prevent = false
-    
+    Navigation.prevent = false;
+
     console.log(`[axios.intercenptors.response.error]`, error);
     if (error.config) {
       //
@@ -120,7 +120,7 @@ mock.onGet("/clubpf/svc/club/info").reply((config) => {
 });
 
 mock.onGet("/uipf/v1/club/account/withdraw").reply((config) => {
-  return [200];
+  return [200, { result: "0000" }];
 });
 
 mock.onGet("/v1/club/account/auth").reply((config) => {
@@ -129,6 +129,10 @@ mock.onGet("/v1/club/account/auth").reply((config) => {
 
 mock.onGet("/v1/club/account/join").reply((config) => {
   return [200, { result: "0000" }];
+});
+
+mock.onGet("/uipf/v1/club/agree/list").reply((config) => {
+  return [200, { C0101: "약관1", C0102: "약관2" }];
 });
 
 mock.onGet("/v1/club/notice/list").reply((config) => {
