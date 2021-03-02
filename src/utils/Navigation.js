@@ -78,7 +78,10 @@ class Navigation {
       event.stopPropagation && event.stopPropagation();
       event.preventDefault && event.preventDefault();
 
-      if (this.prevent) return;
+      if (this.prevent) {
+        console.log(`[Navigation] prevent`)
+        return;
+      }
 
       // Navigation.keydown(section, event) { return true }
       if (this.keydown && this.keydown(this.focusSection, event)) return;

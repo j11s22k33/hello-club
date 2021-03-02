@@ -7,6 +7,7 @@ import notices from "@/dummy/notices";
 import { NoticeListRequest } from "@/modules/notices/requests";
 import axios, { AxiosError } from "axios";
 import MockAdapter from "axios-mock-adapter";
+import Navigation from "@/utils/Navigation";
 
 const API = axios.create({
   baseURL: env.API,
@@ -18,6 +19,8 @@ const API = axios.create({
 
 API.interceptors.request.use(
   (config) => {
+    Navigation.prevent = true
+
     config.params = {
       ...config.params,
       SID: "SID",
@@ -30,6 +33,8 @@ API.interceptors.request.use(
     return config;
   },
   (error) => {
+    Navigation.prevent = false
+    
     console.log(
       "[axios.intercenptors.request.error]",
       error.message,
@@ -41,6 +46,8 @@ API.interceptors.request.use(
 
 API.interceptors.response.use(
   (response) => {
+    Navigation.prevent = false
+    
     console.log(
       `[axios.intercenptors.response]`,
       response.config,
@@ -49,6 +56,8 @@ API.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
+    Navigation.prevent = false
+    
     console.log(`[axios.intercenptors.response.error]`, error);
     if (error.config) {
       //
