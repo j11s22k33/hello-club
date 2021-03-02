@@ -1,10 +1,15 @@
-import PopupAgree1 from "@/components/PopupAgree1";
+import PopupAgree from "@/components/PopupAgree";
 import PopupAlert from "@/components/PopupAlert";
 import PopupPassword from "@/components/PopupPassword";
 import { MenuType } from "@/models/Menu";
 import Notice from "@/models/Notice";
 import { ClubInfoResponse, getClubInfo } from "@/modules/clubs/requests";
-import { join, withdraw } from "@/modules/users/requests";
+import {
+  AgreeResponse,
+  getAgree,
+  join,
+  withdraw,
+} from "@/modules/users/requests";
 import { createNoticePopup } from "@/utils/common";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
@@ -24,6 +29,7 @@ type PopupType =
 const Index = ({ updateUI }) => {
   const router = useRouter();
   const club = useRef<ClubInfoResponse>();
+  const agree = useRef<AgreeResponse>();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
   const [popup, setPopup] = useState<PopupType>();
   const isFull = useRef(false);
@@ -172,6 +178,7 @@ const Index = ({ updateUI }) => {
         SOURCE_ID: "string",
       });
       club.current = data;
+      agree.current = await getAgree();
       updateUI({
         useEffect: () => {
           Navigation.set({
@@ -355,7 +362,9 @@ const Index = ({ updateUI }) => {
           />
         )}
         {popup === "AGREE1" && (
-          <PopupAgree1
+          <PopupAgree
+            title={"개인정보 수집"}
+            body={agree.current.C0101}
             navigation={Navigation}
             updateUI={updateUI}
             ok={() => {
@@ -367,7 +376,9 @@ const Index = ({ updateUI }) => {
           />
         )}
         {popup === "AGREE2" && (
-          <PopupAgree1
+          <PopupAgree
+            title={"제 3자 제공 동의 내역"}
+            body={agree.current.C0102}
             navigation={Navigation}
             updateUI={updateUI}
             ok={async () => {
@@ -394,7 +405,7 @@ const Index = ({ updateUI }) => {
             message={
               <>
                 <p className="accent">
-                  <em>운산성결교회 클럽</em>
+                  <em>{club.current.clubName} 클럽</em>
                 </p>
                 <p>가입이 완료 되었습니다</p>
               </>
@@ -443,7 +454,7 @@ const Index = ({ updateUI }) => {
             navigation={Navigation}
             title={"탈퇴 완료"}
             message={<>탈퇴 되었습니다</>}
-            type="CONFIRM"
+            type="ALERT"
             ok={() => {
               club.current.join.isJoin = "N";
               updateUI({});

@@ -1,18 +1,23 @@
 import { useEffect, useRef } from "react";
 
-interface PopupAgree2Props {
+interface PopupAgreeProps {
   navigation: any;
   updateUI: any;
+  title: string;
+  body: string;
   ok: () => void;
   cancel: () => void;
 }
 
-const PopupAgree2: React.FC<PopupAgree2Props> = ({
+const PopupAgree: React.FC<PopupAgreeProps> = ({
   navigation,
   updateUI,
+  title,
+  body,
   ok,
   cancel,
 }) => {
+  const agree = useRef<string>();
   const checked = useRef(false);
   const height = 219;
   const movePixel = 20;
@@ -20,7 +25,7 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
   let pos = 0;
   let limit = 0;
 
-  let body = {
+  let bodyNavi = {
     id: "body",
     options: {
       cols: 1,
@@ -50,8 +55,8 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
       offsetHeight = document.getElementById("body").offsetHeight;
       limit = Math.ceil((offsetHeight - height + 30) / movePixel);
       limit = Math.max(limit, 0);
-      if (limit === 0) {
-        document.getElementById("scroll-bar").style.display = "none";
+      if (limit > 0) {
+        document.getElementById("scroll-bar").style.display = "block";
       }
     },
   };
@@ -63,7 +68,7 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
     },
     direction: {
       up() {
-        navigation.go(body.id, undefined, false);
+        navigation.go(bodyNavi.id, undefined, false);
       },
       down() {
         if (checked.current) {
@@ -124,11 +129,11 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
 
   useEffect(() => {
     navigation.createLayer({
-      id: "popup-agree2",
-      sections: [body, check, btnNavi],
+      id: "popup-agree",
+      sections: [bodyNavi, check, btnNavi],
     });
     return () => {
-      navigation.removeLayer("popup-agree2");
+      navigation.removeLayer("popup-agree");
     };
   }, []);
 
@@ -136,14 +141,15 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
     <div className="popup">
       <div className="popup-content large">
         <div className="popup-header">
-          <h5 className="popup-title">개인정보 수집 동의</h5>
+          <h5 className="popup-title">{title}</h5>
         </div>
         <div className="popup-body">
-          <h5 className="sub-title">개인정보 이용동의</h5>
+          {/* <h5 className="sub-title">개인정보 이용동의</h5> */}
           <div className="popup-box type-agree">
             <div className="popup-scroll">
-              <div className="text-terms" id="body">
-                <ol>
+              <div className="text-terms" id={bodyNavi.id}>
+                <div>{body}</div>
+                {/* <ol>
                   <li>
                     <p>1. 이용 목적</p>
                     <p className="mgl">: 개인맞춤 서비스 제공</p>
@@ -159,9 +165,13 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
                     <p>3. 보유기간</p>
                     <p className="mgl">: 가입 후</p>
                   </li>
-                </ol>
+                </ol> */}
               </div>
-              <div className="scroll" id="scroll-bar">
+              <div
+                className="scroll"
+                id="scroll-bar"
+                style={{ display: "none" }}
+              >
                 <span
                   id="scroll"
                   style={{ top: "0%", transform: "translate(-50%, -20%)" }}
@@ -191,4 +201,4 @@ const PopupAgree2: React.FC<PopupAgree2Props> = ({
   );
 };
 
-export default PopupAgree2;
+export default PopupAgree;

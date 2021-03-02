@@ -20,8 +20,18 @@ interface ResultResponse extends DefaultResponse {
   result: string;
 }
 
+export interface AgreeResponse extends DefaultResponse {
+  C0101: string;
+  C0102: string;
+}
+
 export const join = async (params: JoinRequest): Promise<ResultResponse> => {
   const res = await API.get("/v1/club/account/join", { params });
+  return res.data;
+};
+
+export const getAgree = async (): Promise<AgreeResponse> => {
+  const res = await API.get("/uipf/v1/club/agree/list");
   return res.data;
 };
 
