@@ -292,10 +292,10 @@ const Index = ({ updateUI }) => {
             </div>
             <nav>
               <ul id={menuNavi.id}>
-                {club.current.menuList.map((menu) => {
+                {club.current.menuList.map((menu, i) => {
                   if (menu.type === "LIVE") {
                     return (
-                      <li data-menu-type={menu.type}>
+                      <li data-menu-type={menu.type} key={i}>
                         <p className="ic-live">
                           실시간 예배
                           <span className="sticker">
@@ -308,13 +308,13 @@ const Index = ({ updateUI }) => {
                     );
                   } else if (menu.type === "NOTICE") {
                     return (
-                      <li data-menu-type={menu.type}>
+                      <li data-menu-type={menu.type} key={i}>
                         <p className="ic-notice">공지사항</p>
                       </li>
                     );
                   } else if (menu.type === "CONT") {
                     return (
-                      <li data-menu-type={menu.type}>
+                      <li data-menu-type={menu.type} key={i}>
                         <p className="ic-vod">예배와 찬양</p>
                       </li>
                     );

@@ -158,8 +158,7 @@ const Notices = ({ updateUI }) => {
               .map((_, index) => {
                 return (
                   <span
-                    className={currentPage.current === index ? "focus" : ""}
-                  >
+                    className={currentPage.current === index ? "focus" : ""} key={index}>
                     <i>{index + 1}</i>
                   </span>
                 );
