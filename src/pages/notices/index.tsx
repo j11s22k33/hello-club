@@ -149,6 +149,19 @@ const Notices = ({ updateUI }) => {
             <span>헬로클럽</span>
             <span>공지사항</span>
           </div>
+          <div
+            className="key-guide"
+            style={{ display: currentPage.current === 0 ? "none" : "" }}
+          >
+            <span className="align-type">
+              <i className="green"></i>정렬 (최신순)
+            </span>
+            <div className="fast-move">
+              <button type="button" className="prev"></button>
+              <span>페이지 이동</span>
+              <button type="button" className="next"></button>
+            </div>
+          </div>
         </div>
         <nav
           className="tabs-wrap"
