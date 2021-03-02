@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 
 const Notices = ({ updateUI }) => {
   const router = useRouter();
-  const categoryData = useRef<NoticeCategoryListResponse>();
+  const category = useRef<NoticeCategoryListResponse>();
   const noticeData = useRef<NoticeListResponse>();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
   const currentPage = useRef(0);
@@ -35,12 +35,49 @@ const Notices = ({ updateUI }) => {
         Navigation.go(itemNavi.id, undefined, false);
       },
     },
+    keydown(section, event) {
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        getAllNoticeList({
+          clubId: "",
+          cateId: category.current.data[section.axis.x].cateId,
+          offset: 0,
+          limit: size,
+        }).then((data) => {
+          noticeData.current = data;
+          totalPage.current = Math.ceil(data.total / size);
+          updateUI({
+            useEffect: () => {
+              Navigation.addSection("notices", [itemNavi]);
+            },
+          });
+        });
+        return false;
+      }
+    },
     focus(section: any) {},
     enter() {},
     back() {
       pageBack();
     },
   };
+
+  // const data = await getAllNoticeList({
+  //   clubId: "",
+  //   cateId: categoryData.current.data[0].cateId,
+  //   offset: 0,
+  //   limit: size,
+  // });
+  // noticeData.current = data;
+  // totalPage.current = Math.ceil(data.total / size);
+  // updateUI({
+  //   useEffect: () => {
+  //     Navigation.set({
+  //       id: "notices",
+  //       sections: [tabNavi, itemNavi],
+  //     });
+  //   },
+  // });
+
   const itemNavi = {
     id: "item-navi",
     options: {
@@ -54,7 +91,7 @@ const Notices = ({ updateUI }) => {
           currentPage.current = (currentPage.current - 1) % totalPage.current;
           await updateData();
           Navigation.addSection("notices", [itemNavi]);
-          Navigation.go(itemNavi.id, { x: 0, y: size - 1 }, false);
+          Navigation.go(itemNavi.id, { x: 0, y: size }, false);
         }
       },
       async down(section: any) {
@@ -90,10 +127,10 @@ const Notices = ({ updateUI }) => {
 
   useEffect(() => {
     (async () => {
-      const category = await getNoticeCategoryList();
-      categoryData.current = category;
+      category.current = await getNoticeCategoryList({ clubId: "" });
       const data = await getAllNoticeList({
         clubId: "",
+        cateId: category.current.data[0].cateId,
         offset: 0,
         limit: size,
       });
@@ -129,9 +166,9 @@ const Notices = ({ updateUI }) => {
           style={{ display: currentPage.current === 0 ? "" : "none" }}
         >
           <ul className="nav-tabs" id="tab-navi">
-            {categoryData.current.data.map((tab) => (
-              <li key={tab} className="tab-item">
-                <span>{tab}</span>
+            {category.current.data.map((category) => (
+              <li key={category.cateId} className="tab-item">
+                <span>{category.cateName}</span>
               </li>
             ))}
           </ul>
@@ -145,6 +182,7 @@ const Notices = ({ updateUI }) => {
             </div>
           )}
           <ul id="item-navi">
+            <NoticeItem notice={noticeData.current.topNotice} />
             {noticeData.current.data.map((notice) => (
               <NoticeItem key={notice.id} notice={notice} />
             ))}
@@ -158,7 +196,9 @@ const Notices = ({ updateUI }) => {
               .map((_, index) => {
                 return (
                   <span
-                    className={currentPage.current === index ? "focus" : ""} key={index}>
+                    className={currentPage.current === index ? "focus" : ""}
+                    key={index}
+                  >
                     <i>{index + 1}</i>
                   </span>
                 );

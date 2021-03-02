@@ -135,11 +135,19 @@ mock.onGet("/uipf/v1/club/agree/list").reply((config) => {
   return [200, { C0101: "약관1", C0102: "약관2" }];
 });
 
-mock.onGet("/v1/club/notice/list").reply((config) => {
+mock.onGet("/clubpf/svc/notice/list").reply((config) => {
   const request = config.params as NoticeListRequest;
   return [
     200,
     {
+      topNotice: {
+        id: 9999,
+        title: `최상단 고정 공지사항 (categoryId: ${request.cateId})`,
+        text:
+          "이번 주 예배 안내입니다<br /><br />우리교회 본당은 450석이므로 주일 예배를 45명씩 4부로 나누어예배를 드릴 예정입니다. 대면 예배에 참여하시기 원하시는 분은아래 예배 안내를 참고해주시기 바랍니다.<br /><br />기저질환을 가지고 계시거나, 평상시 사람을 많이 만나시는 분들은실시간으로 진행되는 영상을 통해 예배를 드려주시기 바라며,코로나가 속히 종식이 되기를 함께 기도해주시기 바랍니다.<br /><br />상암교회 김봉수 목사 * 예배 안내 (실시간 온라인 예배)<br />주일 1부 예배 : 오전 8시 (1~6구역)<br />주일 2부 예배 : 오전 9시 30분 (7~12구역)<br />주일 3부 예배 : 오전 11시 (13~18구역)<br />주일 4부 예배 : 오후 12시 30분 (19~27구역)<br /><br />* 헌금 계좌 안내<br />[십일조, 감사, 주정, 선교헌금]<br />국민 598601-04-137958 (대한예수교장로회 상암교회)<br />[건축헌금]<br />농협 351-0090-3647-43 (상암교회)<br />",
+        date: "2021.01.01",
+        type: "TXT",
+      },
       total: notices.length,
       data: notices.slice(request.offset, request.offset + request.limit),
     },
@@ -147,7 +155,16 @@ mock.onGet("/v1/club/notice/list").reply((config) => {
 });
 
 mock.onGet("/clubpf/svc/notice/cateList").reply((config) => {
-  return [200, { data: ["공지사항", "교회소개"] }];
+  return [
+    200,
+    {
+      total: 2,
+      data: [
+        { cateId: "1", cateName: "공지사항1" },
+        { cateId: "2", cateName: "공지사항2" },
+      ],
+    },
+  ];
 });
 
 export default API;
