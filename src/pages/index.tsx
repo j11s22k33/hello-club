@@ -1,6 +1,5 @@
 import PopupAgree1 from "@/components/PopupAgree1";
 import PopupAlert from "@/components/PopupAlert";
-import PopupJoin from "@/components/PopupJoin";
 import PopupPassword from "@/components/PopupPassword";
 import { MenuType } from "@/models/Menu";
 import Notice from "@/models/Notice";
@@ -17,7 +16,6 @@ type PopupType =
   | "PASSWORD"
   | "WITHDRAW"
   | "WITHDRAW_ACCEPT"
-  | "JOIN"
   | "AGREE1"
   | "AGREE2"
   | "SUCCESS_JOIN"
@@ -71,7 +69,7 @@ const Index = ({ updateUI }) => {
 
   const showJoinPopup = () => {
     if (club.current.join.joinType === "100") {
-      setPopup("JOIN");
+      setPopup("AGREE1");
     } else {
       setPopup("PASSWORD");
     }
@@ -348,17 +346,6 @@ const Index = ({ updateUI }) => {
           <PopupPassword
             navigation={Navigation}
             updateUI={updateUI}
-            ok={() => {
-              setPopup("JOIN");
-            }}
-            cancel={() => {
-              setPopup(undefined);
-            }}
-          />
-        )}
-        {popup === "JOIN" && (
-          <PopupJoin
-            navigation={Navigation}
             ok={() => {
               setPopup("AGREE1");
             }}
