@@ -1,5 +1,6 @@
 import NoticeItem from "@/components/NoticeItem";
 import Notice from "@/models/Notice";
+import NoticeCategory from "@/models/NoticeCategory";
 import {
   getAllNoticeList,
   getNoticeCategoryList,
@@ -17,6 +18,7 @@ const Notices = ({ updateUI }) => {
   const noticeData = useRef<NoticeListResponse>();
   const [selectedNotice, setSelectedNotice] = useState<Notice>();
   const currentPage = useRef(0);
+  const currentTab = useRef(0);
   const totalPage = useRef(1);
   const size = 8;
 
@@ -27,7 +29,7 @@ const Notices = ({ updateUI }) => {
   const tabNavi = {
     id: "tab-navi",
     options: {
-      cols: 2,
+      cols: 1,
       start: true,
     },
     direction: {
@@ -36,22 +38,14 @@ const Notices = ({ updateUI }) => {
       },
     },
     keydown(section, event) {
-      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-        getAllNoticeList({
-          clubId: "",
-          cateId: category.current.data[section.axis.x].cateId,
-          offset: 0,
-          limit: size,
-        }).then((data) => {
-          noticeData.current = data;
-          totalPage.current = Math.ceil(data.total / size);
-          updateUI({
-            useEffect: () => {
-              Navigation.addSection("notices", [itemNavi]);
-            },
-          });
-        });
-        return false;
+      if (event.key === "ArrowLeft") {
+        if (currentTab.current === 0) return;
+        currentTab.current = (currentTab.current + 1) % category.current.total;
+        updateNoticeList(category.current.data[currentTab.current]);
+      } else if (event.key === "ArrowRight") {
+        if (currentTab.current === category.current.total - 1) return;
+        currentTab.current = (currentTab.current + 1) % category.current.total;
+        updateNoticeList(category.current.data[currentTab.current]);
       }
     },
     focus(section: any) {},
@@ -60,23 +54,6 @@ const Notices = ({ updateUI }) => {
       pageBack();
     },
   };
-
-  // const data = await getAllNoticeList({
-  //   clubId: "",
-  //   cateId: categoryData.current.data[0].cateId,
-  //   offset: 0,
-  //   limit: size,
-  // });
-  // noticeData.current = data;
-  // totalPage.current = Math.ceil(data.total / size);
-  // updateUI({
-  //   useEffect: () => {
-  //     Navigation.set({
-  //       id: "notices",
-  //       sections: [tabNavi, itemNavi],
-  //     });
-  //   },
-  // });
 
   const itemNavi = {
     id: "item-navi",
@@ -130,12 +107,13 @@ const Notices = ({ updateUI }) => {
       category.current = await getNoticeCategoryList({ clubId: "" });
       const data = await getAllNoticeList({
         clubId: "",
-        cateId: category.current.data[0].cateId,
+        cateId: category.current.data[currentTab.current].cateId,
         offset: 0,
         limit: size,
       });
       noticeData.current = data;
       totalPage.current = Math.ceil(data.total / size);
+      tabNavi.options.cols = category.current.total;
       updateUI({
         useEffect: () => {
           Navigation.set({
@@ -146,6 +124,17 @@ const Notices = ({ updateUI }) => {
       });
     })();
   }, []);
+
+  const updateNoticeList = async (category: NoticeCategory) => {
+    noticeData.current = await getAllNoticeList({
+      clubId: "",
+      cateId: category.cateId,
+      offset: 0,
+      limit: size,
+    });
+    totalPage.current = Math.ceil(noticeData.current.total / size);
+    updateUI({});
+  };
 
   if (!noticeData.current) {
     return <div></div>;
