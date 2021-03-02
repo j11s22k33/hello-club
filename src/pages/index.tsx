@@ -20,7 +20,8 @@ type PopupType =
   | "JOIN"
   | "AGREE1"
   | "AGREE2"
-  | "SUCCESS_JOIN";
+  | "SUCCESS_JOIN"
+  | "NO_LIVE";
 
 const Index = ({ updateUI }) => {
   const router = useRouter();
@@ -124,8 +125,12 @@ const Index = ({ updateUI }) => {
       }
       const menyType = section.focusItem.dataset.menuType as MenuType;
       if (menyType === "LIVE") {
-        console.log("%o라이브 이동", logPrefix);
-        alert("YOUTUBE LIVE 방송");
+        if (club.current.live.isLive === "Y") {
+          console.log("%o라이브 이동", logPrefix);
+          alert("YOUTUBE LIVE 방송");
+        } else {
+          setPopup("NO_LIVE");
+        }
       } else if (menyType === "NOTICE") {
         console.log("%o공지사항 목록 이동", logPrefix);
         router.push("/notices");
@@ -460,6 +465,17 @@ const Index = ({ updateUI }) => {
             cancel={() => {
               club.current.join.isJoin = "N";
               updateUI({});
+              setPopup(undefined);
+            }}
+          />
+        )}
+        {popup === "NO_LIVE" && (
+          <PopupAlert
+            navigation={Navigation}
+            title={"알림"}
+            message={<>현재 방송중이 아닙니다.</>}
+            type="ALERT"
+            ok={() => {
               setPopup(undefined);
             }}
           />
