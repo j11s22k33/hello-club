@@ -70,17 +70,17 @@ const clubHome: ClubInfoResponse = {
       {
         type: "IMG",
         url:
-          "https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile7.uf.tistory.com%2Fimage%2F24283C3858F778CA2EFABE",
+          "/club/images/temp/001.jpg",
       },
       {
         type: "IMG",
         url:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJCLU4xlE0SoISCvp9ZPiYCxQjtWZyaYw0fSfunfMOKpkJVI8lZFmJM4HNkq3XLdh-7QI&usqp=CAU",
+        "/club/images/temp/002.jpg",
       },
       {
         type: "IMG",
         url:
-          "https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile7.uf.tistory.com%2Fimage%2F24283C3858F778CA2EFABE",
+        "/club/images/temp/003.jpg",
       },
     ],
   },
