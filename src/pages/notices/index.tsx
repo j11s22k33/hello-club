@@ -83,6 +83,29 @@ const Notices = ({ updateUI }) => {
         }
       },
     },
+    keydown(section, event) {
+      if (event.key === ",") {
+        if (currentPage.current > 0) {
+          (async () => {
+            currentPage.current = (currentPage.current - 1) % totalPage.current;
+            await updateData();
+            Navigation.addSection("notices", [itemNavi]);
+            Navigation.go(itemNavi.id, { x: 0, y: 0 }, false);
+          })();
+        }
+        return true;
+      } else if (event.key === ".") {
+        if (currentPage.current < totalPage.current) {
+          (async () => {
+            currentPage.current = (currentPage.current + 1) % totalPage.current;
+            await updateData();
+            Navigation.addSection("notices", [itemNavi]);
+            Navigation.go(itemNavi.id, { x: 0, y: 0 }, false);
+          })();
+        }
+        return true;
+      }
+    },
     focus(section: any) {},
     enter(section: any) {
       setSelectedNotice(noticeData.current.data[section.axis.y] as Notice);
@@ -153,9 +176,9 @@ const Notices = ({ updateUI }) => {
             className="key-guide"
             style={{ display: currentPage.current === 0 ? "none" : "" }}
           >
-            <span className="align-type">
+            {/* <span className="align-type">
               <i className="green"></i>정렬 (최신순)
-            </span>
+            </span> */}
             <div className="fast-move">
               <button type="button" className="prev"></button>
               <span>페이지 이동</span>
