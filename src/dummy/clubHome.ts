@@ -70,17 +70,17 @@ const clubHome: ClubInfoResponse = {
       {
         type: "IMG",
         url:
-          "/club/images/temp/001.jpg",
+          "/images/temp/001.jpg",
       },
       {
         type: "IMG",
         url:
-        "/club/images/temp/002.jpg",
+        "/images/temp/002.jpg",
       },
       {
         type: "IMG",
         url:
-        "/club/images/temp/003.jpg",
+        "/images/temp/003.jpg",
       },
     ],
   },
