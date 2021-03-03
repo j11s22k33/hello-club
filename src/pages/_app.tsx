@@ -1,5 +1,5 @@
 import { AppProps } from "next/app";
-import "@/assets/css/style.css";
+import "@/assets/css/style.scss";
 import { useStateCallbackWrapper } from "@/utils/common"
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {

@@ -1,0 +1,1832 @@
+/* variables */
+/* mixins */
+
+*, ::before, ::after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html {
+  font-size: 10px;
+}
+
+html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, a {
+  margin: 0;
+  padding: 0;
+}
+
+body, table, input, textarea, button, select {
+  font-size: 1.8rem;
+  font-family: "Roboto", "YOONGOTHICPRO750", "sans-serif";
+  line-height: normal;
+  color: #eee;
+}
+
+body {
+  -webkit-text-size-adjust: none;
+}
+
+img, fieldset, button {
+  border: 0;
+}
+
+input, textarea, img {
+  vertical-align: top;
+}
+
+button {
+  cursor: pointer;
+  background: 0;
+}
+
+textarea {
+  overflow: auto;
+  resize: none;
+}
+
+strong {
+  font-weight: normal;
+}
+
+input {
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input[type="text"], input[type="password"] {
+  color: #eee;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: normal;
+  font-size: inherit;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+em, address {
+  font-style: normal;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+  color: #eee;
+}
+
+a:hover, a:active, a:focus {
+  text-decoration: none;
+}
+
+hr, caption, legend {
+  display: none;
+}
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
+#root {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+}
+
+#layer, #modal, #toast {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  overflow: hidden;
+  height: 100%;
+  background-color: #000;
+}
+
+.container.main {
+  padding: 0 60px;
+}
+
+em {
+  color: #ffc000;
+}
+
+.full-img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.full-img .img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.full-img::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-image: url(/images/club/img-default.png); */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+  content: '';
+}
+
+.full-img .mask {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 276px;
+  background-image: url(/images/club/bg-gradient.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.full-img .text {
+  font-size: 2.8rem;
+  font-family: "YOONGOTHICPRO770";
+  width: 100%;
+  position: absolute;
+  z-index: 3;
+  bottom: 80px;
+  line-height: 38px;
+  text-align: center;
+}
+
+.full-img .failed-load {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: #11171c;
+}
+
+.full-img .failed-load p {
+  font-size: 3.4rem;
+  color: #fff;
+  text-align: center;
+  line-height: 44px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.main-header {
+  height: 101px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.main-header .logo {
+  overflow: hidden;
+  width: 336px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-position: left;
+}
+
+.main-header .channel {
+  font-size: 1.8rem;
+  color: #9c9b9b;
+}
+
+.main-header .channel em {
+  color: #e9e9e9;
+  font-family: "YOONGOTHICPRO770";
+}
+
+.main-body {
+  margin: 16px 0 14px;
+  height: 493px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main-body .pr-area {
+  overflow: hidden;
+  position: relative;
+  left: -4px;
+  width: 870px;
+  height: 493px;
+}
+
+.main-body .pr-area ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main-body .pr-area li {
+  position: relative;
+  width: 870px;
+  height: 493px;
+}
+
+.main-body .pr-area li .img {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 862px;
+  height: 485px;
+  margin-top: 4px;
+  margin-left: 4px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.main-body .pr-area li .failed-load {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  width: 862px;
+  height: 485px;
+  background-color: #11171c;
+}
+
+.main-body .pr-area li .failed-load p {
+  font-size: 3.0rem;
+  font-family: "YOONGOTHICPRO770";
+  color: #fff;
+  text-align: center;
+  line-height: 38px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.main-body .pr-area li::before {
+  width: 862px;
+  height: 485px;
+  /* background-image: url(/images/club/img-main-default.png); */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  display: inline-block;
+  content: '';
+  top: 0;
+  left: 0;
+  top: 4px;
+  left: 4px;
+}
+
+.main-body .pr-area li button {
+  opacity: 0;
+  position: absolute;
+  bottom: 20px;
+  right: 14px;
+  z-index: 2;
+}
+
+.main-body .pr-area li button span {
+  display: block;
+  width: 167px;
+  height: 42px;
+  background-image: url(/images/club/keyguide.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-size: 0;
+  color: rgba(0, 0, 0, 0);
+}
+
+.main-body .pr-area li.focus::before {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: block;
+  content: '';
+  border: 4px solid #ffc000;
+}
+
+.main-body .pr-area li.focus button {
+  opacity: 1;
+}
+
+.main-body .lnb {
+  width: 286px;
+  height: 485px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.main-body .lnb .banner {
+  position: relative;
+  width: 100%;
+  height: 202px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.main-body .lnb .banner::after {
+  width: 100%;
+  height: 100%;
+  background-image: url(/images/club/img-banner-default.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  display: inline-block;
+  content: '';
+  top: 0;
+  left: 0;
+}
+
+.main-body .lnb .banner .text {
+  position: relative;
+  z-index: 3;
+  line-height: 24px;
+  margin: 0 20px 18px;
+  color: #c0c0c0;
+  overflow: hidden;
+  display: -webkit-box;
+  white-space: normal;
+  /*! autoprefixer: off */
+  -webkit-line-clamp: 2;
+  /*! autoprefixer: on */
+  -webkit-box-orient: vertical;
+}
+
+.main-body .lnb .banner button {
+  position: relative;
+  z-index: 2;
+  width: 246px;
+  height: 45px;
+  margin-bottom: 5px;
+  border: 1px solid #979797;
+}
+
+.main-body .lnb .banner button span {
+  position: relative;
+  z-index: 3;
+  font-size: 2.0rem;
+}
+
+.main-body .lnb .banner button.focus span {
+  font-size: 2.2rem;
+  font-family: "YOONGOTHICPRO770";
+  color: #000;
+}
+
+.main-body .lnb .banner button.focus::before {
+  width: 271px;
+  height: 50px;
+  background-color: #ffc000;
+  display: block;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.main-body .lnb nav li {
+  font-size: 2.0rem;
+  font-family: "YOONGOTHICPRO770";
+  color: #fff;
+  height: 68px;
+  padding: 0 20px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-bottom: 1px solid #222222;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main-body .lnb nav li:first-child {
+  border-top: 1px solid #343434;
+}
+
+.main-body .lnb nav li:last-child {
+  border-bottom: 1px solid #343434;
+}
+
+.main-body .lnb nav li::after {
+  width: 17px;
+  height: 15px;
+  background-image: url(/images/club/ic-lnb-arrow.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+  content: '';
+}
+
+.main-body .lnb nav li p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main-body .lnb nav li p::before {
+  width: 27px;
+  height: 24px;
+  margin-right: 20px;
+  display: block;
+  content: '';
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25px;
+}
+
+.main-body .lnb nav li p.ic-live::before {
+  background-image: url(/images/club/ic-live.png);
+  background-size: 27px;
+}
+
+.main-body .lnb nav li p.ic-notice::before {
+  background-image: url(/images/club/ic-notice.png);
+}
+
+.main-body .lnb nav li p.ic-vod::before {
+  background-image: url(/images/club/ic-vod.png);
+}
+
+.main-body .lnb nav li p.ic-all::before {
+  background-image: url(/images/club/ic-all.png);
+}
+
+.main-body .lnb nav li.focus {
+  font-size: 2.2rem;
+  background-color: #ffc000;
+  color: #000;
+  border: none;
+}
+
+.main-body .lnb nav li.focus::after {
+  width: 19px;
+  height: 16px;
+  background-image: url(/images/club/ic-lnb-arrow-focus.png);
+}
+
+.main-body .lnb nav li.focus p::before {
+  width: 28px;
+  height: 27px;
+  background-size: 28px;
+}
+
+.main-body .lnb nav li.focus p.ic-live::before {
+  background-image: url(/images/club/ic-live-focus.png);
+}
+
+.main-body .lnb nav li.focus p.ic-notice::before {
+  background-image: url(/images/club/ic-notice-focus.png);
+  background-size: 27px;
+}
+
+.main-body .lnb nav li.focus p.ic-vod::before {
+  background-image: url(/images/club/ic-vod-focus.png);
+}
+
+.main-body .lnb nav li.focus p.ic-all::before {
+  background-image: url(/images/club/ic-all-focus.png);
+}
+
+.main-body .lnb nav li .sticker {
+  font-size: 1.1rem;
+  font-family: "YOONGOTHICPRO770";
+  width: 49px;
+  height: 18px;
+  border-radius: 9px;
+  background-color: #ff0000;
+  text-align: center;
+  margin-left: 10px;
+  color: #fff;
+}
+
+.main-footer {
+  height: 29px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main-footer .notice {
+  font-size: 2.0rem;
+}
+
+.main-footer .notice p {
+  max-width: 931px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.main-footer button {
+  position: relative;
+  margin-right: 20px;
+  width: 102px;
+  height: 29px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid #373737;
+}
+
+.main-footer button span {
+  font-size: 1.28rem;
+  color: rgba(238, 238, 238, 0.48);
+  position: relative;
+  top: -1px;
+}
+
+.main-footer button::before {
+  width: 7px;
+  height: 10px;
+  margin-right: 5px;
+  display: block;
+  background-image: url(/images/club/ic-triangle.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+  content: '';
+}
+
+.main-footer button.focus span {
+  font-size: 1.4rem;
+  font-family: "YOONGOTHICPRO770";
+  color: rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.main-footer button.focus::before {
+  position: relative;
+  z-index: 1;
+  background-image: url(/images/club/ic-triangle-focus.png);
+}
+
+.main-footer button.focus::after {
+  width: 112px;
+  height: 31px;
+  background-color: #ffc000;
+  display: block;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.contents-utill {
+  background-color: #1e1e1e;
+  position: relative;
+  height: 65px;
+  padding: 32px 73px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.entry-route {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.entry-route span {
+  line-height: 20px;
+  font-size: 1.6rem;
+  color: #777;
+}
+
+.entry-route span::before {
+  display: inline-block;
+  content: '';
+  padding: 0 6px;
+  color: #777;
+  content: '>';
+}
+
+.entry-route span.home {
+  width: 18px;
+  height: 15px;
+  position: relative;
+  top: 2px;
+  background-image: url(/images/club/ic-home.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-size: 0;
+  color: rgba(0, 0, 0, 0);
+}
+
+.entry-route span.home::before {
+  display: none;
+}
+
+.entry-route span:last-child {
+  color: #b49569;
+}
+
+.key-guide {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 20px;
+  line-height: 20px;
+  font-size: 1.6rem;
+  color: #777;
+}
+
+.key-guide .align-type {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.key-guide .align-type i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background-color: #52b337;
+  margin-right: 8px;
+}
+
+.key-guide .fast-move {
+  margin-left: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.key-guide .fast-move button {
+  width: 28px;
+  height: 20px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.key-guide .fast-move .prev {
+  background-image: url(/images/club/ic-prev.png);
+  margin-right: 8px;
+}
+
+.key-guide .fast-move .next {
+  background-image: url(/images/club/ic-next.png);
+  margin-left: 8px;
+}
+
+.tabs-wrap {
+  height: 60px;
+  margin: 15px 73px 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.tabs-wrap.type-depth2 {
+  margin-bottom: 80px;
+}
+
+.nav-tabs {
+  height: 60px;
+  line-height: 58px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.nav-tabs .tab-item {
+  position: relative;
+  font-size: 2.6rem;
+  font-family: "YOONGOTHICPRO770";
+  padding: 0 42px;
+  letter-spacing: -0.1px;
+  position: relative;
+  text-align: center;
+  color: #fff;
+}
+
+.nav-tabs .tab-item.selected {
+  color: #ffc000;
+}
+
+.nav-tabs .tab-item.focus {
+  color: #000;
+  background-color: #ffc000;
+}
+
+.nav-tabs .depth2 {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  color: #777;
+  font-size: 2.6rem;
+  line-height: 54px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.nav-tabs .depth2 li {
+  display: block;
+  padding: 0 42px;
+  white-space: nowrap;
+}
+
+.nav-tabs .depth2 li.select {
+  color: #ffc000;
+  background-color: #322800;
+}
+
+.board-list {
+  margin: 40px 118px 0;
+}
+
+.board-list li {
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  height: 50px;
+  padding: 0 31px 0 35px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-bottom: 1px solid #444;
+}
+
+.board-list li:first-child {
+  border-top: 1px solid #777;
+}
+
+.board-list li .title {
+  font-size: 1.9rem;
+  font-family: "YOONGOTHICPRO770";
+  max-width: 90%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.board-list li .date {
+  font-size: 1.7rem;
+  color: #b49569;
+}
+
+.board-list li.focus {
+  background-color: #ffc000;
+  color: #000;
+  border: none;
+  height: 85px;
+}
+
+.board-list li.focus .title {
+  font-size: 2.8rem;
+}
+
+.board-list li.focus em, .board-list li.focus .date {
+  color: #000;
+}
+
+.contents-list {
+  overflow: hidden;
+  margin-top: 25px;
+}
+
+.contents-list ul {
+  margin: 15px 73px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.contents-list li {
+  position: relative;
+  width: 272px;
+  height: 230px;
+}
+
+.contents-list li .thumbnail {
+  width: 100%;
+  height: 153px;
+}
+
+.contents-list li .thumbnail .img {
+  display: block;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 153px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.contents-list li .thumbnail .img.dim::after {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: block;
+  content: '';
+}
+
+.contents-list li .thumbnail::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/images/club/img-default.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+  content: '';
+  height: 153px;
+}
+
+.contents-list li .thumbnail .club-text {
+  font-size: 2.2rem;
+  font-family: "YOONGOTHICPRO770";
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.contents-list li .thumbnail .club-text .channel {
+  font-family: 'Roboto', 'sans-serif';
+  font-weight: bold;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.contents-list li .thumbnail .club-text .logo {
+  overflow: hidden;
+  width: 199px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.contents-list li .thumbnail .club-text .logo.big {
+  height: 58px;
+}
+
+.contents-list li .title {
+  width: 100%;
+  height: 77px;
+  padding: 12px 15px;
+  background-color: #fff;
+}
+
+.contents-list li .title p {
+  color: #000;
+  display: block;
+  font-size: 2.0rem;
+  font-family: "YOONGOTHICPRO770";
+  overflow: hidden;
+  display: -webkit-box;
+  white-space: normal;
+  /*! autoprefixer: off */
+  -webkit-line-clamp: 2;
+  /*! autoprefixer: on */
+  -webkit-box-orient: vertical;
+  line-height: 26.8px;
+  letter-spacing: -1px;
+}
+
+.contents-list li.focus {
+  z-index: 3;
+}
+
+.contents-list li.focus .inner {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+.contents-list li.focus::after {
+  width: 300px;
+  height: 254px;
+  display: block;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  border: 4px solid #ffc000;
+}
+
+.contents-list.type-club li {
+  height: 153px;
+}
+
+.contents-list.type-club li.focus::after {
+  height: 169px;
+}
+
+.empty-contents {
+  position: absolute;
+  top: 327px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  font-size: 3.0rem;
+  text-align: center;
+}
+
+.empty-contents p {
+  line-height: 38px;
+}
+
+.empty-contents p em {
+  color: #b49569;
+}
+
+.empty-contents::before {
+  width: 65px;
+  height: 65px;
+  margin: 0 auto 20px;
+  background-image: url(/images/club/ic-caution.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+  content: '';
+}
+
+.contents-list .scroll, .board-list .scroll {
+  position: absolute;
+  left: 28px;
+  top: 270px;
+  width: 1px;
+  height: autopx;
+  background-color: #777;
+}
+
+.contents-list .scroll::before, .contents-list .scroll::after, .board-list .scroll::before, .board-list .scroll::after {
+  width: 5px;
+  height: 5px;
+  border-radius: calc(5px / 2);
+  background-color: #b1b1b1;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  display: block;
+  content: '';
+}
+
+.contents-list .scroll::before, .board-list .scroll::before {
+  top: 0;
+}
+
+.contents-list .scroll::after, .board-list .scroll::after {
+  bottom: 0;
+}
+
+.contents-list .scroll span, .board-list .scroll span {
+  width: 25px;
+  height: 25px;
+  border-radius: calc(25px / 2);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  z-index: 1;
+  background-color: #444;
+  border: 1px solid #979797;
+}
+
+.contents-list .scroll span, .board-list .scroll span {
+  opacity: 0;
+  position: relative;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.contents-list .scroll span i, .board-list .scroll span i {
+  font-size: 1rem;
+  font-style: normal;
+}
+
+.contents-list .scroll .focus, .board-list .scroll .focus {
+  opacity: 1;
+}
+
+.contents-list.active ul, .board-list.active ul {
+  -webkit-transform: scale(0.83);
+          transform: scale(0.83);
+}
+
+.contents-list.active .scroll, .board-list.active .scroll {
+  left: 66px;
+  top: 187px;
+}
+
+.contents-list.active .focus i, .board-list.active .focus i {
+  font-size: 1.7rem;
+  font-family: "YOONGOTHICPRO770";
+  position: absolute;
+  text-align: center;
+  border-radius: 50%;
+  width: 33px;
+  height: 33px;
+  line-height: 31px;
+  background-color: #ffc000;
+  border: 2px solid #ffde7a;
+  color: #000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.popup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  word-break: keep-all;
+}
+
+.popup .popup-content {
+  overflow: hidden;
+  text-align: center;
+  padding: 0 32px;
+  background-color: #2b292c;
+  color: #b1b1b1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 1.9rem;
+  font-family: "YOONGOTHICPRO770";
+}
+
+.popup .popup-content em {
+  font-size: 2.4rem;
+}
+
+.popup .popup-content.small {
+  width: 513px;
+}
+
+.popup .popup-content.medium {
+  width: 583px;
+}
+
+.popup .popup-content.large {
+  width: 667px;
+}
+
+.popup .popup-content.xlarge {
+  width: 735px;
+}
+
+.popup .popup-header {
+  height: 95px;
+  line-height: 95px;
+  border-bottom: 1px solid #777;
+}
+
+.popup .popup-header .popup-title {
+  font-size: 3.0rem;
+  color: #eee;
+}
+
+.popup .popup-body .sub-title {
+  margin-top: 29px;
+  font-size: 2.0rem;
+  line-height: 1;
+}
+
+.popup .popup-footer {
+  height: 115px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-top: 1px solid #777;
+}
+
+.popup .popup-footer.no-line {
+  border: none;
+}
+
+.popup .popup-text-normal {
+  margin: 27px 0;
+}
+
+.popup .popup-text-normal p {
+  line-height: 27px;
+  margin-top: -2px;
+}
+
+.popup .popup-text-normal .accent + p {
+  margin-top: 0;
+}
+
+.popup .popup-text-normal .accent em {
+  display: block;
+  line-height: 29px;
+  margin-top: -2px;
+}
+
+.popup .popup-box {
+  margin-top: 30px;
+  background-color: #1e1e1e;
+  overflow: hidden;
+}
+
+.popup .popup-box .scroll {
+  position: absolute;
+  top: 10px;
+  left: 32px;
+  width: 1px;
+  height: 260px;
+  background-color: #777;
+}
+
+.popup .popup-box .scroll::before, .popup .popup-box .scroll::after {
+  width: 5px;
+  height: 5px;
+  border-radius: calc(5px / 2);
+  background-color: #b1b1b1;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  display: block;
+  content: '';
+}
+
+.popup .popup-box .scroll::before {
+  top: 0;
+}
+
+.popup .popup-box .scroll::after {
+  bottom: 0;
+}
+
+.popup .popup-box .scroll span {
+  width: 13px;
+  height: 13px;
+  border-radius: calc(13px / 2);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  z-index: 1;
+  background-color: #000;
+  border: 1px solid #eee;
+}
+
+.popup .popup-box .control-box {
+  position: relative;
+  width: 346px;
+  height: 45px;
+  margin: 19px auto auto;
+}
+
+.popup .popup-box .control {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: 346px;
+  height: 1px;
+  background-color: #777;
+}
+
+.popup .popup-box .control::before, .popup .popup-box .control::after {
+  width: 5px;
+  height: 5px;
+  border-radius: calc(5px / 2);
+  background-color: #b1b1b1;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  display: block;
+  content: '';
+}
+
+.popup .popup-box .control::before {
+  top: 0;
+}
+
+.popup .popup-box .control::after {
+  bottom: 0;
+}
+
+.popup .popup-box .control span {
+  width: 45px;
+  height: 45px;
+  border-radius: calc(45px / 2);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  z-index: 1;
+  background-color: #444;
+  border: 1px solid #979797;
+}
+
+.popup .popup-box .control::before, .popup .popup-box .control::after {
+  left: unset;
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.popup .popup-box .control::before {
+  left: 0;
+}
+
+.popup .popup-box .control::after {
+  bottom: unset;
+  right: 0;
+}
+
+.popup .popup-box .control span {
+  left: unset;
+  -webkit-transform: translateX(0%);
+          transform: translateX(0%);
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+  font-family: "YOONGOTHICPRO750";
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.popup .popup-box.type-privacy {
+  height: 322px;
+}
+
+.popup .popup-box.type-agree {
+  height: 219px;
+}
+
+.popup .popup-box.type-agree .scroll {
+  height: 170px;
+}
+
+.popup .popup-box.type-notice {
+  height: 322px;
+}
+
+.popup .popup-box.type-notice .scroll {
+  height: 170px;
+  top: 54px;
+}
+
+.popup .popup-box.type-notice-img, .popup .popup-box.type-notice-half {
+  padding-top: 0;
+  background: none;
+}
+
+.popup .popup-box .popup-slide {
+  width: 671px;
+  height: 356px;
+  position: relative;
+  overflow: hidden;
+}
+
+.popup .popup-box .popup-slide ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.popup .popup-box .popup-slide li {
+  position: relative;
+  width: 671px;
+  height: 356px;
+  background-color: #1e1e1e;
+}
+
+.popup .popup-box .popup-slide li .img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.popup .popup-box .popup-slide li::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/images/club/img-default.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+  content: '';
+}
+
+.popup .popup-box.type-notice-half .popup-slide {
+  width: 603px;
+  height: 261px;
+}
+
+.popup .popup-box.type-notice-half .popup-slide li {
+  width: 603px;
+  height: 261px;
+  padding: 15px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.popup .popup-box.type-notice-half .popup-slide li .img {
+  width: 289px;
+}
+
+.popup .popup-box.type-notice-half .popup-slide li::before {
+  top: 15px;
+  left: 15px;
+  width: 289px;
+  height: 231px;
+}
+
+.popup .popup-box.type-notice-half .popup-slide li .text {
+  font-size: 1.7rem;
+  width: 267px;
+  margin-left: 16px;
+  text-align: left;
+}
+
+.popup .popup-box .popup-scroll {
+  margin-top: 22px;
+  position: relative;
+  text-align: left;
+  padding: 0 20px 0 65px;
+}
+
+.popup .popup-box .popup-scroll .text-terms {
+  position: relative;
+  font-size: 1.7rem;
+}
+
+.popup .popup-box .popup-scroll .text-terms dl {
+  margin-top: 40px;
+}
+
+.popup .popup-box .popup-scroll .text-terms dd {
+  margin-top: 8px;
+}
+
+.popup .popup-box .popup-scroll .text-terms ol p {
+  line-height: 32px;
+}
+
+.popup .popup-box .popup-scroll .text-terms .mgt {
+  margin-top: 45px;
+}
+
+.popup .popup-box .popup-scroll .text-terms .mgt:first-child {
+  margin-top: 0;
+}
+
+.popup .popup-box .popup-scroll .text-terms .mgl {
+  padding-left: 15px;
+}
+
+.popup .input-checkbox {
+  margin-top: 34px;
+  font-size: 2.0rem;
+  line-height: 1;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.popup .input-checkbox input[type=checkbox] {
+  position: relative;
+  top: 1px;
+  width: 19px;
+  height: 19px;
+  margin-right: 18px;
+  border: 2px solid #4c4c4c;
+}
+
+.popup .input-checkbox.focus input[type=checkbox] {
+  border: 2px solid #c9bb03;
+}
+
+.popup .input-checkbox input[type=checkbox]::before {
+  display: block;
+  content: '';
+}
+
+.popup .input-checkbox input[type=checkbox]:checked::after {
+  position: absolute;
+  top: -8px;
+  left: -5px;
+  width: 28px;
+  height: 21px;
+  display: block;
+  content: '';
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(/images/club/ic-input-check.png);
+}
+
+.popup .popup-password {
+  height: 196px;
+}
+
+.popup .popup-password p:first-child {
+  padding-top: 50px;
+}
+
+.popup .popup-password .password {
+  height: 48px;
+  margin-top: 17px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.popup .popup-password .password.focus span {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #ffc000;
+}
+
+.popup .popup-password .password.focus span.entered {
+  background-image: url(/images/club/ic-password-focus.png);
+}
+
+.popup .popup-password .password span {
+  width: 40px;
+  height: 40px;
+  display: block;
+  margin-left: 5px;
+  border: 2px solid #777;
+}
+
+.popup .popup-password .password span:first-child {
+  margin-left: 0;
+}
+
+.popup .popup-password .password span.entered {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(/images/club/ic-password.png);
+  background-size: 23px;
+}
+
+.popup .popup-password .password input {
+  display: none;
+}
+
+.popup .popup-password .alt {
+  font-size: 1.6rem;
+  font-family: "YOONGOTHICPRO750";
+  margin-top: 5px;
+  color: #b49569;
+}
+
+.popup .align-select {
+  height: 146px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #eee;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.popup .align-select li {
+  width: 132px;
+  position: relative;
+  margin-left: 8px;
+}
+
+.popup .align-select li:first-child {
+  margin-left: 0;
+}
+
+.popup .align-select li p {
+  font-size: 1.8rem;
+  letter-spacing: -1px;
+  height: 50px;
+  line-height: 50px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 2px solid #424241;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.popup .align-select li p span {
+  position: relative;
+  top: -1px;
+}
+
+.popup .align-select li p i {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  margin-left: 4px;
+  border: 2px solid #777;
+}
+
+.popup .align-select li.focus {
+  z-index: 1;
+}
+
+.popup .align-select li.focus p {
+  width: 160px;
+  height: 58px;
+  background-color: #ffc000;
+  color: #000;
+  font-size: 2.0rem;
+  border: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.popup .align-select li.focus p i {
+  width: 26px;
+  height: 26px;
+  margin-left: 7px;
+  border-color: #000;
+  position: relative;
+}
+
+.popup .align-select li.focus p i::before {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background-color: #000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  display: block;
+  content: '';
+}
+
+.button-area {
+  height: 58px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.button-area button {
+  font-size: 1.8rem;
+  font-family: "YOONGOTHICPRO770";
+  position: relative;
+  width: 132px;
+  height: 50px;
+  margin-left: 6px;
+  background-color: #303030;
+  border: 1px solid #303030;
+}
+
+.button-area button.focus {
+  z-index: 1;
+  font-size: 2.0rem;
+  color: #000;
+}
+
+.button-area button.focus::before {
+  width: 148px;
+  height: 58px;
+  background-color: #ffc000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  display: block;
+  content: '';
+}
+
+.button-area button:first-child {
+  margin-left: 0;
+}
+
+.button-area button span {
+  position: relative;
+  z-index: 1;
+}
