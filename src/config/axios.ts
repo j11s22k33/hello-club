@@ -90,7 +90,7 @@ mock.onGet("/v1/club/list/all").reply((config) => {
 });
 
 mock.onGet("/v1/club/content/list").reply((config) => {
-  const list = contents.createContents(random(30, 30), config.params);
+  const list = contents.createContents(random(30, 80), config.params);
   // const list = contents.createContents(random(0, 30), config.params)
   return [
     200,

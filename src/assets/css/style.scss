@@ -1162,6 +1162,8 @@ em {
 .contents-list.active ul, .board-list.active ul {
   -webkit-transform: scale(0.83);
           transform: scale(0.83);
+  -webkit-transform-origin: center 400px;
+          transform-origin: center 400px;
 }
 
 .contents-list.active .scroll, .board-list.active .scroll {

@@ -90,6 +90,13 @@ const Contents = ({updateUI}) => {
           useLayoutEffect: state => { console.log('updateUIMode useLayoutEffect ', state)},
           useEffect: state => { console.log('updateUIMode useEffect ', state)},
         })
+      } else if(didx > 7) {
+        // XXX 테스트
+        updateUIMode({
+          setState: state => { console.log('updateUIMode setState ', state); return "UI_SCROLL_BROWSING" },
+          useLayoutEffect: state => { console.log('updateUIMode useLayoutEffect ', state)},
+          useEffect: state => { console.log('updateUIMode useEffect ', state)},
+        })
       } else {
         updateUIMode({
           setState: state => { console.log('updateUIMode setState ', state); return "UI_CONTENTS_BROWSING" },
