@@ -87,21 +87,19 @@ const Contents = ({updateUI}) => {
       if(didx < data.current.contentsCols) {
         updateUIMode({
           setState: state => { console.log('updateUIMode setState ', state); return "UI_DEFAULT_BROWSING" },
-          useLayoutEffect: state => { console.log('updateUIMode useLayoutEffect ', state)},
-          useEffect: state => { console.log('updateUIMode useEffect ', state)},
+          useEffect: state => {
+            // UI_CONTENTS_BROWSING||UI_SCROLL_BROWSING  ---> UI_DEFAULT_BROWSING 모드가 변경되었을때 useEffect불림
+            // 여기서 Navigation items 새로 등록해야함.  Navigation은 이전 섹션 상태가 되어야함
+          },
         })
       } else if(didx > 7) {
         // XXX 테스트
         updateUIMode({
-          setState: state => { console.log('updateUIMode setState ', state); return "UI_SCROLL_BROWSING" },
-          useLayoutEffect: state => { console.log('updateUIMode useLayoutEffect ', state)},
-          useEffect: state => { console.log('updateUIMode useEffect ', state)},
+          setState: state => { console.log('updateUIMode setState ', state); return "UI_SCROLL_BROWSING" }
         })
       } else {
         updateUIMode({
-          setState: state => { console.log('updateUIMode setState ', state); return "UI_CONTENTS_BROWSING" },
-          useLayoutEffect: state => { console.log('updateUIMode useLayoutEffect ', state)},
-          useEffect: state => { console.log('updateUIMode useEffect ', state)},
+          setState: state => { console.log('updateUIMode setState ', state); return "UI_CONTENTS_BROWSING" }
         })
       }
     },
