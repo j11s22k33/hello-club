@@ -30,8 +30,12 @@ export const join = async (params: JoinRequest): Promise<ResultResponse> => {
   return res.data;
 };
 
-export const getAgree = async (): Promise<AgreeResponse> => {
-  const res = await API.get("/uipf/v1/club/agree/list");
+export const getAgree = async (params): Promise<AgreeResponse> => {
+  const res = await API.get(process.env.NEXT_PUBLIC_API_UIPF + "/uipf/v1/club/agree/list", {
+    params: {
+      clubId: params.CLUB_ID
+    }
+  });
   return res.data;
 };
 

@@ -68,6 +68,10 @@ export const getMyClubList = async (
 export const getClubInfo = async (
   params: ClubInfoRequest
 ): Promise<ClubInfoResponse> => {
-  const res = await API.get("/clubpf/svc/club/info", { params });
+  const res = await API.get(process.env.NEXT_PUBLIC_API_ADMIN + "/clubpf/svc/club/info", {
+    params: {
+      clubId: params.CLUB_ID
+    }
+  });
   return res.data;
 };

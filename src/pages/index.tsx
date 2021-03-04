@@ -178,7 +178,11 @@ const Index = ({ updateUI }) => {
         SOURCE_ID: "string",
       });
       club.current = data;
-      agree.current = await getAgree();
+
+      agree.current = await getAgree({
+        CLUB_ID: ""
+      });
+      
       updateUI({
         useEffect: () => {
           Navigation.set({
