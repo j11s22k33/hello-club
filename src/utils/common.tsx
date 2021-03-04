@@ -19,28 +19,27 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
  * @param initialState
  * @returns [state, updateState]
  */
-const useStateCallbackWrapper = <T extends unknown>(
-  initialState?: T
-): [T, Function] => {
-  const [_state, _setState] = useState(initialState);
-  const _ref = useRef({ effect: null, layoutEffect: null });
+const $emptyFn = (state) => { };
+const useStateCallbackWrapper = <T extends unknown>(initialState?: T): [T, Function] => {
+  const [$state, $setState] = useState(initialState);
+  const $res = useRef({ effect: $emptyFn, layoutEffect: $emptyFn });
 
   useLayoutEffect(() => {
-    _ref.current.layoutEffect?.(_state);
-  }, [_state]);
+    $res.current.layoutEffect($state);
+  }, [$state]);
 
   useEffect(() => {
-    _ref.current.effect?.(_state);
-  }, [_state]);
+    $res.current.effect($state);
+  }, [$state]);
 
-  function _udateState({ setState, useLayoutEffect, useEffect }) {
-    _ref.current.effect = useEffect;
-    _ref.current.layoutEffect = useLayoutEffect;
-    _setState(setState);
+  function $udateState({ setState, useLayoutEffect = $emptyFn, useEffect = $emptyFn }) {
+    $res.current.effect = useEffect;
+    $res.current.layoutEffect = useLayoutEffect;
+    $setState(setState);
   }
 
-  return [_state, _udateState];
-};
+  return [$state, $udateState];
+}
 
 function createNoticePopup(props: {
   notice: Notice;
