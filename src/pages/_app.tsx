@@ -2,7 +2,7 @@ import { AppProps } from "next/app";
 import "@/assets/css/style.scss";
 import { useStateCallbackWrapper } from "@/utils/common"
 import env from "@/config/env";
-console.log(env)
+console.log('[App]', env)
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [tmp, uTmp] = useStateCallbackWrapper(0)
