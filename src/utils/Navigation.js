@@ -3,6 +3,8 @@
  * LG HelloVision 미디어기술팀 신현승 (bbakbbak@lghv.net)
  */
 
+import env from "@/config/env";
+
 class Navigation {
   constructor() {}
 
@@ -70,8 +72,28 @@ class Navigation {
       }
     });
 
+    function convStbkey(event) {
+      if(env.isSTB) {
+        switch(event.keyCode) {
+          case 13: event.key='Enter'; break
+          case 37: event.key='ArrowLeft'; break
+          case 38: event.key='ArrowUp'; break
+          case 39: event.key='ArrowRight'; break
+          case 40: event.key='ArrowDown'; break
+          case 112: event.key='F1'; break // RED << 뒤로감기
+          case 113: event.key='F2'; break // GREEN 멈춤
+          case 114: event.key='F3'; break // YELLOW 재생/일시정지
+          case 115: event.key='F4'; break // BLUE >> 빨리감기
+        }
+      }
+      return event
+    }
+
     document.onkeydown = (event) => {
       console.log(`[Navigation] onkeydown %o`, event);
+
+      event = convStbkey(event)
+
       if (event.key == "F5" || event.key == "F12") return;
 
       event.stopImmediatePropagation && event.stopImmediatePropagation();
