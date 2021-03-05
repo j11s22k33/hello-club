@@ -15,9 +15,18 @@ html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, fo
   padding: 0;
 }
 
+@font-face {
+  font-family: 'YOONGOTHICPRO750';
+  src: url(../fonts/OTE_YOONGOTHICPRO750.OTF) format('opentype');
+}
+@font-face {
+  font-family: 'YOONGOTHICPRO770';
+  src: url(../fonts/OTE_YOONGOTHICPRO770.OTF) format('opentype');
+}
+
 body, table, input, textarea, button, select {
   font-size: 1.8rem;
-  font-family: "Roboto", "YOONGOTHICPRO750", "sans-serif";
+  font-family: "YOONGOTHICPRO750", "YOONGOTHICPRO750", "Roboto", "sans-serif";
   line-height: normal;
   color: #eee;
 }
