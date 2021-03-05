@@ -1,4 +1,5 @@
 import API from "@/config/axios";
+import env from "@/config/env";
 import { DefaultRequest } from "../DefaultRequest";
 import { DefaultResponse } from "../DefaultResponse";
 
@@ -31,7 +32,7 @@ export const join = async (params: JoinRequest): Promise<ResultResponse> => {
 };
 
 export const getAgree = async (params): Promise<AgreeResponse> => {
-  const res = await API.get(process.env.NEXT_PUBLIC_API_UIPF + "/uipf/v1/club/agree/list", {
+  const res = await API.get(env.API_UIPF + "/uipf/v1/club/agree/list", {
     params: {
       clubId: params.CLUB_ID
     }

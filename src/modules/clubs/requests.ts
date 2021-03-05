@@ -1,4 +1,5 @@
 import API from "@/config/axios";
+import env from "@/config/env";
 import Club from "@/models/Club";
 import Join from "@/models/Join";
 import Live from "@/models/Live";
@@ -68,7 +69,7 @@ export const getMyClubList = async (
 export const getClubInfo = async (
   params: ClubInfoRequest
 ): Promise<ClubInfoResponse> => {
-  const res = await API.get(process.env.NEXT_PUBLIC_API_ADMIN + "/clubpf/svc/club/info", {
+  const res = await API.get(env.API_ADMIN + "/clubpf/svc/club/info", {
     params: {
       clubId: params.CLUB_ID
     }
