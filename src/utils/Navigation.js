@@ -80,6 +80,8 @@ class Navigation {
           case 38: event.key='ArrowUp'; break
           case 39: event.key='ArrowRight'; break
           case 40: event.key='ArrowDown'; break
+          case 8: event.key='Backspace'; break // 이전
+          case 27: event.key='Escape'; break // 종료
           case 112: event.key='F1'; break // RED << 뒤로감기
           case 113: event.key='F2'; break // GREEN 멈춤
           case 114: event.key='F3'; break // YELLOW 재생/일시정지
@@ -96,9 +98,9 @@ class Navigation {
 
       if (event.key == "F5" || event.key == "F12") return;
 
-      event.stopImmediatePropagation && event.stopImmediatePropagation();
-      event.stopPropagation && event.stopPropagation();
-      event.preventDefault && event.preventDefault();
+      event.stopImmediatePropagation?.();
+      event.stopPropagation?.();
+      event.preventDefault?.();
 
       if (this.prevent) {
         console.log(`[Navigation] prevent`)
@@ -106,13 +108,13 @@ class Navigation {
       }
 
       // Navigation.keydown(section, event) { return true }
-      if (this.keydown && this.keydown(this.focusSection, event)) return;
-      // Section.keydown(section, event) { return true }
-      if (
-        this.focusSection.keydown &&
-        this.focusSection.keydown(this.focusSection, event)
-      )
+      if (this.keydown?.(this.focusSection, event)) {
         return;
+      }
+      // Section.keydown(section, event) { return true }
+      if (this.focusSection.keydown?.(this.focusSection, event)) {
+        return;
+      }
 
       let direction;
       switch (event.key) {
@@ -137,11 +139,25 @@ class Navigation {
         this.key = event.key;
         switch (event.key) {
           case "Enter":
-            this.focusSection.enter &&
-              this.focusSection.enter(this.focusSection);
+            this.focusSection.enter?.(this.focusSection); // 확인키
             break;
           case "Backspace":
-            this.focusSection.back && this.focusSection.back(this.focusSection);
+            this.focusSection.back?.(this.focusSection); // 이전키
+            break;
+          case "Escape":
+            this.focusSection.esc?.(this.focusSection); // 종료키
+            break;
+          case "F1":
+            this.focusSection.red?.(this.focusSection); // STB 컬러키
+            break;
+          case "F2":
+            this.focusSection.green?.(this.focusSection); // STB 컬러키
+            break;
+          case "F3":
+            this.focusSection.yellow?.(this.focusSection); // STB 컬러키
+            break;
+          case "F4":
+            this.focusSection.blue?.(this.focusSection); // STB colorKey
             break;
         }
       }
