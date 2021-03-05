@@ -76,6 +76,7 @@ class Navigation {
       if(env.isSTB) {
         switch(event.keyCode) {
           case 13: event.key='Enter'; break
+          case 36: event.key='Home'; break
           case 37: event.key='ArrowLeft'; break
           case 38: event.key='ArrowUp'; break
           case 39: event.key='ArrowRight'; break
@@ -146,6 +147,9 @@ class Navigation {
             break;
           case "Escape":
             this.focusSection.esc?.(this.focusSection); // 종료키
+            break;
+          case "Home":
+            this.focusSection.home?.(this.focusSection); // 홈키
             break;
           case "F1":
             this.focusSection.red?.(this.focusSection); // STB 컬러키
