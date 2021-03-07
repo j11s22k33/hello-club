@@ -1,6 +1,6 @@
 interface ContentCategory {
-  CATE_ID: string;
-  NAME: string;
+  cateId: string;
+  cateName: string;
 }
 
 export default ContentCategory;

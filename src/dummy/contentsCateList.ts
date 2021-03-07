@@ -5,8 +5,8 @@ const data: Array<ContentCategory> = new Array(size)
 
 for (let x = 0; x < size; x++) {
   data[x] = {
-    CATE_ID: `CATE_${x}`,
-    NAME: `CATE_${x}`
+    cateId: `CATE_${x}`,
+    cateName: `CATE_${x}`
   }  
 }
 

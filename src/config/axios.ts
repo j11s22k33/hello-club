@@ -1,4 +1,3 @@
-import env from "@/config/env";
 import clubHome from "@/dummy/clubHome";
 import clubs from "@/dummy/clubs";
 import contents from "@/dummy/contents";
@@ -25,7 +24,7 @@ API.interceptors.request.use(
       ...config.params,
       domain: "CJHV",
       stbType: "ocap",
-      subscribeId: "123123123123"
+      subscribeId: "123123123123",
     };
     console.log(`[axios.intercenptors.request]`, config);
     return config;
@@ -77,9 +76,7 @@ export default API;
 export const fetcher = <T>(url: string): Promise<T> =>
   API.get<T>(url).then(({ data }) => data);
 
-
-
-if(true) {
+if (true) {
   // https://www.npmjs.com/package/axios-mock-adapter
   const mock = new MockAdapter(API, { delayResponse: 500 });
   mock.onGet(new RegExp("/v1/club/list/all")).reply((config) => {
@@ -95,53 +92,49 @@ if(true) {
       },
     ];
   });
-  
-  mock.onGet(new RegExp("/v1/club/content/list")).reply((config) => {
-    const list = contents.createContents(random(30, 80), config.params);
-    // const list = contents.createContents(random(0, 30), config.params)
+
+  mock.onGet(new RegExp("/clubpf/svc/contents/list")).reply((config) => {
+    const contentSize = 18;
+    const list = contents.createContents(contentSize, config.params);
     return [
       200,
       {
-        RESULT_CODE: 200,
-        RESULT_MESSAGE: "",
-        TOTAL: list.length,
-        LIST: list,
+        total: contentSize,
+        data: list,
       },
     ];
   });
-  
-  mock.onGet(new RegExp("/v1/club/category/list")).reply((config) => {
+
+  mock.onGet(new RegExp("/clubpf/svc/contents/cateList")).reply((config) => {
     return [
       200,
       {
-        RESULT_CODE: 200,
-        RESULT_MESSAGE: "",
-        TOTAL: contentsCateList.length,
-        LIST: contentsCateList,
+        total: contentsCateList.length,
+        data: contentsCateList,
       },
     ];
   });
-  
+
   mock.onGet(new RegExp("/clubpf/svc/club/info")).reply((config) => {
     return [200, clubHome];
   });
-  
+
   mock.onGet(new RegExp("/uipf/v1/club/account/withdraw")).reply((config) => {
     return [200, { result: "0000" }];
   });
-  
+
   mock.onGet("/v1/club/account/auth").reply((config) => {
     return [200, { result: "0000" }];
   });
-  
+
   mock.onGet(new RegExp("/v1/club/account/join")).reply((config) => {
     return [200, { result: "0000" }];
   });
-  
+
   mock.onGet(new RegExp("/uipf/v1/club/agree/list")).reply((config) => {
     return [200, { C0101: "약관1", C0102: "약관2" }];
   });
-  
+
   mock.onGet(new RegExp("/clubpf/svc/notice/list")).reply((config) => {
     const request = config.params as NoticeListRequest;
     return [
@@ -160,7 +153,7 @@ if(true) {
       },
     ];
   });
-  
+
   mock.onGet(new RegExp("/clubpf/svc/notice/cateList")).reply((config) => {
     return [
       200,

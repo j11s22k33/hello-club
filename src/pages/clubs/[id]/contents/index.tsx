@@ -1,31 +1,41 @@
 import ContentItem from "@/components/ContentItem";
-import { getContentList, getContentCategoryList } from "@/modules/contents/requests";
+import {
+  getContentCategoryList,
+  getContentList,
+} from "@/modules/contents/requests";
 import Navigation from "@/utils/Navigation";
 import { useRouter } from "next/router";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useStateCallbackWrapper } from "@/utils/common"
+import { useEffect, useRef } from "react";
 
-type UI_MODE = "UI_DEFAULT_BROWSING" | "UI_CONTENTS_BROWSING" | "UI_SCROLL_BROWSING";
+type UI_MODE =
+  | "UI_DEFAULT_BROWSING"
+  | "UI_CONTENTS_BROWSING"
+  | "UI_SCROLL_BROWSING";
 
 const pageName = "[콘텐츠 리스트]";
 
-const Contents = ({updateUI}) => {
+const Contents = ({ updateUI }) => {
   const router = useRouter();
+  // const [uiMode, updateUIMode] = useStateCallbackWrapper("UI_DEFAULT_BROWSING");
+  // const itemFocus = useRef(0);
+  const activePageingMode = useRef(false);
+  const currentPage = useRef(0);
+  const currentTab = useRef(0);
+  const totalPage = useRef(1);
+  const size = 8;
 
-  const [uiMode, updateUIMode] = useStateCallbackWrapper("UI_DEFAULT_BROWSING")  
-
-  const elTab = useRef()
+  const elTab = useRef();
   const data = useRef({
     cateList: {
-      TOTAL: 0,
-      LIST: []
+      total: 0,
+      data: [],
     },
     contents: {
-      TOTAL: 0,
-      LIST: []
+      total: 0,
+      data: [],
     },
-    contentsCols: 4
-  })
+    contentsCols: 4,
+  });
 
   function pageBack() {
     router.back();
@@ -34,36 +44,32 @@ const Contents = ({updateUI}) => {
   const tabNavi = {
     id: "tab-navi",
     options: {
-      cols: 4,
-      start: true
+      cols: 1,
+      start: true,
     },
     direction: {
       down(section: any) {
-        if(data.current.contents.LIST.length > 0) {
-          Navigation.go(itemNavi.id, undefined, true)
-        }
+        Navigation.go(itemNavi.id, undefined, false);
       },
     },
-    focus(section: any) {
-      const d = data.current.cateList.LIST[section.axis.x]
-      console.log(`${pageName} tabNavi focus`, d)
-      console.log(section.items)
-
-      getContentList({
-        CLUB_ID: router.query.id as string,
-        CATE_ID: d.CATE_ID,
-        ORDER: "string",
-        OFFSET: 0,
-        LIMIT: 100,
-      }).then(resp => {
-        data.current.contents = resp
-        updateUI({
-            useLayoutEffect: () => {
-              Navigation.addSection(pageName, [itemNavi])
-            }
-        })
-      })
+    keydown(section, event) {
+      if (event.key === "ArrowLeft") {
+        if (currentTab.current === 0) return;
+        currentTab.current =
+          (currentTab.current - 1) % data.current.cateList.total;
+        updateList(() => {
+          Navigation.addSection(pageName, [itemNavi]);
+        });
+      } else if (event.key === "ArrowRight") {
+        if (currentTab.current === data.current.cateList.total - 1) return;
+        currentTab.current =
+          (currentTab.current + 1) % data.current.cateList.total;
+        updateList(() => {
+          Navigation.addSection(pageName, [itemNavi]);
+        });
+      }
     },
+    focus(section: any) {},
     enter() {},
     back() {
       pageBack();
@@ -75,33 +81,39 @@ const Contents = ({updateUI}) => {
       cols: data.current.contentsCols,
     },
     direction: {
+      left(section: any) {
+        Navigation.go(scrollNavi.id, undefined, false);
+      },
       up(section: any) {
-        Navigation.go(tabNavi.id, undefined, true);
+        if (currentPage.current === 0) {
+          Navigation.go(tabNavi.id, undefined, true);
+        } else {
+          currentPage.current = (currentPage.current - 1) % totalPage.current;
+          updateList(() => {
+            Navigation.addSection(pageName, [itemNavi]);
+            Navigation.go(itemNavi.id, { x: 0, y: 0 }, false);
+          });
+        }
+      },
+      down(section: any) {
+        currentPage.current = (currentPage.current + 1) % totalPage.current;
+        updateList(() => {
+          Navigation.addSection(pageName, [itemNavi]);
+          Navigation.go(itemNavi.id, { x: 0, y: 0 }, false);
+        });
       },
     },
     focus(section: any) {
-      const didx = data.current.contentsCols * section.axis.y + section.axis.x
-      const d = data.current.contents.LIST[didx]
-      console.log(`${pageName} itemNavi focus`, d)
-
-      if(didx < data.current.contentsCols) {
-        updateUIMode({
-          setState: state => { console.log('updateUIMode setState ', state); return "UI_DEFAULT_BROWSING" },
-          useEffect: state => {
-            // UI_CONTENTS_BROWSING||UI_SCROLL_BROWSING  ---> UI_DEFAULT_BROWSING 모드가 변경되었을때 useEffect불림
-            // 여기서 Navigation items 새로 등록해야함.  Navigation은 이전 섹션 상태가 되어야함
-          },
-        })
-      } else if(didx > 7) {
-        // XXX 테스트
-        updateUIMode({
-          setState: state => { console.log('updateUIMode setState ', state); return "UI_SCROLL_BROWSING" }
-        })
+      const itemIndex =
+        data.current.contentsCols * section.axis.y + section.axis.x;
+      if (totalPage.current > 1) {
+        if (currentPage.current === 0) {
+          activePageingMode.current = itemIndex > 3;
+        }
       } else {
-        updateUIMode({
-          setState: state => { console.log('updateUIMode setState ', state); return "UI_CONTENTS_BROWSING" }
-        })
+        activePageingMode.current = false;
       }
+      updateUI({});
     },
     enter() {
       alert("VOD OR YOUTUBE 재생");
@@ -111,107 +123,169 @@ const Contents = ({updateUI}) => {
     },
   };
 
+  const scrollNavi = {
+    id: "scroll-navi",
+    options: {
+      cols: 1,
+    },
+    direction: {
+      up(section: any) {},
+      down(section: any) {},
+      right(section: any) {
+        document.getElementById("temp").classList.remove("active");
+        Navigation.go(itemNavi.id, undefined, true);
+      },
+    },
+    focus(section: any) {},
+    enter() {},
+    back() {
+      pageBack();
+    },
+    leave(section) {},
+    entry(section) {
+      document.getElementById("temp").classList.add("active");
+    },
+  };
+
+  const updateList = (updateUICallback?: () => void) => {
+    getContentList({
+      clubId: router.query.id as string,
+      cateId: data.current.cateList.data[currentTab.current].cateId,
+      order: "string",
+      offset: currentPage.current * size,
+      limit: size + 4,
+    }).then((resp) => {
+      data.current.contents = resp;
+      totalPage.current = Math.ceil(resp.total / size);
+      updateUI({
+        useLayoutEffect: () => {
+          updateUICallback && updateUICallback();
+        },
+      });
+    });
+  };
+
   useEffect(() => {
-    console.log(`${pageName} mount`)
+    console.log(`${pageName} mount`);
 
     getContentCategoryList({
-      CLUB_ID: router.query.id as string,
-      OFFSET: 1,
-      LIMIT: 100,
-    }).then(resp => {
-      data.current.cateList = resp
-
+      clubId: router.query.id as string,
+      offset: 0,
+      limit: 100,
+    }).then((resp) => {
+      data.current.cateList = resp;
+      updateList(() => {
+        Navigation.addSection(pageName, [itemNavi, scrollNavi]);
+      });
       updateUI({
-        useLayoutEffect:()=>{
-          tabNavi.options.cols = data.current.cateList.LIST.length
+        useLayoutEffect: () => {
+          tabNavi.options.cols = data.current.cateList.data.length;
           Navigation.set({
             id: pageName,
-            sections: [tabNavi, itemNavi],
-          })
-        }
-      })
-    })
+            sections: [tabNavi, itemNavi, scrollNavi],
+          });
+        },
+      });
+    });
 
-    return ()=>{
-      console.log(`${pageName} unmount`)
-    }
+    return () => {
+      console.log(`${pageName} unmount`);
+    };
   }, []);
 
   return (
     <div id="root">
       <div id="navi" className="container">
-
-      {/* <!-- contents-utill : start --> */}
+        {/* <!-- contents-utill : start --> */}
         <div className="contents-utill">
           <div className="entry-route">
             <span className="home">홈</span>
             <span>헬로클럽</span>
             <span>콘텐츠</span>
           </div>
-          
-          {/* <!-- key-guide : start --> */
-          uiMode==="UI_CONTENTS_BROWSING" &&
-          <div className="key-guide">
-            <span className="align-type"><i className="green"></i>정렬 (최신순)</span>
-            <div className="fast-move">    
-                <button type="button" className="prev"></button>
-                <span>페이지 이동</span>
-                <button type="button" className="next"></button>
-            </div>
-          </div>
-          /* <!-- key-guide : end --> */}
 
+          {
+            /* <!-- key-guide : start --> */
+            activePageingMode.current && (
+              <div className="key-guide">
+                <span className="align-type">
+                  <i className="green"></i>정렬 (최신순)
+                </span>
+                <div className="fast-move">
+                  <button type="button" className="prev"></button>
+                  <span>페이지 이동</span>
+                  <button type="button" className="next"></button>
+                </div>
+              </div>
+            )
+            /* <!-- key-guide : end --> */
+          }
         </div>
         {/* <!-- contents-utill : end --> */}
 
-        {/* <!-- tab : start --> */
-        uiMode==="UI_DEFAULT_BROWSING" &&
-        <nav className="tabs-wrap">
-          <ul className="nav-tabs" id="tab-navi" ref={elTab}>
+        {
+          /* <!-- tab : start --> */
+          !activePageingMode.current && (
+            <nav className="tabs-wrap">
+              <ul className="nav-tabs" id="tab-navi" ref={elTab}>
+                {data.current.cateList.data.map((item) => (
+                  <li key={item.cateId} className="tab-item">
+                    <span>{item.cateName}</span>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+          /* <!-- tab : end --> */
+        }
+
+        {
+          /* <!-- contents-list : start --><!-- active 클래스로 리스트 스케일과 스크롤 포커스를 제어합니다. --> */
+          <div
+            id="temp"
+            className={"contents-list " + (activePageingMode.current ? "" : "")}
+          >
+            {data.current.contents.data.length === 0 && (
+              <div className="empty-contents">
+                <p>
+                  등록된 <em>콘텐츠</em>가 없습니다.
+                </p>
+              </div>
+            )}
+
+            {/* <!-- list : start --> */}
+            <ul id="item-navi">
+              {data.current.contents.data.map((content, index) => (
+                <ContentItem
+                  key={content.id}
+                  content={content}
+                  naviIgnore={index > 7}
+                />
+              ))}
+            </ul>
+            {/* <!-- list : end --> */}
             {
-              data.current.cateList.LIST.map(item => (
-                <li key={item.CATE_ID} className="tab-item">
-                  <span>{item.NAME}</span>
-                </li>
-              ))
+              /* <!-- scroll : start --> */
+              activePageingMode.current && (
+                <div className="scroll" id={scrollNavi.id}>
+                  {Array(totalPage.current)
+                    .fill(undefined)
+                    .map((_, index) => {
+                      return (
+                        <span
+                          className={currentPage.current === index ? "" : ""}
+                          key={index}
+                        >
+                          <i>{index + 1}</i>
+                        </span>
+                      );
+                    })}
+                </div>
+              )
             }
-          </ul>
-        </nav>
-        /* <!-- tab : end --> */}
-
-        {/* <!-- contents-list : start --><!-- active 클래스로 리스트 스케일과 스크롤 포커스를 제어합니다. --> */
-        <div className={"contents-list " + (uiMode==="UI_SCROLL_BROWSING" ? "active" : "")}>
-          {
-            data.current.contents.LIST.length === 0 &&
-            <div className="empty-contents">
-              <p>
-                등록된 <em>콘텐츠</em>가 없습니다.
-              </p>
-            </div>
-          }
-
-          {/* <!-- list : start --> */}
-          <ul id="item-navi">
-            {data.current.contents.LIST.map((content) => (
-              <ContentItem key={content.ID} content={content} />
-            ))}
-          </ul>
-          {/* <!-- list : end --> */}
-
-          {/* <!-- scroll : start --> */
-          uiMode!=="UI_DEFAULT_BROWSING" &&
-          <div className="scroll">
-              <span className="focus"><i>1</i></span>
-              <span className=""><i>2</i></span>
-              <span className=""><i>3</i></span>
-              <span className=""><i>4</i></span>
-              <span className=""><i>5</i></span>
           </div>
-          /* <!-- scroll : end --> */}
-
-        </div>
-        /* <!-- contents-list : end --> */}
-
+          /* <!-- contents-list : end --> */
+        }
       </div>
     </div>
   );

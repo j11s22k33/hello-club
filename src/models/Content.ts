@@ -1,16 +1,16 @@
-// 100 : asset vod 200 : youtube 실행
-type ContentType = 100 | 200;
+// “ASSET”: 동영상
+// “YOUTUBE”: 유튜브
+type ContentType = "ASSET" | "YOUTUBE";
 
 interface Content {
-  ID: number;
-  TITLE?: string;
-  CONTENT_TYPE?: ContentType;
-  DURATION?: number;
-  REGI_DATE?: string;
-  PLAY_URL?: string;
-  FREQ?: string;
-  PNUM?: string;
-  POSTER_IMG?: string;
+  id: number;
+  title: string;
+  contentsType: ContentType;
+  duration?: number;
+  date: string;
+  imgUrl: string;
+  playUrl?: string;
+  asset?: string;
 }
 
 export default Content;

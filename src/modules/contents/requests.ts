@@ -5,39 +5,39 @@ import { DefaultRequest } from "../DefaultRequest";
 import { DefaultResponse } from "../DefaultResponse";
 
 export interface ContentListRequest extends DefaultRequest {
-  CLUB_ID: string;
-  CATE_ID: string;
-  ORDER: string;
-  OFFSET: number;
-  LIMIT: number;
+  clubId: string;
+  cateId: string;
+  order: string;
+  offset: number;
+  limit: number;
 }
 
 export interface ContentListResponse extends DefaultResponse {
-  TOTAL: number;
-  LIST: Array<Content>;
+  total: number;
+  data: Array<Content>;
 }
 
 export interface ContentCategoryRequest extends DefaultRequest {
-  CLUB_ID: string;
-  OFFSET: number;
-  LIMIT: number;
+  clubId: string;
+  offset: number;
+  limit: number;
 }
 
 export interface ContentCategoryResponse extends DefaultResponse {
-  TOTAL: number;
-  LIST: Array<ContentCategory>;
+  total: number;
+  data: Array<ContentCategory>;
 }
 
 export const getContentList = async (
   params: ContentListRequest
 ): Promise<ContentListResponse> => {
-  const res = await API.get("/v1/club/content/list", { params });
+  const res = await API.get("/clubpf/svc/contents/list", { params });
   return res.data;
 };
 
 export const getContentCategoryList = async (
   params: ContentCategoryRequest
 ): Promise<ContentCategoryResponse> => {
-  const res = await API.get("/v1/club/category/list", { params });
+  const res = await API.get("/clubpf/svc/contents/cateList", { params });
   return res.data;
 };
